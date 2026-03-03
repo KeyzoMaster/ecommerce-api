@@ -1,0 +1,20 @@
+.
+├── docker-compose.yml
+├── mvnw
+├── mvnw.cmd
+├── pom.xml
+├── src
+│   ├── main
+│   │   ├── java
+│   │   │   └── com
+│   │   │       └── lemzo
+│   │   └── resources
+│   │       └── META-INF
+│   │           ├── beans.xml
+│   │           └── persistence.xml
+│   └── test
+│       ├── java
+│       └── resources
+└── tree.txt
+
+11 directories, 7 files

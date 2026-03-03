@@ -1,0 +1,535 @@
+ecommerce-postgres-1: The files belonging to this database system will be owned by user "postgres".
+ecommerce-postgres-1: This user must also own the server process.
+ecommerce-postgres-1:
+ecommerce-postgres-1: The database cluster will be initialized with locale "en_US.utf8".
+ecommerce-postgres-1: The default database encoding has accordingly been set to "UTF8".
+ecommerce-postgres-1: The default text search configuration will be set to "english".
+ecommerce-postgres-1:
+ecommerce-postgres-1: Data page checksums are enabled.
+ecommerce-postgres-1:
+ecommerce-postgres-1: fixing permissions on existing directory /var/lib/postgresql/18/docker ... ok
+ecommerce-postgres-1: creating subdirectories ... ok
+ecommerce-postgres-1: selecting dynamic shared memory implementation ... posix
+ecommerce-postgres-1: selecting default "max_connections" ... 100
+ecommerce-postgres-1: selecting default "shared_buffers" ... 128MB
+ecommerce-postgres-1: selecting default time zone ... Etc/UTC
+ecommerce-postgres-1: creating configuration files ... ok
+ecommerce-postgres-1: running bootstrap script ... ok
+ecommerce-postgres-1: performing post-bootstrap initialization ... ok
+ecommerce-postgres-1: syncing data to disk ... ok
+ecommerce-postgres-1:
+ecommerce-postgres-1:
+ecommerce-postgres-1: Success. You can now start the database server using:
+ecommerce-postgres-1:
+ecommerce-postgres-1:     pg_ctl -D /var/lib/postgresql/18/docker -l logfile start
+ecommerce-postgres-1:
+ecommerce-postgres-1: initdb: warning: enabling "trust" authentication for local connections
+ecommerce-postgres-1: initdb: hint: You can change this by editing pg_hba.conf or using the option -A, or --auth-local and --auth-host, the next time you run initdb.
+ecommerce-postgres-1: waiting for server to start....2026-03-03 17:20:32.835 UTC [58] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+ecommerce-postgres-1: 2026-03-03 17:20:32.841 UTC [58] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+ecommerce-postgres-1: 2026-03-03 17:20:32.858 UTC [64] LOG:  database system was shut down at 2026-03-03 17:20:26 UTC
+ecommerce-postgres-1: 2026-03-03 17:20:32.865 UTC [58] LOG:  database system is ready to accept connections
+ecommerce-postgres-1:  done
+ecommerce-postgres-1: server started
+ecommerce-postgres-1: CREATE DATABASE
+ecommerce-postgres-1:
+ecommerce-postgres-1:
+ecommerce-postgres-1: /usr/local/bin/docker-entrypoint.sh: ignoring /docker-entrypoint-initdb.d/*
+ecommerce-postgres-1:
+ecommerce-postgres-1: waiting for server to shut down...2026-03-03 17:20:33.069 UTC [58] LOG:  received fast shutdown request
+ecommerce-postgres-1: .2026-03-03 17:20:33.074 UTC [58] LOG:  aborting any active transactions
+ecommerce-postgres-1: 2026-03-03 17:20:33.076 UTC [58] LOG:  background worker "logical replication launcher" (PID 67) exited with exit code 1
+ecommerce-postgres-1: 2026-03-03 17:20:33.076 UTC [62] LOG:  shutting down
+ecommerce-postgres-1: 2026-03-03 17:20:33.081 UTC [62] LOG:  checkpoint starting: shutdown immediate
+ecommerce-postgres-1: .2026-03-03 17:20:34.758 UTC [62] LOG:  checkpoint complete: wrote 943 buffers (5.8%), wrote 3 SLRU buffers; 0 WAL file(s) added, 0 removed, 0 recycled; write=0.034 s, sync=1.612 s, total=1.683 s; sync files=303, longest=0.016 s, average=0.006 s; distance=4352 kB, estimate=4352 kB; lsn=0/1B9FBA8, redo lsn=0/1B9FBA8
+ecommerce-postgres-1: 2026-03-03 17:20:34.782 UTC [58] LOG:  database system is shut down
+ecommerce-postgres-1:  done
+ecommerce-api-1: Mar 03, 2026 5:20:36 PM jakarta.enterprise.launcher
+ecommerce-api-1: INFO: JVM invocation command line:
+ecommerce-api-1: /opt/java/openjdk/bin/java
+ecommerce-api-1: --module-path
+ecommerce-api-1: /opt/glassfish8/glassfish/lib/bootstrap
+ecommerce-api-1: --add-modules
+ecommerce-api-1: ALL-MODULE-PATH
+ecommerce-postgres-1: server stopped
+ecommerce-postgres-1:
+ecommerce-postgres-1: PostgreSQL init process complete; ready for start up.
+ecommerce-postgres-1:
+ecommerce-postgres-1: 2026-03-03 17:20:34.900 UTC [1] LOG:  starting PostgreSQL 18.3 (Debian 18.3-1.pgdg13+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 14.2.0-19) 14.2.0, 64-bit
+ecommerce-postgres-1: 2026-03-03 17:20:34.900 UTC [1] LOG:  listening on IPv4 address "0.0.0.0", port 5432
+ecommerce-api-1: -DWALL_CLOCK_START=2026-03-03T17:20:36.411706482Z
+ecommerce-api-1: -XX:+UnlockDiagnosticVMOptions
+ecommerce-api-1: -XX:NewRatio=2
+ecommerce-api-1: -Xmx512m
+ecommerce-api-1: --add-opens=java.base/java.io=ALL-UNNAMED
+ecommerce-api-1: --add-opens=java.base/java.lang=ALL-UNNAMED
+ecommerce-postgres-1: 2026-03-03 17:20:34.900 UTC [1] LOG:  listening on IPv6 address "::", port 5432
+ecommerce-postgres-1: 2026-03-03 17:20:34.912 UTC [1] LOG:  listening on Unix socket "/var/run/postgresql/.s.PGSQL.5432"
+ecommerce-postgres-1: 2026-03-03 17:20:34.924 UTC [80] LOG:  database system was shut down at 2026-03-03 17:20:34 UTC
+ecommerce-api-1: --add-opens=java.base/java.util=ALL-UNNAMED
+ecommerce-postgres-1: 2026-03-03 17:20:34.932 UTC [1] LOG:  database system is ready to accept connections
+ecommerce-api-1: --add-opens=java.base/sun.nio.fs=ALL-UNNAMED
+ecommerce-api-1: --add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED
+ecommerce-api-1: --add-opens=java.naming/javax.naming.spi=org.glassfish.main.jdke
+ecommerce-api-1: --add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
+ecommerce-api-1: --add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED
+ecommerce-api-1: --add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED
+ecommerce-api-1: --add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+ecommerce-api-1: --add-opens=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
+ecommerce-api-1: --add-exports=java.base/jdk.internal.loader=ALL-UNNAMED
+ecommerce-api-1: -javaagent:/opt/glassfish8/glassfish/lib/monitor/flashlight-agent.jar
+ecommerce-api-1: -Djava.util.logging.manager=org.glassfish.main.jul.GlassFishLogManager
+ecommerce-api-1: -Djava.util.logging.config.block=true
+ecommerce-api-1: -Djava.awt.headless=true
+ecommerce-api-1: -Djdk.corba.allowOutputStreamSubclass=true
+ecommerce-api-1: -Djdk.tls.rejectClientInitiatedRenegotiation=true
+ecommerce-api-1: -Djdk.xml.totalEntitySizeLimit=50000000
+ecommerce-api-1: -Djavax.xml.accessExternalSchema=all
+ecommerce-api-1: -Djava.security.auth.login.config=/opt/glassfish8/glassfish/domains/domain1/config/login.conf
+ecommerce-api-1: -Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as
+ecommerce-api-1: -Djavax.net.ssl.keyStore=/opt/glassfish8/glassfish/domains/domain1/config/keystore.p12
+ecommerce-api-1: -Djavax.net.ssl.trustStore=/opt/glassfish8/glassfish/domains/domain1/config/cacerts.p12
+ecommerce-api-1: -Djdbc.drivers=org.apache.derby.jdbc.ClientDriver
+ecommerce-api-1: -DANTLR_USE_DIRECT_CLASS_LOADING=true
+ecommerce-api-1: -Dcom.sun.enterprise.config.config_environment_factory_class=com.sun.enterprise.config.serverbeans.AppserverConfigEnvironmentFactory
+ecommerce-api-1: -Dorg.glassfish.additionalOSGiBundlesToStart=org.apache.felix.shell,org.apache.felix.gogo.runtime,org.apache.felix.gogo.shell,org.apache.felix.gogo.command,org.apache.felix.shell.remote,org.apache.felix.fileinstall
+ecommerce-api-1: -Dosgi.shell.telnet.port=6666
+ecommerce-api-1: -Dosgi.shell.telnet.maxconn=1
+ecommerce-api-1: -Dosgi.shell.telnet.ip=127.0.0.1
+ecommerce-api-1: -Dgosh.args=--nointeractive
+ecommerce-api-1: -Dfelix.fileinstall.dir=/opt/glassfish8/glassfish/modules/autostart/
+ecommerce-api-1: -Dfelix.fileinstall.poll=5000
+ecommerce-api-1: -Dfelix.fileinstall.log.level=2
+ecommerce-api-1: -Dfelix.fileinstall.bundles.new.start=true
+ecommerce-api-1: -Dfelix.fileinstall.bundles.startTransient=true
+ecommerce-api-1: -Dfelix.fileinstall.disableConfigSave=false
+ecommerce-api-1: -Dorg.glassfish.gmbal.no.multipleUpperBoundsException=true
+ecommerce-api-1: -Dcom.ctc.wstx.returnNullForDefaultNamespace=true
+ecommerce-api-1: -Djdk.attach.allowAttachSelf=true
+ecommerce-api-1: -Dcom.sun.aas.instanceRoot=/opt/glassfish8/glassfish/domains/domain1
+ecommerce-api-1: -Dcom.sun.aas.installRoot=/opt/glassfish8/glassfish
+ecommerce-api-1: -Djava.library.path=/opt/glassfish8/glassfish/lib:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
+ecommerce-api-1: com.sun.enterprise.glassfish.bootstrap.GlassFishMain
+ecommerce-api-1: -upgrade
+ecommerce-api-1: false
+ecommerce-api-1: -domaindir
+ecommerce-api-1: /opt/glassfish8/glassfish/domains/domain1
+ecommerce-api-1: -read-stdin
+ecommerce-api-1: true
+ecommerce-api-1: -asadmin-args
+ecommerce-api-1: --host,,,localhost,,,--port,,,4848,,,--secure=false,,,--terse=false,,,--echo=false,,,--interactive=false,,,start-domain,,,--verbose=true,,,--watchdog=false,,,--debug=false,,,--domaindir,,,/opt/glassfish8/glassfish/domains,,,domain1
+ecommerce-api-1: -domainname
+ecommerce-api-1: domain1
+ecommerce-api-1: -instancename
+ecommerce-api-1: server
+ecommerce-api-1: -type
+ecommerce-api-1: DAS
+ecommerce-api-1: -verbose
+ecommerce-api-1: true
+ecommerce-api-1: -asadmin-modulepath
+ecommerce-api-1: /opt/glassfish8/glassfish/lib/bootstrap
+ecommerce-api-1: -asadmin-classpath
+ecommerce-api-1: /opt/glassfish8/glassfish/appserver-cli.jar:/opt/glassfish8/glassfish/admin-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/cli-optional.jar:/opt/glassfish8/glassfish/lib/asadmin/cluster-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/osgi-cli-interactive.jar:/opt/glassfish8/glassfish/lib/asadmin/server-mgmt.jar:/opt/glassfish8/glassfish/modules/admin-util.jar:/opt/glassfish8/glassfish/modules/backup.jar:/opt/glassfish8/glassfish/modules/cluster-common.jar:/opt/glassfish8/glassfish/modules/cluster-ssh.jar:/opt/glassfish8/glassfish/modules/config-api.jar:/opt/glassfish8/glassfish/modules/config-types.jar:/opt/glassfish8/glassfish/modules/common-util.jar:/opt/glassfish8/glassfish/modules/glassfish-api.jar:/opt/glassfish8/glassfish/modules/hk2.jar:/opt/glassfish8/glassfish/modules/hk2-config-generator.jar:/opt/glassfish8/glassfish/modules/internal-api.jar:/opt/glassfish8/glassfish/modules/jackson-core.jar:/opt/glassfish8/glassfish/modules/jakarta.activation-api.jar:/opt/glassfish8/glassfish/modules/jakarta.validatioecommerce-api-1: n-api.jar:/opt/glassfish8/glassfish/modules/jakarta.xml.bind-api.jar:/opt/glassfish8/glassfish/modules/jaxb-osgi.jar:/opt/glassfish8/glassfish/modules/jettison.jar:/opt/glassfish8/glassfish/modules/jsch.jar:/opt/glassfish8/glassfish/modules/launcher.jar:/opt/glassfish8/glassfish/modules/mimepull.jar
+ecommerce-api-1: -debug
+ecommerce-api-1: false
+ecommerce-api-1: -asadmin-classname
+ecommerce-api-1: com.sun.enterprise.admin.cli.AdminMain
+ecommerce-api-1: Launching GlassFish on Felix platform
+ecommerce-api-1: Resolved GlassFish install root: /opt/glassfish8/glassfish
+ecommerce-api-1: Resolved properties: {-upgrade=false, -read-stdin=true, -domainname=domain1, -asadmin-modulepath=/opt/glassfish8/glassfish/lib/bootstrap, -domaindir=/opt/glassfish8/glassfish/domains/domain1, -asadmin-args=--host,,,localhost,,,--port,,,4848,,,--secure=false,,,--terse=false,,,--echo=false,,,--interactive=false,,,start-domain,,,--verbose=true,,,--watchdog=false,,,--debug=false,,,--domaindir,,,/opt/glassfish8/glassfish/domains,,,domain1, -instancename=server, -type=DAS, -verbose=true, -asadmin-classpath=/opt/glassfish8/glassfish/appserver-cli.jar:/opt/glassfish8/glassfish/admin-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/cli-optional.jar:/opt/glassfish8/glassfish/lib/asadmin/cluster-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/osgi-cli-interactive.jar:/opt/glassfish8/glassfish/lib/asadmin/server-mgmt.jar:/opt/glassfish8/glassfish/modules/admin-util.jar:/opt/glassfish8/glassfish/modules/backup.jar:/opt/glassfish8/glassfish/modules/cluster-common.jar:/opt/glassfish8/glassfish/modules/cluster-ssh.jar:/opt/glassfecommerce-api-1: ish8/glassfish/modules/config-api.jar:/opt/glassfish8/glassfish/modules/config-types.jar:/opt/glassfish8/glassfish/modules/common-util.jar:/opt/glassfish8/glassfish/modules/glassfish-api.jar:/opt/glassfish8/glassfish/modules/hk2.jar:/opt/glassfish8/glassfish/modules/hk2-config-generator.jar:/opt/glassfish8/glassfish/modules/internal-api.jar:/opt/glassfish8/glassfish/modules/jackson-core.jar:/opt/glassfish8/glassfish/modules/jakarta.activation-api.jar:/opt/glassfish8/glassfish/modules/jakarta.validation-api.jar:/opt/glassfish8/glassfish/modules/jakarta.xml.bind-api.jar:/opt/glassfish8/glassfish/modules/jaxb-osgi.jar:/opt/glassfish8/glassfish/modules/jettison.jar:/opt/glassfish8/glassfish/modules/jsch.jar:/opt/glassfish8/glassfish/modules/launcher.jar:/opt/glassfish8/glassfish/modules/mimepull.jar, -debug=false, -asadmin-classname=com.sun.enterprise.admin.cli.AdminMain}
+ecommerce-api-1: OSGI framework packages:
+ecommerce-api-1: org.glassfish.main.jdke;uses:="javax.naming,javax.naming.spi";version="8.0.0",org.glassfish.main.jdke.cl;version="8.0.0",org.glassfish.main.jdke.i18n;version="8.0.0",org.glassfish.main.jdke.props;version="8.0.0",org.glassfish.main.jdke.security;version="8.0.0", com.sun.enterprise.glassfish.bootstrap;version="8.0.0",com.sun.enterprise.glassfish.bootstrap.cfg;version="8.0.0",com.sun.enterprise.glassfish.bootstrap.cp;uses:="com.sun.enterprise.glassfish.bootstrap.cfg";version="8.0.0",com.sun.enterprise.glassfish.bootstrap.launch;uses:="org.glassfish.main.jdke.cl";version="8.0.0",com.sun.enterprise.glassfish.bootstrap.log;version="8.0.0", org.glassfish.embeddable;version="8.0.0",org.glassfish.embeddable.client;version="8.0.0",org.glassfish.embeddable.spi;uses:="org.glassfish.embeddable";version="8.0.0", org.glassfish.main.jul;uses:="org.glassfish.main.jul.cfg,org.glassfish.main.jul.handler";version="8.0.0",org.glassfish.main.jul.cfg;version="8.0.0",org.glassfish.main.jul.env;version="8.0.0",org.glassfish.main.jul.ecommerce-api-1: formatter;uses:="org.glassfish.main.jul.cfg,org.glassfish.main.jul.record";version="8.0.0",org.glassfish.main.jul.handler;uses:="org.glassfish.main.jul.cfg,org.glassfish.main.jul.formatter,org.glassfish.main.jul.record";version="8.0.0",org.glassfish.main.jul.record;version="8.0.0",org.glassfish.main.jul.rotation;version="8.0.0",org.glassfish.main.jul.tracing;version="8.0.0", null, org.osgi.dto;version="1.1.1",org.osgi.framework;version="1.10",org.osgi.framework.connect;uses:="org.osgi.framework,org.osgi.framework.launch";version="1.0",org.osgi.framework.dto;uses:="org.osgi.dto";version="1.8",org.osgi.framework.hooks.bundle;uses:="org.osgi.framework";version="1.1",org.osgi.framework.hooks.resolver;uses:="org.osgi.framework.wiring";version="1.0",org.osgi.framework.hooks.service;uses:="org.osgi.framework";version="1.1",org.osgi.framework.hooks.weaving;uses:="org.osgi.framework.wiring";version="1.1",org.osgi.framework.launch;uses:="org.osgi.framework";version="1.2",org.osgi.framework.namespace;uses:="org.osgi.resecommerce-api-1: ource";version="1.2",org.osgi.framework.startlevel;uses:="org.osgi.framework";version="1.0",org.osgi.framework.startlevel.dto;uses:="org.osgi.dto";version="1.0",org.osgi.framework.wiring;uses:="org.osgi.framework,org.osgi.resource";version="1.2",org.osgi.framework.wiring.dto;uses:="org.osgi.dto,org.osgi.resource.dto";version="1.3",org.osgi.resource;version="1.0.1",org.osgi.resource.dto;uses:="org.osgi.dto";version="1.0.1",org.osgi.service.condition;version="1.0",org.osgi.service.packageadmin;uses:="org.osgi.framework";version="1.2.1",org.osgi.service.resolver;uses:="org.osgi.resource";version="1.1.1",org.osgi.service.startlevel;uses:="org.osgi.framework";version="1.1.1",org.osgi.service.url;version="1.0.1",org.osgi.util.tracker;uses:="org.osgi.framework";version="1.5.3"
+ecommerce-api-1: JDK provided packages:
+ecommerce-api-1: com.sun.enterprise.glassfish.bootstrap.cfg, com.sun.enterprise.glassfish.bootstrap.launch, com.sun.java.accessibility.util, com.sun.jdi, com.sun.jdi.connect, com.sun.jdi.connect.spi, com.sun.jdi.event, com.sun.jdi.request, com.sun.management, com.sun.net.httpserver, com.sun.net.httpserver.spi, com.sun.nio.file, com.sun.nio.sctp, com.sun.security.auth, com.sun.security.auth.callback, com.sun.security.auth.login, com.sun.security.auth.module, com.sun.security.jgss, com.sun.source.doctree, com.sun.source.tree, com.sun.source.util, com.sun.tools.attach, com.sun.tools.attach.spi, com.sun.tools.javac, com.sun.tools.jconsole, java.applet, java.awt, java.awt.color, java.awt.datatransfer, java.awt.desktop, java.awt.dnd, java.awt.event, java.awt.font, java.awt.geom, java.awt.im, java.awt.im.spi, java.awt.image, java.awt.image.renderable, java.awt.print, java.beans, java.beans.beancontext, java.io, java.lang, java.lang.annotation, java.lang.classfile, java.lang.classfile.attribute, java.lang.classfile.constantpool, javaecommerce-api-1: .lang.classfile.instruction, java.lang.constant, java.lang.foreign, java.lang.instrument, java.lang.invoke, java.lang.management, java.lang.module, java.lang.ref, java.lang.reflect, java.lang.runtime, java.math, java.net, java.net.http, java.net.spi, java.nio, java.nio.channels, java.nio.channels.spi, java.nio.charset, java.nio.charset.spi, java.nio.file, java.nio.file.attribute, java.nio.file.spi, java.rmi, java.rmi.dgc, java.rmi.registry, java.rmi.server, java.security, java.security.cert, java.security.interfaces, java.security.spec, java.sql, java.text, java.text.spi, java.time, java.time.chrono, java.time.format, java.time.temporal, java.time.zone, java.util, java.util.concurrent, java.util.concurrent.atomic, java.util.concurrent.locks, java.util.function, java.util.jar, java.util.logging, java.util.prefs, java.util.random, java.util.regex, java.util.spi, java.util.stream, java.util.zip, javax.accessibility, javax.annotation.processing, javax.crypto, javax.crypto.interfaces, javax.crypto.spec, javax.imagecommerce-api-1: eio, javax.imageio.event, javax.imageio.metadata, javax.imageio.plugins.bmp, javax.imageio.plugins.jpeg, javax.imageio.plugins.tiff, javax.imageio.spi, javax.imageio.stream, javax.lang.model, javax.lang.model.element, javax.lang.model.type, javax.lang.model.util, javax.management, javax.management.loading, javax.management.modelmbean, javax.management.monitor, javax.management.openmbean, javax.management.relation, javax.management.remote, javax.management.remote.rmi, javax.management.timer, javax.naming, javax.naming.directory, javax.naming.event, javax.naming.ldap, javax.naming.ldap.spi, javax.naming.spi, javax.net, javax.net.ssl, javax.print, javax.print.attribute, javax.print.attribute.standard, javax.print.event, javax.rmi.ssl, javax.script, javax.security.auth, javax.security.auth.callback, javax.security.auth.kerberos, javax.security.auth.login, javax.security.auth.spi, javax.security.auth.x500, javax.security.cert, javax.security.sasl, javax.smartcardio, javax.sound, javax.sound.midi, javax.sound.midi.ecommerce-api-1: spi, javax.sound.sampled, javax.sound.sampled.spi, javax.sql, javax.sql.rowset, javax.sql.rowset.serial, javax.sql.rowset.spi, javax.swing, javax.swing.border, javax.swing.colorchooser, javax.swing.event, javax.swing.filechooser, javax.swing.plaf, javax.swing.plaf.basic, javax.swing.plaf.metal, javax.swing.plaf.multi, javax.swing.plaf.nimbus, javax.swing.plaf.synth, javax.swing.table, javax.swing.text, javax.swing.text.html, javax.swing.text.html.parser, javax.swing.text.rtf, javax.swing.tree, javax.swing.undo, javax.tools, javax.transaction.xa, javax.xml, javax.xml.catalog, javax.xml.crypto, javax.xml.crypto.dom, javax.xml.crypto.dsig, javax.xml.crypto.dsig.dom, javax.xml.crypto.dsig.keyinfo, javax.xml.crypto.dsig.spec, javax.xml.datatype, javax.xml.namespace, javax.xml.parsers, javax.xml.stream, javax.xml.stream.events, javax.xml.stream.util, javax.xml.transform, javax.xml.transform.dom, javax.xml.transform.sax, javax.xml.transform.stax, javax.xml.transform.stream, javax.xml.validation, javax.xml.xpath, jdkecommerce-api-1: .dynalink, jdk.dynalink.beans, jdk.dynalink.linker, jdk.dynalink.linker.support, jdk.dynalink.support, jdk.javadoc.doclet, jdk.jfr, jdk.jfr.consumer, jdk.jshell, jdk.jshell.execution, jdk.jshell.spi, jdk.jshell.tool, jdk.management, jdk.management.jfr, jdk.net, jdk.nio, jdk.nio.mapmode, jdk.security.jarsigner, jdk.swing.interop, netscape.javascript, org.glassfish.embeddable, org.glassfish.embeddable.client, org.glassfish.embeddable.spi, org.glassfish.main.jdke, org.glassfish.main.jdke.cl, org.glassfish.main.jdke.i18n, org.glassfish.main.jdke.props, org.glassfish.main.jdke.security, org.glassfish.main.jul, org.glassfish.main.jul.cfg, org.glassfish.main.jul.env, org.glassfish.main.jul.formatter, org.glassfish.main.jul.handler, org.glassfish.main.jul.record, org.ietf.jgss, org.w3c.dom, org.w3c.dom.bootstrap, org.w3c.dom.css, org.w3c.dom.events, org.w3c.dom.html, org.w3c.dom.ls, org.w3c.dom.ranges, org.w3c.dom.stylesheets, org.w3c.dom.traversal, org.w3c.dom.views, org.w3c.dom.xpath, org.xml.sax, org.xml.sax.ext, ecommerce-api-1: org.xml.sax.helpers, sun.misc, sun.reflect
+ecommerce-api-1: WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+ecommerce-api-1: WARNING: sun.misc.Unsafe::staticFieldOffset has been called by org.apache.felix.framework.util.SecureAction (file:/opt/glassfish8/glassfish/osgi/felix/bin/felix.jar)
+ecommerce-api-1: WARNING: Please consider reporting this to the maintainers of class org.apache.felix.framework.util.SecureAction
+ecommerce-api-1: WARNING: sun.misc.Unsafe::staticFieldOffset will be removed in a future release
+ecommerce-api-1: [#|2026-03-03T17:20:39.658722Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=3;_ThreadName=main;_LevelValue=800;|
+ecommerce-api-1:   Loaded server named: server|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.737993Z|INFO|GF 8.0.0|com.sun.enterprise.server.logging.LogManagerService|_ThreadID=50;_ThreadName=RunLevelControllerThread-1772558439683;_LevelValue=800;|
+ecommerce-api-1:   Using property file: /opt/glassfish8/glassfish/domains/domain1/config/logging.properties|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.813230Z|INFO|GF 8.0.0|com.sun.enterprise.server.logging.LogManagerService|_ThreadID=50;_ThreadName=RunLevelControllerThread-1772558439683;_LevelValue=800;_MessageID=NCLS-LOGGING-00009;|
+ecommerce-api-1:   Running GlassFish Version: Eclipse GlassFish 8.0.0 (commit: ca9f02fbdfb5d712d756a320bc8df3847687be96)|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.917864Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-SECURITY-01115;|
+ecommerce-api-1:   Realm [admin-realm] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.918956Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-SECURITY-01115;|
+ecommerce-api-1:   Realm [file] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.925604Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-SECURITY-01115;|
+ecommerce-api-1:   Realm [certificate] of classtype [com.sun.enterprise.security.auth.realm.certificate.CertificateRealm] successfully created.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:39.991939Z|INFO|GF 8.0.0|org.glassfish.ha.store.spi.BackingStoreFactoryRegistry|_ThreadID=51;_ThreadName=RunLevelControllerThread-1772558439690;_LevelValue=800;|
+ecommerce-api-1:   Registered org.glassfish.ha.store.adapter.cache.ShoalBackingStoreProxy for persistence-type = replicated in BackingStoreFactoryRegistry|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.287021Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-CORE-00087;|
+ecommerce-api-1:   Grizzly Framework 5.0.0 started in: 24 ms - bound to [/0.0.0.0:8080]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.316812Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-CORE-00087;|
+ecommerce-api-1:   Grizzly Framework 5.0.0 started in: 1 ms - bound to [/0.0.0.0:8181]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.325074Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=NCLS-CORE-00087;|
+ecommerce-api-1:   Grizzly Framework 5.0.0 started in: 1 ms - bound to [/0.0.0.0:4848]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.405776Z|INFO|GF 8.0.0|jakarta.enterprise.security.services|_ThreadID=49;_ThreadName=RunLevelControllerThread-1772558439681;_LevelValue=800;_MessageID=SEC-SVCS-00100;|
+ecommerce-api-1:   Authorization Service has successfully initialized.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.442083Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=50;_ThreadName=RunLevelControllerThread-1772558439683;_LevelValue=800;_MessageID=NCLS-CORE-00087;|
+ecommerce-api-1:   Grizzly Framework 5.0.0 started in: 1 ms - bound to [/0.0.0.0:3700]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.566460Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=3;_ThreadName=main;_LevelValue=800;_MessageID=NCLS-CORE-00017;|
+ecommerce-api-1:   Eclipse GlassFish 8.0.0 (commit: ca9f02fbdfb5d712d756a320bc8df3847687be96) startup time: Felix (2,459 ms), startup services (892 ms), total (3,351 ms)|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.570621Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=3;_ThreadName=main;_LevelValue=800;_MessageID=NCLS-CORE-00018;|
+ecommerce-api-1:   Total startup time including CLI: 4,158 ms|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.663288Z|INFO|GF 8.0.0|jakarta.enterprise.system.tools.deployment.autodeploy|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=NCLS-DEPLOYMENT-02027;|
+ecommerce-api-1:   Selecting file /opt/glassfish8/glassfish/domains/domain1/autodeploy/ecommerce.war for autodeployment|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.966937Z|INFO|GF 8.0.0|jakarta.enterprise.system.jmx|_ThreadID=102;_ThreadName=Thread-14;_LevelValue=800;_MessageID=NCLS-JMX-00005;|
+ecommerce-api-1:   JMXStartupService has started JMXConnector on JMXService URL service:jmx:rmi://245e19e4b242:8686/jndi/rmi://245e19e4b242:8686/jmxrmi|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:40.996740Z|INFO|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=51;_ThreadName=RunLevelControllerThread-1772558439690;_LevelValue=800;_MessageID=NCLS-CORE-00087;|
+ecommerce-api-1:   Grizzly Framework 5.0.0 started in: 0 ms - bound to [/0.0.0.0:7676]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:41.904706Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=NCLS-SECURITY-01143;|
+ecommerce-api-1:   Loading policy provider org.glassfish.exousia.modules.def.DefaultPolicy.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:41.910966Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=NCLS-SECURITY-01010;|
+ecommerce-api-1:   Entering Security Startup Service.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:41.918572Z|INFO|GF 8.0.0|jakarta.enterprise.system.core.security|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=NCLS-SECURITY-01011;|
+ecommerce-api-1:   Security Service(s) started successfully.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.147665Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00198;|
+ecommerce-api-1:   Created HTTP listener http-listener-1 on host/port 0.0.0.0:8080|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.152796Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00198;|
+ecommerce-api-1:   Created HTTP listener http-listener-2 on host/port 0.0.0.0:8181|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.155061Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00198;|
+ecommerce-api-1:   Created HTTP listener admin-listener on host/port 0.0.0.0:4848|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.176855Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00200;|
+ecommerce-api-1:   Created virtual server server|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.179377Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00200;|
+ecommerce-api-1:   Created virtual server __asadmin|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.331603Z|INFO|GF 8.0.0|jakarta.enterprise.web.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-CORE-00306;|
+ecommerce-api-1:   Setting JAAS app name glassfish-web|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:42.332082Z|INFO|GF 8.0.0|jakarta.enterprise.web|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=AS-WEB-GLUE-00201;|
+ecommerce-api-1:   Virtual server server loaded default web module |#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:43.977184Z|INFO|GF 8.0.0|jakarta.enterprise.resource.resourceadapter.com.sun.enterprise.resource.pool|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   Created connection pool and added it to PoolManager: Pool [PoolInfo[jndiName=java:app/PostgresPool, applicationName=ecommerce, moduleName=null]] PoolSize=0  FreeResources=0  QueueSize=0 matching=off validation=off|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:43.998973Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;|
+ecommerce-api-1:   Exception while deploying the app [ecommerce]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:43.999679Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;_MessageID=NCLS-CORE-00026;|
+ecommerce-api-1:   Exception during lifecycle processing
+ecommerce-api-1: org.glassfish.deployment.common.DeploymentException: JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:886)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateResources(ResourceValidator.java:748)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.event(ResourceValidator.java:173)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl$Listener.event(EventsImpl.java:185)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl.send(EventsImpl.java:142)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:485)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:285)
+ecommerce-api-1: 	at org.glassfish.deployment.admin.DeployCommand.execute(DeployCommand.java:475)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:541)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1.execute(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:566)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:1425)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:185)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:164)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:47)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoOperation.run(AutoOperation.java:145)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deploy(AutoDeployer.java:569)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deployAll(AutoDeployer.java:456)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:384)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:375)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployService$1.run(AutoDeployService.java:208)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.mainLoop(Timer.java:572)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.run(Timer.java:522)
+ecommerce-api-1: Caused by: javax.naming.NamingException: Lookup failed for jdbc/ecommerceDS in SerialContext[myEnv={java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl, java.naming.factory.url.pkgs=com.sun.enterprise.naming}] [Root exception is javax.naming.NameNotFoundException: ecommerceDS not found]
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:836)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:257)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.doLookup(InitialContext.java:282)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:882)
+ecommerce-api-1: 	... 35 more
+ecommerce-api-1: Caused by: javax.naming.NameNotFoundException: ecommerceDS not found
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.doLookup(TransientContext.java:235)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:203)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:207)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContextProviderImpl.lookup(SerialContextProviderImpl.java:38)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.LocalSerialContextProviderImpl.lookup(LocalSerialContextProviderImpl.java:92)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:825)
+ecommerce-api-1: 	... 40 more
+ecommerce-api-1: |#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.001221Z|INFO|GF 8.0.0|org.glassfish.web.loader.WebappClassLoader|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   close(), this:
+ecommerce-api-1: org.glassfish.web.loader.WebappClassLoader@6dc49286[name=ecommerce], urls=[
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/classes/
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-api-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-impl-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-jackson-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-core-2.21.1.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-databind-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-annotations-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-nolibs-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jna-5.8.0.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/ecommerce/
+ecommerce-api-1: ][delegate=true, context=ecommerce, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=32, pathTimestamps.size=9, resourceEntryCache.size=0]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.020845Z|INFO|GF 8.0.0|org.glassfish.web.loader.WebappClassLoader|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   close(), this:
+ecommerce-api-1: org.glassfish.web.loader.WebappClassLoader@7cfb6e55[name=ecommerce], urls=[
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/classes/
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-api-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-impl-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-jackson-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-core-2.21.1.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-databind-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-annotations-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-nolibs-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jna-5.8.0.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/ecommerce/
+ecommerce-api-1: ][delegate=true, context=ecommerce, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=0, pathTimestamps.size=9, resourceEntryCache.size=0]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.027357Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;|
+ecommerce-api-1:   Exception while deploying the app [ecommerce] : JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource
+ecommerce-api-1: javax.naming.NamingException: Lookup failed for jdbc/ecommerceDS in SerialContext[myEnv={java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl, java.naming.factory.url.pkgs=com.sun.enterprise.naming}] [Root exception is javax.naming.NameNotFoundException: ecommerceDS not found]
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:836)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:257)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.doLookup(InitialContext.java:282)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:882)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateResources(ResourceValidator.java:748)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.event(ResourceValidator.java:173)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl$Listener.event(EventsImpl.java:185)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl.send(EventsImpl.java:142)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:485)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:285)
+ecommerce-api-1: 	at org.glassfish.deployment.admin.DeployCommand.execute(DeployCommand.java:475)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:541)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1.execute(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:566)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:1425)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:185)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:164)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:47)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoOperation.run(AutoOperation.java:145)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deploy(AutoDeployer.java:569)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deployAll(AutoDeployer.java:456)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:384)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:375)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployService$1.run(AutoDeployService.java:208)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.mainLoop(Timer.java:572)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.run(Timer.java:522)
+ecommerce-api-1: Caused by: javax.naming.NameNotFoundException: ecommerceDS not found
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.doLookup(TransientContext.java:235)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:203)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:207)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContextProviderImpl.lookup(SerialContextProviderImpl.java:38)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.LocalSerialContextProviderImpl.lookup(LocalSerialContextProviderImpl.java:92)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:825)
+ecommerce-api-1: 	... 40 more
+ecommerce-api-1: |#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.033001Z|WARNING|GF 8.0.0|jakarta.enterprise.system.tools.deployment.autodeploy|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=900;_MessageID=NCLS-DEPLOYMENT-02036;|
+ecommerce-api-1:   Error occurred during deployment: Exception while deploying the app [ecommerce] : JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource. Please see server.log for more details.|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.033632Z|INFO|GF 8.0.0|jakarta.enterprise.system.tools.deployment.autodeploy|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;_MessageID=NCLS-DEPLOYMENT-02027;|
+ecommerce-api-1:   Selecting file /opt/glassfish8/glassfish/domains/domain1/autodeploy/ecommerce.war for autodeployment|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.518854Z|INFO|GF 8.0.0|jakarta.enterprise.resource.resourceadapter.com.sun.enterprise.resource.pool|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   Created connection pool and added it to PoolManager: Pool [PoolInfo[jndiName=java:app/PostgresPool, applicationName=ecommerce, moduleName=null]] PoolSize=0  FreeResources=0  QueueSize=0 matching=off validation=off|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.529374Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;|
+ecommerce-api-1:   Exception while deploying the app [ecommerce]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.529627Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;_MessageID=NCLS-CORE-00026;|
+ecommerce-api-1:   Exception during lifecycle processing
+ecommerce-api-1: org.glassfish.deployment.common.DeploymentException: JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:886)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateResources(ResourceValidator.java:748)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.event(ResourceValidator.java:173)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl$Listener.event(EventsImpl.java:185)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl.send(EventsImpl.java:142)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:485)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:285)
+ecommerce-api-1: 	at org.glassfish.deployment.admin.DeployCommand.execute(DeployCommand.java:475)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:541)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1.execute(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:566)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:1425)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:185)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:164)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:47)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoOperation.run(AutoOperation.java:145)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deploy(AutoDeployer.java:569)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deployAll(AutoDeployer.java:456)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:384)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:375)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployService$1.run(AutoDeployService.java:208)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.mainLoop(Timer.java:572)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.run(Timer.java:522)
+ecommerce-api-1: Caused by: javax.naming.NamingException: Lookup failed for jdbc/ecommerceDS in SerialContext[myEnv={java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl, java.naming.factory.url.pkgs=com.sun.enterprise.naming}] [Root exception is javax.naming.NameNotFoundException: ecommerceDS not found]
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:836)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:257)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.doLookup(InitialContext.java:282)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:882)
+ecommerce-api-1: 	... 35 more
+ecommerce-api-1: Caused by: javax.naming.NameNotFoundException: ecommerceDS not found
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.doLookup(TransientContext.java:235)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:203)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:207)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContextProviderImpl.lookup(SerialContextProviderImpl.java:38)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.LocalSerialContextProviderImpl.lookup(LocalSerialContextProviderImpl.java:92)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:825)
+ecommerce-api-1: 	... 40 more
+ecommerce-api-1: |#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.530253Z|INFO|GF 8.0.0|org.glassfish.web.loader.WebappClassLoader|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   close(), this:
+ecommerce-api-1: org.glassfish.web.loader.WebappClassLoader@5ff6a77e[name=ecommerce], urls=[
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/classes/
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-api-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-impl-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-jackson-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-core-2.21.1.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-databind-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-annotations-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-nolibs-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jna-5.8.0.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/ecommerce/
+ecommerce-api-1: ][delegate=true, context=ecommerce, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=1, pathTimestamps.size=9, resourceEntryCache.size=0]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.534504Z|INFO|GF 8.0.0|org.glassfish.web.loader.WebappClassLoader|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=800;|
+ecommerce-api-1:   close(), this:
+ecommerce-api-1: org.glassfish.web.loader.WebappClassLoader@24cfd8c9[name=ecommerce], urls=[
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/classes/
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-api-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-impl-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jjwt-jackson-0.12.6.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-core-2.21.1.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-databind-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jackson-annotations-2.18.3.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/argon2-jvm-nolibs-2.11.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/applications/ecommerce/WEB-INF/lib/jna-5.8.0.jar
+ecommerce-api-1: file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/ecommerce/
+ecommerce-api-1: ][delegate=true, context=ecommerce, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=0, pathTimestamps.size=9, resourceEntryCache.size=0]|#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.537621Z|SEVERE|GF 8.0.0|jakarta.enterprise.system.core|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=1000;|
+ecommerce-api-1:   Exception while deploying the app [ecommerce] : JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource
+ecommerce-api-1: javax.naming.NamingException: Lookup failed for jdbc/ecommerceDS in SerialContext[myEnv={java.naming.factory.state=com.sun.corba.ee.impl.presentation.rmi.JNDIStateFactoryImpl, java.naming.factory.url.pkgs=com.sun.enterprise.naming}] [Root exception is javax.naming.NameNotFoundException: ecommerceDS not found]
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:836)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:257)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.lookup(InitialContext.java:409)
+ecommerce-api-1: 	at java.naming/javax.naming.InitialContext.doLookup(InitialContext.java:282)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateJNDIRefs(ResourceValidator.java:882)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.validateResources(ResourceValidator.java:748)
+ecommerce-api-1: 	at com.sun.enterprise.deployment.util.ResourceValidator.event(ResourceValidator.java:173)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl$Listener.event(EventsImpl.java:185)
+ecommerce-api-1: 	at org.glassfish.kernel.event.EventsImpl.send(EventsImpl.java:142)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:485)
+ecommerce-api-1: 	at com.sun.enterprise.v3.server.ApplicationLifecycle.deploy(ApplicationLifecycle.java:285)
+ecommerce-api-1: 	at org.glassfish.deployment.admin.DeployCommand.execute(DeployCommand.java:475)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:541)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1$1.run(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$1.execute(CommandRunnerImpl.java:537)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:566)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl$2.run(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.callWithoutScope(ScopedValueContainer.java:162)
+ecommerce-api-1: 	at java.base/jdk.internal.vm.ScopedValueContainer.call(ScopedValueContainer.java:147)
+ecommerce-api-1: 	at java.base/java.lang.ScopedValue$Carrier.call(ScopedValue.java:419)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.callAs(Subject.java:331)
+ecommerce-api-1: 	at java.base/javax.security.auth.Subject.doAs(Subject.java:379)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:558)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerImpl.doCommand(CommandRunnerImpl.java:1425)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:185)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:164)
+ecommerce-api-1: 	at com.sun.enterprise.v3.admin.CommandRunnerExecutionContext.execute(CommandRunnerExecutionContext.java:47)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoOperation.run(AutoOperation.java:145)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deploy(AutoDeployer.java:569)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.deployAll(AutoDeployer.java:456)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:384)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployer.run(AutoDeployer.java:375)
+ecommerce-api-1: 	at org.glassfish.deployment.autodeploy.AutoDeployService$1.run(AutoDeployService.java:208)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.mainLoop(Timer.java:572)
+ecommerce-api-1: 	at java.base/java.util.TimerThread.run(Timer.java:522)
+ecommerce-api-1: Caused by: javax.naming.NameNotFoundException: ecommerceDS not found
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.doLookup(TransientContext.java:235)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:203)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.TransientContext.lookup(TransientContext.java:207)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContextProviderImpl.lookup(SerialContextProviderImpl.java:38)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.LocalSerialContextProviderImpl.lookup(LocalSerialContextProviderImpl.java:92)
+ecommerce-api-1: 	at com.sun.enterprise.naming.impl.SerialContext.lookup(SerialContext.java:825)
+ecommerce-api-1: 	... 40 more
+ecommerce-api-1: |#]
+ecommerce-api-1:
+ecommerce-api-1: [#|2026-03-03T17:20:44.540957Z|WARNING|GF 8.0.0|jakarta.enterprise.system.tools.deployment.autodeploy|_ThreadID=97;_ThreadName=AutoDeployer;_LevelValue=900;_MessageID=NCLS-DEPLOYMENT-02036;|
+ecommerce-api-1:   Error occurred during deployment: Exception while deploying the app [ecommerce] : JNDI lookup failed for the resource: Name: ecommercePU, Lookup: jdbc/ecommerceDS, Type: javax.sql.DataSource. Please see server.log for more details.|#]
+ecommerce-api-1:
