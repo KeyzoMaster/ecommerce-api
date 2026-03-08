@@ -8,8 +8,6 @@ import com.lemzo.ecommerce.security.infrastructure.jwt.JwtService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import com.lemzo.ecommerce.iam.domain.Permission;
-import com.lemzo.ecommerce.iam.domain.Role;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;

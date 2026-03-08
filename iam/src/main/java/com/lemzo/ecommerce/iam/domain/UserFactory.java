@@ -1,7 +1,5 @@
 package com.lemzo.ecommerce.iam.domain;
 
-import java.util.UUID;
-
 /**
  * Factory pour la création d'utilisateurs de test.
  */

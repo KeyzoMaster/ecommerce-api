@@ -2,7 +2,6 @@ package com.lemzo.ecommerce.domain.analytics.repository;
 
 import com.lemzo.ecommerce.domain.analytics.api.dto.DailySalesStats;
 import com.lemzo.ecommerce.domain.analytics.api.dto.TopProductStats;
-import com.lemzo.ecommerce.domain.sales.domain.Order;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import java.util.List;

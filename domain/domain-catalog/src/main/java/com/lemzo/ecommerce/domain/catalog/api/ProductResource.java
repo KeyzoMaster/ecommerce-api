@@ -147,7 +147,7 @@ public class ProductResource {
     @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.UPDATE, checkOwnership = true)
     @Operation(summary = "Uploader une image", description = "Enregistre une image produit sur MinIO")
     public Response uploadImage(@PathParam("id") UUID id, @Context EntityPart filePart) {
-        var product = catalogService.getProductById(id)
+        catalogService.getProductById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé"));
 
         var principal = (AuthenticatedUser) securityContext.getUserPrincipal();

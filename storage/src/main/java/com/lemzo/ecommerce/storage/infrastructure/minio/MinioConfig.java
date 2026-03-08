@@ -1,3 +1,5 @@
+package com.lemzo.ecommerce.storage.infrastructure.minio;
+
 import io.minio.BucketExistsArgs;
 import io.minio.MakeBucketArgs;
 import io.minio.MinioClient;

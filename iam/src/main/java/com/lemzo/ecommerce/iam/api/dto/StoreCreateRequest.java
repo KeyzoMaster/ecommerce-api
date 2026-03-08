@@ -2,7 +2,6 @@ package com.lemzo.ecommerce.iam.api.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import java.util.UUID;
 
 @Schema(description = "Requête pour la création d'une boutique")
 public record StoreCreateRequest(

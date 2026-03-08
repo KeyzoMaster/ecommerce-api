@@ -1,6 +1,5 @@
 package com.lemzo.ecommerce.domain.inventory.api;
 
-import com.lemzo.ecommerce.core.api.dto.RestResponse;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
 import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.api.security.PbacAction;
@@ -20,7 +19,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import java.util.List;
 import java.util.UUID;
 
 /**
