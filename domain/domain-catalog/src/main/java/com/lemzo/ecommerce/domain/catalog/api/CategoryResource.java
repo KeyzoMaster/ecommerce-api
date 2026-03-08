@@ -35,7 +35,6 @@ public class CategoryResource {
     private UriInfo uriInfo;
 
     @GET
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.READ)
     @Operation(summary = "Lister les catégories", description = "Retourne la liste complète des catégories")
     public Response list() {
         var categories = catalogService.getAllCategories();
@@ -59,7 +58,6 @@ public class CategoryResource {
 
     @GET
     @Path("/{id}")
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.READ)
     @Operation(summary = "Détails d'une catégorie")
     public Response get(@PathParam("id") UUID id) {
         return catalogService.getCategoryById(id)

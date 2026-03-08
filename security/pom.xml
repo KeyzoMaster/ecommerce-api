@@ -28,6 +28,10 @@
             <artifactId>core</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.lemzo</groupId>
+            <artifactId>storage</artifactId>
+        </dependency>
+        <dependency>
             <groupId>io.jsonwebtoken</groupId>
             <artifactId>jjwt-api</artifactId>
         </dependency>

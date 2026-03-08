@@ -37,6 +37,7 @@ public class JwtService {
         Date expiryDate = new Date(now.getTime() + expirationMs);
 
         return Jwts.builder()
+                .id(UUID.randomUUID().toString()) // JTI unique pour révocation
                 .subject(userId.toString())
                 .claim("email", email)
                 .claim("permissions", permissions)

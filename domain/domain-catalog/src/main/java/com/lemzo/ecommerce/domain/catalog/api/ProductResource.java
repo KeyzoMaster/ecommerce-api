@@ -67,7 +67,6 @@ public class ProductResource {
     private UriInfo uriInfo;
 
     @GET
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.READ)
     @Operation(summary = "Lister les produits", description = "Retourne une page de produits avec recherche avancée (texte, catégorie, prix, disponibilité, tri)")
     public Response list(
             @QueryParam("q") String query,
@@ -129,7 +128,6 @@ public class ProductResource {
 
     @GET
     @Path("/{slug}")
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.READ)
     @Operation(summary = "Récupérer un produit", description = "Détails d'un produit avec liens relationnels et actions autorisées")
     public Response getBySlug(@PathParam("slug") String slug) {
         return catalogService.getProductBySlug(slug)

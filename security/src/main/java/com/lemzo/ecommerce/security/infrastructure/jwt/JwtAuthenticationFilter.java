@@ -28,6 +28,9 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
     @Inject
     private JwtService jwtService;
 
+    @Inject
+    private TokenRevocationService tokenRevocationService;
+
     @Override
     public void filter(ContainerRequestContext requestContext) throws IOException {
         Optional.ofNullable(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
@@ -36,6 +39,16 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
                 .ifPresent(token -> {
                     try {
                         Claims claims = jwtService.validateToken(token);
+                        
+                        // Vérifier la révocation via JTI
+                        if (tokenRevocationService.isRevoked(claims.getId())) {
+                            requestContext.abortWith(jakarta.ws.rs.core.Response
+                                    .status(jakarta.ws.rs.core.Response.Status.UNAUTHORIZED)
+                                    .entity("Token has been revoked.")
+                                    .build());
+                            return;
+                        }
+
                         UUID userId = UUID.fromString(claims.getSubject());
                         String email = claims.get("email", String.class);
                         

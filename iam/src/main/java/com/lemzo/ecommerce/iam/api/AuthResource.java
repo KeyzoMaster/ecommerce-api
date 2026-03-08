@@ -1,7 +1,6 @@
 package com.lemzo.ecommerce.iam.api;
 
 import com.lemzo.ecommerce.core.api.dto.Link;
-import com.lemzo.ecommerce.core.api.dto.RestResponse;
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.iam.api.dto.AuthResponse;
 import com.lemzo.ecommerce.iam.api.dto.LoginRequest;
@@ -10,12 +9,12 @@ import com.lemzo.ecommerce.iam.api.dto.UserResponse;
 import com.lemzo.ecommerce.iam.domain.User;
 import com.lemzo.ecommerce.iam.service.AuthenticationService;
 import com.lemzo.ecommerce.iam.service.UserService;
+import com.lemzo.ecommerce.security.infrastructure.jwt.JwtService;
+import com.lemzo.ecommerce.security.infrastructure.jwt.TokenRevocationService;
+import io.jsonwebtoken.Claims;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -39,6 +38,12 @@ public class AuthResource {
 
     @Inject
     private UserService userService;
+
+    @Inject
+    private TokenRevocationService tokenRevocationService;
+
+    @Inject
+    private JwtService jwtService;
 
     @Inject
     private HateoasMapper hateoasMapper;
@@ -71,9 +76,32 @@ public class AuthResource {
             Link.of("user-profile", uriInfo.getBaseUriBuilder().path("/users/me").build().toString(), "GET")
         );
 
-        // On enveloppe le résultat de l'authentification
         var response = new AuthResponse(result.accessToken(), result.refreshToken(), links);
-
         return Response.ok(response).build();
+    }
+
+    @POST
+    @Path("/logout")
+    @Operation(summary = "Se déconnecter", description = "Invalide le jeton d'accès actuel")
+    @APIResponse(responseCode = "204", description = "Déconnexion réussie")
+    public Response logout(@HeaderParam("Authorization") String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            try {
+                Claims claims = jwtService.validateToken(token);
+                String jti = claims.getId();
+                if (jti != null && claims.getExpiration() != null) {
+                    long exp = claims.getExpiration().getTime();
+                    long now = System.currentTimeMillis();
+                    long ttl = (exp - now) / 1000;
+                    if (ttl > 0) {
+                        tokenRevocationService.revoke(jti, ttl);
+                    }
+                }
+            } catch (Exception e) {
+                // Token déjà invalide ou malformé
+            }
+        }
+        return Response.noContent().build();
     }
 }
