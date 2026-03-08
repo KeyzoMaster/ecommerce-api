@@ -1,12 +1,16 @@
-package com.lemzo.ecommerce.storage.infrastructure.minio;
-
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
-import io.minio.MinioClient;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
+import java.util.logging.Logger;
 
 @ApplicationScoped
 public class MinioConfig {
+
+    private static final Logger LOGGER = Logger.getLogger(MinioConfig.class.getName());
 
     @ConfigProperty(name = "MINIO_URL", defaultValue = "http://localhost:9000")
     private String url;
@@ -17,12 +21,32 @@ public class MinioConfig {
     @ConfigProperty(name = "MINIO_SECRET_KEY", defaultValue = "minio_password")
     private String secretKey;
 
-    @Produces
-    @ApplicationScoped
-    public MinioClient minioClient() {
-        return MinioClient.builder()
+    @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce")
+    private String bucketName;
+
+    private MinioClient client;
+
+    @PostConstruct
+    public void init() {
+        this.client = MinioClient.builder()
                 .endpoint(url)
                 .credentials(accessKey, secretKey)
                 .build();
+
+        try {
+            boolean exists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
+            if (!exists) {
+                LOGGER.info("Création du bucket MinIO : " + bucketName);
+                client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+            }
+        } catch (Exception e) {
+            LOGGER.severe("Impossible d'initialiser le bucket MinIO : " + e.getMessage());
+        }
+    }
+
+    @Produces
+    @ApplicationScoped
+    public MinioClient minioClient() {
+        return client;
     }
 }
