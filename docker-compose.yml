@@ -1,6 +1,7 @@
 services:
   postgres:
     image: postgres:18
+    container_name: ecommerce_postgres
     environment:
       POSTGRES_DB: ecommerce_db
       POSTGRES_USER: e_user
@@ -8,20 +9,71 @@ services:
     ports:
       - "5432:5432"
     volumes:
-      - postgres_data:/var/lib/postgresql
+      - postgres_data:/var/lib/postgresql/data
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U e_user -d ecommerce_db"]
       interval: 5s
       timeout: 5s
       retries: 5
 
+  mongodb:
+    image: mongo:latest
+    container_name: ecommerce_mongodb
+    environment:
+      MONGO_INITDB_DATABASE: ecommerce_audit
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+  redis:
+    image: redis:latest
+    container_name: ecommerce_redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+
+  minio:
+    image: minio/minio:latest
+    container_name: ecommerce_minio
+    environment:
+      MINIO_ROOT_USER: minio_user
+      MINIO_ROOT_PASSWORD: minio_password
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+
   api:
     build: .
+    container_name: ecommerce_api
     ports:
       - "8080:8080"
+    environment:
+      - DB_URL=jdbc:postgresql://postgres:5432/ecommerce_db
+      - DB_USER=e_user
+      - DB_PASSWORD=e_password
+      - MONGO_URL=mongodb://mongodb:27017/ecommerce_audit
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - MINIO_URL=http://minio:9000
+      - MINIO_ACCESS_KEY=minio_user
+      - MINIO_SECRET_KEY=minio_password
     depends_on:
       postgres:
         condition: service_healthy
+      mongodb:
+        condition: service_started
+      redis:
+        condition: service_started
+      minio:
+        condition: service_started
 
 volumes:
   postgres_data:
+  mongodb_data:
+  redis_data:
+  minio_data:
