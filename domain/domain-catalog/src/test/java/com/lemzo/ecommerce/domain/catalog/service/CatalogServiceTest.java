@@ -62,7 +62,7 @@ class CatalogServiceTest {
         when(productRepository.insert(any(Product.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act
-        Product result = catalogService.createProduct(name, slug, sku, price, categoryId, attrs, imageUrl, weight, shippingConfig);
+        Product result = catalogService.createProduct(UUID.randomUUID(), name, slug, sku, price, categoryId, attrs, imageUrl, weight, shippingConfig);
 
         // Assert
         assertNotNull(result);
@@ -103,10 +103,9 @@ class CatalogServiceTest {
     void shouldFailIfCategoryNotFound() {
         when(categoryRepository.findById(any())).thenReturn(Optional.empty());
 
-        assertThrows(ResourceNotFoundException.class, () -> 
-            catalogService.createProduct("Name", "slug", "sku", BigDecimal.ONE, UUID.randomUUID(), Map.of(), null, BigDecimal.ZERO, null)
-        );
-    }
+        assertThrows(ResourceNotFoundException.class, () ->
+            catalogService.createProduct(UUID.randomUUID(), "Name", "slug", "sku", BigDecimal.ONE, UUID.randomUUID(), Map.of(), null, BigDecimal.ZERO, null)
+        );    }
 
     @Test
     @DisplayName("Should successfully create a category")

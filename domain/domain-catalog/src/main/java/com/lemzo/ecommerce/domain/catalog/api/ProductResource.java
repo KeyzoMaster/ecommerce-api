@@ -100,7 +100,9 @@ public class ProductResource {
     @Operation(summary = "Créer un nouveau produit", description = "Ajoute un produit au catalogue")
     @SecurityRequirement(name = "jwt")
     public Response create(@Valid ProductCreateRequest request) {
+        var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         Product product = catalogService.createProduct(
+                principal.getUserId(),
                 request.name(), request.slug(), request.sku(),
                 request.price(), request.categoryId(), request.attributes(),
                 request.imageUrl(), request.weight(), request.shippingConfig()

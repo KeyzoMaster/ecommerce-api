@@ -32,13 +32,14 @@ public class CatalogService {
 
     @Transactional
     @Audit(action = "PRODUCT_CREATE")
-    public Product createProduct(String name, String slug, String sku, BigDecimal price, UUID categoryId, 
+    public Product createProduct(UUID storeId, String name, String slug, String sku, BigDecimal price, UUID categoryId, 
                                Map<String, Object> attributes, String imageUrl, BigDecimal weight, 
                                Map<String, Object> shippingConfig) {
         Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée: " + categoryId));
 
         Product product = new Product(name, slug, sku, price, category);
+        product.setStoreId(storeId);
         product.setAttributes(attributes);
         product.setImageUrl(imageUrl);
         product.setWeight(Optional.ofNullable(weight).orElse(BigDecimal.ZERO));
