@@ -8,4 +8,7 @@ import jakarta.enterprise.context.ApplicationScoped;
  */
 @ApplicationScoped
 public class RedisConfig {
+    public RedisConfig() {
+        // Required by CDI
+    }
 }

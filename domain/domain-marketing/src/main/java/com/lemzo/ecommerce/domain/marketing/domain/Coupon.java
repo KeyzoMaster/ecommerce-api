@@ -40,10 +40,10 @@ public class Coupon extends AbstractEntity {
     @Column(name = "max_usages")
     private Integer maxUsages;
 
-    @Column(name = "start_date")
+    @Column(name = "start_date", nullable = false)
     private LocalDateTime startDate;
 
-    @Column(name = "end_date")
+    @Column(name = "end_date", nullable = false)
     private LocalDateTime endDate;
 
     public Coupon(final String code, final String type, final BigDecimal value) {
@@ -55,7 +55,6 @@ public class Coupon extends AbstractEntity {
 
     public boolean isValid() {
         final var now = LocalDateTime.now();
-        
         final boolean dateStarted = Optional.ofNullable(startDate).map(now::isAfter).orElse(true);
         final boolean notExpired = Optional.ofNullable(endDate).map(now::isBefore).orElse(true);
         final boolean usageAvailable = Optional.ofNullable(maxUsages).map(max -> usageCount < max).orElse(true);

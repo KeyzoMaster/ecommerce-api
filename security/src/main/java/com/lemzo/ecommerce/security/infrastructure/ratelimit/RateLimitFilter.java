@@ -7,28 +7,31 @@ import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.Provider;
+import lombok.RequiredArgsConstructor;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
- * Filtre JAX-RS pour appliquer le Rate Limiting par IP.
+ * Filtre de limitation de débit par IP.
  */
 @Provider
-@Priority(Priorities.AUTHENTICATION - 10) // S'exécute avant l'authentification
+@Priority(Priorities.AUTHENTICATION - 10)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class RateLimitFilter implements ContainerRequestFilter {
 
-    @Inject
-    private RateLimitService rateLimitService;
+    private final RateLimitService rateLimitService;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
-        // Extraction de l'IP (X-Forwarded-For si derrière proxy)
-        String ip = requestContext.getHeaderString("X-Forwarded-For");
-        if (ip == null || ip.isBlank()) {
-            ip = "anonymous"; // Fallback ou extraire l'IP réelle du HttpServletRequest si nécessaire
-        }
+    public void filter(final ContainerRequestContext requestContext) throws IOException {
+        final String ip = requestContext.getHeaderString("X-Forwarded-For");
+        
+        final String clientIp = Optional.ofNullable(ip)
+                .filter(address -> !address.isBlank())
+                .orElse("anonymous");
 
-        if (!rateLimitService.isAllowed(ip, 100)) { // 100 requêtes par minute
-            requestContext.abortWith(Response.status(429) // Too Many Requests
+        if (!rateLimitService.isAllowed(clientIp, 100)) {
+            requestContext.abortWith(Response
+                    .status(Response.Status.TOO_MANY_REQUESTS)
                     .entity("Rate limit exceeded. Try again later.")
                     .build());
         }

@@ -9,6 +9,6 @@ import java.util.List;
 public record AnalyticsDashboardResponse(
     BigDecimal totalRevenue,
     long totalOrders,
-    List<TopProductStats> topProducts,
-    List<DailySalesStats> dailyTrends
+    List<DailySalesStats> dailyTrends,
+    List<TopProductStats> topProducts
 ) {}

@@ -1,77 +1,93 @@
 package com.lemzo.ecommerce.domain.marketing.service;
 
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
+import com.lemzo.ecommerce.domain.marketing.api.dto.CouponCreateRequest;
 import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
 import com.lemzo.ecommerce.domain.marketing.repository.CouponRepository;
-import org.junit.jupiter.api.BeforeEach;
+import com.lemzo.ecommerce.domain.marketing.repository.ProductPromotionRepository;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
 import java.math.BigDecimal;
 import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests unitaires pour MarketingService.
+ */
 @ExtendWith(MockitoExtension.class)
+@DisplayName("MarketingService Unit Tests")
 class MarketingServiceTest {
 
     @Mock
     private CouponRepository couponRepository;
 
+    @Mock
+    private ProductPromotionRepository promotionRepository;
+
     @InjectMocks
     private MarketingService marketingService;
 
-    private Coupon fixedCoupon;
-    private Coupon percentCoupon;
+    @Test
+    @DisplayName("Should apply percentage coupon correctly")
+    void shouldApplyPercentageCoupon() {
+        // Arrange
+        final String code = "SALE10";
+        final var coupon = new Coupon(code, "PERCENTAGE", new BigDecimal("10"));
+        when(couponRepository.findByCode(code)).thenReturn(Optional.of(coupon));
 
-    @BeforeEach
-    void setUp() {
-        fixedCoupon = new Coupon("FIXED10", Coupon.DiscountType.FIXED_AMOUNT, new BigDecimal("1000"));
-        fixedCoupon.setActive(true);
-        
-        percentCoupon = new Coupon("PERCENT10", Coupon.DiscountType.PERCENTAGE, new BigDecimal("10"));
-        percentCoupon.setActive(true);
+        // Act
+        final var discount = marketingService.applyCoupon(code, new BigDecimal("1000"));
+
+        // Assert
+        assertTrue(discount.isPresent());
+        assertEquals(new BigDecimal("100.00"), discount.get());
     }
 
     @Test
-    void validateAndApplyCoupon_FixedAmount_ShouldWork() {
-        when(couponRepository.findByCode("FIXED10")).thenReturn(Optional.of(fixedCoupon));
-        
-        BigDecimal discount = marketingService.validateAndApplyCoupon("FIXED10", new BigDecimal("5000"));
-        
-        assertEquals(new BigDecimal("1000"), discount);
-        assertEquals(1, fixedCoupon.getUsedCount());
-        verify(couponRepository).save(fixedCoupon);
+    @DisplayName("Should apply fixed amount coupon correctly")
+    void shouldApplyFixedAmountCoupon() {
+        // Arrange
+        final String code = "FIXED50";
+        final var coupon = new Coupon(code, "FIXED_AMOUNT", new BigDecimal("50"));
+        when(couponRepository.findByCode(code)).thenReturn(Optional.of(coupon));
+
+        // Act
+        final var discount = marketingService.applyCoupon(code, new BigDecimal("1000"));
+
+        // Assert
+        assertTrue(discount.isPresent());
+        assertEquals(new BigDecimal("50"), discount.get());
     }
 
     @Test
-    void validateAndApplyCoupon_Percentage_ShouldWork() {
-        when(couponRepository.findByCode("PERCENT10")).thenReturn(Optional.of(percentCoupon));
-        
-        BigDecimal discount = marketingService.validateAndApplyCoupon("PERCENT10", new BigDecimal("5000"));
-        
-        assertEquals(new BigDecimal("500.00"), discount);
-        assertEquals(1, percentCoupon.getUsedCount());
+    @DisplayName("Should return empty if coupon is invalid or not found")
+    void shouldReturnEmptyForInvalidCoupon() {
+        // Arrange
+        when(couponRepository.findByCode("INVALID")).thenReturn(Optional.empty());
+
+        // Act
+        final var result = marketingService.applyCoupon("INVALID", new BigDecimal("1000"));
+
+        // Assert
+        assertTrue(result.isEmpty());
     }
 
     @Test
-    void validateAndApplyCoupon_Expired_ShouldThrowException() {
-        fixedCoupon.setActive(false);
-        when(couponRepository.findByCode("FIXED10")).thenReturn(Optional.of(fixedCoupon));
-        
-        assertThrows(BusinessRuleException.class, () -> 
-            marketingService.validateAndApplyCoupon("FIXED10", new BigDecimal("5000"))
-        );
-    }
+    @DisplayName("Should fail to create coupon if code already exists")
+    void shouldFailIfCodeExists() {
+        // Arrange
+        final var request = new CouponCreateRequest("EXISTING", "PERCENTAGE", BigDecimal.TEN, BigDecimal.ZERO, null, null, null);
+        when(couponRepository.findByCode("EXISTING")).thenReturn(Optional.of(new Coupon("EXISTING", "P", BigDecimal.ONE)));
 
-    @Test
-    void validateAndApplyCoupon_NotFound_ShouldThrowException() {
-        when(couponRepository.findByCode("UNKNOWN")).thenReturn(Optional.empty());
-        
-        assertThrows(BusinessRuleException.class, () -> 
-            marketingService.validateAndApplyCoupon("UNKNOWN", new BigDecimal("5000"))
-        );
+        // Act & Assert
+        assertThrows(BusinessRuleException.class, () -> marketingService.createCoupon(request));
     }
 }

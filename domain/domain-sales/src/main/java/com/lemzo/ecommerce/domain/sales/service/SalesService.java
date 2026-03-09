@@ -2,29 +2,31 @@ package com.lemzo.ecommerce.domain.sales.service;
 
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import com.lemzo.ecommerce.core.api.exception.ResourceNotFoundException;
-import com.lemzo.ecommerce.core.contract.payment.PaymentResult;
-import com.lemzo.ecommerce.core.domain.Address;
-import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
-import com.lemzo.ecommerce.domain.inventory.service.InventoryService;
-import com.lemzo.ecommerce.domain.marketing.service.MarketingService;
-import com.lemzo.ecommerce.domain.sales.api.dto.OrderCreateRequest;
+import com.lemzo.ecommerce.domain.core.catalog.CatalogPort;
+import com.lemzo.ecommerce.domain.core.marketing.MarketingPort;
+import com.lemzo.ecommerce.core.contract.payment.PaymentPort;
+import com.lemzo.ecommerce.domain.core.iam.UserPort;
+import com.lemzo.ecommerce.domain.catalog.domain.Product;
 import com.lemzo.ecommerce.domain.sales.domain.Order;
 import com.lemzo.ecommerce.domain.sales.domain.OrderItem;
+import com.lemzo.ecommerce.domain.sales.domain.SalesFactory;
 import com.lemzo.ecommerce.domain.sales.repository.OrderRepository;
-import com.lemzo.ecommerce.iam.service.UserService;
-import com.lemzo.ecommerce.payment.service.PaymentGatewayProvider;
+import com.lemzo.ecommerce.core.domain.Address;
 import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Instance;
+import jakarta.enterprise.inject.literal.NamedLiteral;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service de traitement des ventes et commandes.
+ * Service orchestrant le tunnel de vente.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
@@ -32,99 +34,85 @@ import java.util.UUID;
 public class SalesService {
 
     private final OrderRepository orderRepository;
+    private final CatalogPort catalogPort;
+    private final MarketingPort marketingPort;
+    private final Instance<PaymentPort> paymentPorts; // Utilisation de Instance pour gérer les multiples implémentations
+    private final UserPort userPort;
     private final CartService cartService;
-    private final CatalogService catalogService;
-    private final InventoryService inventoryService;
-    private final MarketingService marketingService;
-    private final UserService userService;
-    private final PaymentGatewayProvider paymentGatewayProvider;
-    private final ShippingRateProvider shippingRateProvider;
 
     @Transactional
-    @Audit(action = "ORDER_CREATE")
-    public Order placeOrder(final UUID userId, final OrderCreateRequest request) {
+    @Audit(action = "ORDER_PLACE")
+    public Order placeOrder(final UUID userId, final String shippingAddressId, 
+                            final String couponCode, final String paymentProvider) {
+        
         final var cart = cartService.getCart(userId)
-                .orElseThrow(() -> new BusinessRuleException("error.sales.cart_empty"));
+                .orElseThrow(() -> new BusinessRuleException("Panier vide"));
 
-        if (cart.items().isEmpty()) {
-            throw new BusinessRuleException("error.sales.cart_empty");
+        final String orderNumber = "ORD-" + System.currentTimeMillis();
+        final Order order = SalesFactory.createOrder(userId, orderNumber);
+        
+        final Address address = userPort.findAddressById(userId, shippingAddressId)
+                .orElseThrow(() -> new ResourceNotFoundException("Adresse non trouvée"));
+        order.setShippingAddress(address);
+
+        BigDecimal subtotal = BigDecimal.ZERO;
+
+        for (final var cartItem : cart.items()) {
+            final var product = (Product) catalogPort.findProductById(cartItem.productId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé : " + cartItem.productId()));
+            
+            final OrderItem item = SalesFactory.createItem(
+                    product.getId(), 
+                    product.getStoreId(), 
+                    cartItem.quantity(), 
+                    product.getPrice()
+            );
+            order.addItem(item);
+            subtotal = subtotal.add(item.getSubtotal());
         }
 
-        final var user = userService.findById(userId)
-                .orElseThrow(() -> new BusinessRuleException("error.sales.user_not_found"));
+        // Appliquer Coupon si présent
+        if (couponCode != null && !couponCode.isBlank()) {
+            final BigDecimal discount = marketingPort.applyCoupon(couponCode, subtotal)
+                    .orElse(BigDecimal.ZERO);
+            order.setDiscountAmount(discount);
+            order.setCouponCode(couponCode);
+        }
+
+        order.setTotalAmount(subtotal.subtract(order.getDiscountAmount()).add(order.getShippingCost()));
         
-        final var shippingAddress = user.getAddresses().stream()
-                .filter(addr -> addr.getTechnicalId().equals(request.shippingAddressId()))
-                .findFirst()
-                .orElseThrow(() -> new BusinessRuleException("error.sales.address_not_found"));
+        final Order savedOrder = orderRepository.insert(order);
 
-        final var order = new Order(userId, generateOrderNumber());
-        order.setShippingAddress(shippingAddress);
-        order.setShippingMethod(request.shippingMethod().name());
+        // Sélectionner dynamiquement le port de paiement
+        final PaymentPort port = paymentPorts.select(NamedLiteral.of(paymentProvider.toLowerCase())).get();
+        port.initiate(
+                savedOrder.getTotalAmount(), 
+                "XOF", 
+                savedOrder.getId().toString(), 
+                "Commande " + savedOrder.getOrderNumber()
+        );
 
-        // 1. Vérifier stocks et créer les lignes
-        cart.items().forEach(item -> {
-            if (!inventoryService.isAvailable(item.productId(), item.quantity())) {
-                throw new BusinessRuleException("error.inventory.insufficient_stock", item.productName());
-            }
-            final var product = catalogService.findById(item.productId()).orElseThrow();
-            final var orderItem = new OrderItem(
-                    item.productId(),
-                    product.getCategory().getId(),
-                    item.quantity(),
-                    item.unitPrice(),
-                    product.getWeight(),
-                    product.getShippingConfig()
-            );
-            order.addItem(orderItem);
-        });
-
-        // 2. Calculs financiers
-        final var itemsTotal = cart.getTotalPrice();
-        final var discount = marketingService.applyCoupon(request.couponCode(), itemsTotal)
-                .orElse(BigDecimal.ZERO);
-        
-        final var shippingCost = shippingRateProvider.calculateRate(
-                shippingAddress, request.shippingMethod(), itemsTotal, order.getItems());
-
-        order.setShippingCost(shippingCost);
-        order.setDiscountAmount(discount);
-        order.setCouponCode(request.couponCode());
-        order.setTotalAmount(itemsTotal.add(shippingCost).subtract(discount));
-
-        // 3. Persistance
-        final var savedOrder = orderRepository.save(order);
-
-        // 4. Décrémentation stocks
-        cart.items().forEach(item -> inventoryService.updateStock(item.productId(), -item.quantity()));
-        
-        // 5. Nettoyage panier
+        // Vider le panier
         cartService.clearCart(userId);
 
         return savedOrder;
     }
 
-    private String generateOrderNumber() {
-        return "ORD-" + System.currentTimeMillis() + "-" + UUID.randomUUID().toString().substring(0, 4).toUpperCase();
-    }
-
-    public PaymentResult initiatePayment(final Order order, final String provider) {
-        final var gateway = paymentGatewayProvider.getGateway(provider);
-        return gateway.initiate(
-                order.getTotalAmount(),
-                order.getCurrency(),
-                order.getOrderNumber(),
-                "Commande #" + order.getOrderNumber()
-        );
-    }
-
     @Transactional
     @Audit(action = "ORDER_STATUS_UPDATE")
     public Order updateStatus(final UUID orderId, final Order.OrderStatus status) {
-        final var order = orderRepository.findById(orderId)
+        final Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Commande non trouvée"));
         
+        if (order.getStatus() == Order.OrderStatus.CANCELLED) {
+            throw new BusinessRuleException("Impossible de modifier une commande annulée");
+        }
+
         order.setStatus(status);
-        return orderRepository.save(order);
+        return orderRepository.update(order);
+    }
+
+    public Optional<Order> findById(final UUID id) {
+        return orderRepository.findById(id);
     }
 }

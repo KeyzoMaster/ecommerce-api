@@ -1,0 +1,35 @@
+-- =============================================================================
+-- 9. DONNÉES INITIALES (SQL SEEDING)
+-- =============================================================================
+
+-- 1. Permissions & Rôles
+INSERT INTO iam_permissions (id, resource_type, action) VALUES 
+('018e2345-6789-7000-8000-000000000001', 'PLATFORM', 'MANAGE'),
+('018e2345-6789-7000-8000-000000000002', 'CATALOG', 'READ'),
+('018e2345-6789-7000-8000-000000000003', 'CATALOG', 'MANAGE'),
+('018e2345-6789-7000-8000-000000000004', 'SALES', 'READ'),
+('018e2345-6789-7000-8000-000000000005', 'SALES', 'MANAGE');
+
+INSERT INTO iam_roles (id, name, description, is_system_role) VALUES 
+('018e2345-6789-7000-9000-000000000001', 'SUPER_ADMIN', 'Administrateur total', true),
+('018e2345-6789-7000-9000-000000000002', 'CLIENT', 'Client standard', true),
+('018e2345-6789-7000-9000-000000000003', 'STORE_OWNER', 'Propriétaire de boutique', true);
+
+INSERT INTO iam_role_permissions (role_id, permission_id) VALUES 
+('018e2345-6789-7000-9000-000000000001', '018e2345-6789-7000-8000-000000000001'),
+('018e2345-6789-7000-9000-000000000002', '018e2345-6789-7000-8000-000000000002'),
+('018e2345-6789-7000-9000-000000000002', '018e2345-6789-7000-8000-000000000004'),
+('018e2345-6789-7000-9000-000000000003', '018e2345-6789-7000-8000-000000000002'),
+('018e2345-6789-7000-9000-000000000003', '018e2345-6789-7000-8000-000000000003');
+
+-- 2. Catalog
+INSERT INTO catalog_categories (id, name, slug, description) VALUES 
+('018e2345-6789-7000-b000-000000000001', 'Électronique', 'electronics', 'Gadgets et appareils');
+
+INSERT INTO catalog_products (id, store_id, name, slug, sku, price, category_id, attributes) VALUES 
+('018e2345-6789-7000-c000-000000000001', '018e2345-6789-7000-d000-000000000001', 'MacBook Pro M3', 'macbook-pro-m3', 'AAPL-MBP-M3', 1500000, '018e2345-6789-7000-b000-000000000001', '{"brand": "Apple", "cpu": "M3"}'),
+('018e2345-6789-7000-c000-000000000002', '018e2345-6789-7000-d000-000000000001', 'iPhone 15 Pro', 'iphone-15-pro', 'AAPL-I15P', 850000, '018e2345-6789-7000-b000-000000000001', '{"brand": "Apple", "storage": "256GB"}');
+
+-- 3. Marketing
+INSERT INTO marketing_coupons (id, code, type, value, start_date, end_date) VALUES 
+(uuidv7(), 'MARS2026', 'PERCENTAGE', 15.00, '2026-03-01 00:00:00+00', '2026-04-01 00:00:00+00');

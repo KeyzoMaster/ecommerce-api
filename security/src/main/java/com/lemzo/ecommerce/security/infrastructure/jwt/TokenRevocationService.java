@@ -3,48 +3,42 @@ package com.lemzo.ecommerce.security.infrastructure.jwt;
 import com.lemzo.ecommerce.storage.infrastructure.redis.JedisPoolProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import redis.clients.jedis.Jedis;
+import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.Optional;
 
 /**
- * Service de révocation de tokens JWT utilisant Redis.
+ * Service de révocation de tokens utilisant Redis.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class TokenRevocationService {
 
     private static final Logger LOGGER = Logger.getLogger(TokenRevocationService.class.getName());
-    private static final String REVOCATION_KEY_PREFIX = "token:revoked:";
+    private static final String REVOCATION_KEY_PREFIX = "revoked_token:";
 
     private final JedisPoolProvider jedisPoolProvider;
 
-    /**
-     * Révoque un token en ajoutant son JTI à Redis.
-     */
-    public void revoke(String jti, long ttlSeconds) {
-        try (var jedis = jedisPoolProvider.getResource()) {
-            jedis.setex(REVOCATION_KEY_PREFIX + jti, ttlSeconds, "1");
-            LOGGER.info("Token révoqué : " + jti);
-        } catch (Exception e) {
-            LOGGER.severe("Erreur révocation token Redis: " + e.getMessage());
+    public void revoke(final String jti, final long ttlSeconds) {
+        try (Jedis jedis = jedisPoolProvider.getResource()) {
+            jedis.setex(REVOCATION_KEY_PREFIX + jti, ttlSeconds, "true");
+            if (LOGGER.isLoggable(Level.FINE)) {
+                LOGGER.fine(() -> "Token révoqué dans Redis: " + jti);
+            }
+        } catch (final Exception exception) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la révocation du token dans Redis", exception);
         }
     }
 
-    /**
-     * Vérifie si un token est révoqué.
-     */
-    public boolean isRevoked(String jti) {
-        return Optional.ofNullable(jti)
-                .map(id -> checkInRedis(id))
-                .orElse(false);
-    }
-
-    private boolean checkInRedis(String jti) {
-        try (var jedis = jedisPoolProvider.getResource()) {
+    public boolean isRevoked(final String jti) {
+        try (Jedis jedis = jedisPoolProvider.getResource()) {
             return jedis.exists(REVOCATION_KEY_PREFIX + jti);
-        } catch (Exception e) {
-            LOGGER.severe("Erreur vérification révocation Redis: " + e.getMessage());
+        } catch (final Exception exception) {
+            LOGGER.log(Level.SEVERE, "Erreur lors de la vérification de la révocation", exception);
             return false;
         }
     }

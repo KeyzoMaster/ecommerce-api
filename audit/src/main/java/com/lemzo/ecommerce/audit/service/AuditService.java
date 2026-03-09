@@ -7,9 +7,10 @@ import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.concurrent.ManagedExecutorService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.bson.Document;
-import org.bson.conversions.Bson;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Map;
@@ -23,6 +24,7 @@ import java.util.logging.Logger;
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AuditService {
 
     private static final Logger LOGGER = Logger.getLogger(AuditService.class.getName());

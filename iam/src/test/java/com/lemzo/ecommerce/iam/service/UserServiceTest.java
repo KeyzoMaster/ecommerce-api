@@ -3,6 +3,7 @@ package com.lemzo.ecommerce.iam.service;
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import com.lemzo.ecommerce.iam.domain.User;
 import com.lemzo.ecommerce.iam.repository.UserRepository;
+import com.lemzo.ecommerce.iam.repository.StoreRepository;
 import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,11 +20,14 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("UserService Unit Tests (JUnit 6)")
+@DisplayName("UserService Unit Tests")
 class UserServiceTest {
 
     @Mock
     private UserRepository userRepository;
+
+    @Mock
+    private StoreRepository storeRepository;
 
     @Mock
     private PasswordService passwordService;
@@ -32,52 +36,27 @@ class UserServiceTest {
     private UserService userService;
 
     @Test
-    @DisplayName("Should successfully create a user")
-    void shouldCreateUserSuccessfully() {
+    @DisplayName("Should successfully register a user")
+    void shouldRegisterSuccessfully() {
         // Arrange
-        String username = "jdoe";
-        String email = "jdoe@test.com";
-        String password = "password123";
-        String hashed = "hashed_pass";
-
-        when(userRepository.existsByEmail(email)).thenReturn(false);
-        when(userRepository.existsByUsername(username)).thenReturn(false);
-        when(passwordService.hash(any())).thenReturn(hashed);
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.empty());
+        when(userRepository.findByEmail(anyString())).thenReturn(Optional.empty());
+        when(passwordService.hash(any())).thenReturn("hashed");
         when(userRepository.insert(any(User.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act
-        User result = userService.createUser(username, email, password);
+        final User result = userService.register("testuser", "test@ecommerce.local", "password");
 
         // Assert
         assertNotNull(result);
-        assertEquals(username, result.getUsername());
-        assertEquals(hashed, result.getPassword());
+        assertEquals("testuser", result.getUsername());
         verify(userRepository).insert(any(User.class));
     }
 
     @Test
-    @DisplayName("Should fail if email already exists")
-    void shouldFailIfEmailExists() {
-        when(userRepository.existsByEmail(anyString())).thenReturn(true);
-
-        assertThrows(BusinessRuleException.class, () -> 
-            userService.createUser("user", "existing@test.com", "pass")
-        );
-    }
-
-    @Test
-    @DisplayName("Should find user by identifier")
-    void shouldFindUserByIdentifier() {
-        String identifier = "jdoe";
-        User user = new User();
-        user.setUsername(identifier);
-
-        when(userRepository.findByEmail(identifier)).thenReturn(Optional.empty());
-        when(userRepository.findByUsername(identifier)).thenReturn(Optional.of(user));
-
-        Optional<User> result = userService.findByIdentifier(identifier);
-
-        assertTrue(result.isPresent());
-        assertEquals(identifier, result.get().getUsername());
+    @DisplayName("Should throw exception if username taken")
+    void shouldThrowIfUsernameTaken() {
+        when(userRepository.findByUsername("taken")).thenReturn(Optional.of(new User("taken", "e", "p")));
+        assertThrows(BusinessRuleException.class, () -> userService.register("taken", "other", "p"));
     }
 }

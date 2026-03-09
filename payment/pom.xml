@@ -18,8 +18,12 @@
             <artifactId>jakarta.jakartaee-api</artifactId>
         </dependency>
         <dependency>
-            <groupId>${project.groupId}</groupId>
+            <groupId>com.lemzo</groupId>
             <artifactId>core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lemzo</groupId>
+            <artifactId>domain-core</artifactId>
         </dependency>
     </dependencies>
 

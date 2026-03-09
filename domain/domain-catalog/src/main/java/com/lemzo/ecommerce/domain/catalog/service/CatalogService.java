@@ -1,9 +1,10 @@
 package com.lemzo.ecommerce.domain.catalog.service;
 
-import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import com.lemzo.ecommerce.core.api.exception.ResourceNotFoundException;
+import com.lemzo.ecommerce.domain.core.catalog.CatalogPort;
 import com.lemzo.ecommerce.domain.catalog.domain.Category;
 import com.lemzo.ecommerce.domain.catalog.domain.Product;
+import com.lemzo.ecommerce.domain.catalog.domain.CatalogFactory;
 import com.lemzo.ecommerce.domain.catalog.repository.CategoryRepository;
 import com.lemzo.ecommerce.domain.catalog.repository.ProductRepository;
 import com.lemzo.ecommerce.core.annotation.Audit;
@@ -27,10 +28,15 @@ import java.util.UUID;
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class CatalogService {
+public class CatalogService implements CatalogPort {
 
     private final ProductRepository productRepository;
     private final CategoryRepository categoryRepository;
+
+    @Override
+    public Optional<Product> findProductById(final UUID productId) {
+        return productRepository.findById(productId);
+    }
 
     @Transactional
     @Audit(action = "PRODUCT_CREATE")
@@ -39,16 +45,16 @@ public class CatalogService {
                                  final Map<String, Object> attributes, final String imageUrl,
                                  final BigDecimal weight, final Map<String, Object> shippingConfig) {
         
-        final var category = categoryRepository.findById(categoryId)
+        final Category category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée"));
 
-        final var product = new Product(name, slug, sku, price, category);
-        product.setAttributes(attributes);
+        final Product product = CatalogFactory.createProduct(name, slug, sku, price, category);
+        product.setAttributes(Optional.ofNullable(attributes).orElse(Map.of()));
         product.setImageUrl(imageUrl);
-        product.setWeight(weight);
-        product.setShippingConfig(shippingConfig);
+        product.setWeight(Optional.ofNullable(weight).orElse(BigDecimal.ZERO));
+        product.setShippingConfig(Optional.ofNullable(shippingConfig).orElse(Map.of()));
 
-        return productRepository.save(product);
+        return productRepository.insert(product);
     }
 
     @Transactional
@@ -58,7 +64,7 @@ public class CatalogService {
                                  final Boolean active, final Map<String, Object> attributes,
                                  final String imageUrl, final BigDecimal weight, final Map<String, Object> shippingConfig) {
         
-        final var product = productRepository.findById(id)
+        final Product product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé"));
 
         Optional.ofNullable(name).ifPresent(product::setName);
@@ -72,13 +78,11 @@ public class CatalogService {
         Optional.ofNullable(weight).ifPresent(product::setWeight);
         Optional.ofNullable(shippingConfig).ifPresent(product::setShippingConfig);
 
-        if (categoryId != null) {
-            final var category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée"));
-            product.setCategory(category);
-        }
+        Optional.ofNullable(categoryId)
+                .flatMap(categoryRepository::findById)
+                .ifPresent(product::setCategory);
 
-        return productRepository.save(product);
+        return productRepository.update(product);
     }
 
     public Page<Product> findAll(final PageRequest pageRequest) {
@@ -86,12 +90,15 @@ public class CatalogService {
     }
 
     public Page<Product> search(final String query, final PageRequest pageRequest) {
-        return productRepository.searchFullText(query, pageRequest);
+        if (query == null || query.isBlank()) {
+            return findAll(pageRequest);
+        }
+        return productRepository.findByNameLike("%" + query + "%", pageRequest);
     }
 
     public Page<Product> filter(final String query, final UUID categoryId, final BigDecimal minPrice,
                                 final BigDecimal maxPrice, final Boolean available, final PageRequest pageRequest) {
-        return productRepository.searchByCriteria(query, categoryId, minPrice, maxPrice, available, pageRequest);
+        return search(query, pageRequest);
     }
 
     public Optional<Product> findBySlug(final String slug) {
@@ -107,7 +114,7 @@ public class CatalogService {
         productRepository.findById(productId)
                 .ifPresent(p -> {
                     p.setImageUrl(imageUrl);
-                    productRepository.save(p);
+                    productRepository.update(p);
                 });
     }
 
@@ -116,7 +123,7 @@ public class CatalogService {
         productRepository.findById(productId)
                 .ifPresent(p -> {
                     p.setViewCount(p.getViewCount() + 1);
-                    productRepository.save(p);
+                    productRepository.update(p);
                 });
     }
 
@@ -131,13 +138,13 @@ public class CatalogService {
     @Transactional
     @Audit(action = "CATEGORY_CREATE")
     public Category createCategory(final String name, final String slug, final String description, final UUID parentId) {
-        final var category = new Category(name, slug, description);
+        final Category category = CatalogFactory.createCategory(name, slug, description);
         
         Optional.ofNullable(parentId)
                 .flatMap(categoryRepository::findById)
                 .ifPresent(category::setParent);
 
-        return categoryRepository.save(category);
+        return categoryRepository.insert(category);
     }
 
     public Optional<Category> findCategoryById(final UUID id) {

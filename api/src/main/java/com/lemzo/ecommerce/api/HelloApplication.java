@@ -11,6 +11,10 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
 import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
+/**
+ * Configuration JAX-RS et Documentation OpenAPI.
+ * La DataSource est définie dans WEB-INF/glassfish-resources.xml.
+ */
 @ApplicationPath("/v1")
 @OpenAPIDefinition(
     info = @Info(
@@ -32,4 +36,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
     )
 })
 public class HelloApplication extends Application {
+    public HelloApplication() {
+        super();
+    }
 }

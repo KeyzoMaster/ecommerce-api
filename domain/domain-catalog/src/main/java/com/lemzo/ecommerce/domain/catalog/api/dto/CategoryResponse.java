@@ -1,6 +1,7 @@
 package com.lemzo.ecommerce.domain.catalog.api.dto;
 
 import com.lemzo.ecommerce.domain.catalog.domain.Category;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -19,7 +20,9 @@ public record CategoryResponse(
             category.getName(),
             category.getSlug(),
             category.getDescription(),
-            category.getParent() != null ? category.getParent().getId() : null
+            Optional.ofNullable(category.getParent())
+                    .map(Category::getId)
+                    .orElse(null)
         );
     }
 }

@@ -10,16 +10,20 @@ public enum PbacAction {
     READ, CREATE, UPDATE, DELETE, MANAGE, VIEW_ANALYTICS, APPLY_COUPON;
 
     /**
-     * Retourne l'ensemble des actions qui accordent implicitement cette action.
+     * Retourne l'ensemble des actions qui, si possédées par l'utilisateur, 
+     * accordent l'action demandée (this).
      */
-    public Set<PbacAction> getGrantingActions() {
-        final Set<PbacAction> granting = EnumSet.of(this, MANAGE);
+    public Set<PbacAction> getRequiredPossessedActions() {
+        // Posséder l'action elle-même ou MANAGE accorde toujours l'accès.
+        final Set<PbacAction> required = EnumSet.of(this, MANAGE);
         
-        switch (this) {
-            case READ, VIEW_ANALYTICS -> granting.add(MANAGE);
-            default -> {}
+        // Logique d'implicité : Posséder UPDATE ou CREATE accorde souvent READ.
+        if (this == READ) {
+            required.add(UPDATE);
+            required.add(CREATE);
+            required.add(DELETE);
         }
         
-        return granting;
+        return required;
     }
 }

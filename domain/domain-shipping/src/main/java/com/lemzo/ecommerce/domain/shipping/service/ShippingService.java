@@ -29,7 +29,7 @@ public class ShippingService {
         final var trackingNumber = "TRK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         final var shipment = new Shipment(orderId, trackingNumber, carrier);
         shipment.setEstimatedDeliveryDate(LocalDateTime.now().plusDays(3));
-        return shipmentRepository.save(shipment);
+        return shipmentRepository.insert(shipment);
     }
 
     @Transactional
@@ -39,6 +39,6 @@ public class ShippingService {
                 .orElseThrow(() -> new ResourceNotFoundException("Expédition non trouvée"));
         
         shipment.setStatus(status);
-        return shipmentRepository.save(shipment);
+        return shipmentRepository.update(shipment);
     }
 }

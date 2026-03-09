@@ -16,6 +16,10 @@ public class MongoConfig {
     @ConfigProperty(name = "MONGO_DATABASE", defaultValue = "ecommerce_audit")
     private String databaseName;
 
+    public MongoConfig() {
+        // Required by CDI
+    }
+
     @Produces
     @ApplicationScoped
     public MongoClient mongoClient() {

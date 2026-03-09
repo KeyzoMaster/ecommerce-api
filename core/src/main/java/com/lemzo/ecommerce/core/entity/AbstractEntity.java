@@ -1,6 +1,7 @@
 package com.lemzo.ecommerce.core.entity;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
@@ -13,7 +14,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 /**
- * Classe de base pour toutes les entités.
+ * Classe de base pour toutes les entités du système.
+ * Gère l'identifiant unique et l'audit de base.
  */
 @MappedSuperclass
 @Getter
@@ -21,6 +23,7 @@ import java.util.UUID;
 public abstract class AbstractEntity implements Serializable {
 
     @Id
+    @GeneratedValue
     @Column(name = "id", updatable = false, nullable = false)
     private UUID entityId;
 
@@ -30,33 +33,25 @@ public abstract class AbstractEntity implements Serializable {
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    protected AbstractEntity() {
-        // Requis par JPA
+    @PrePersist
+    protected void onCreate() {
+        createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = LocalDateTime.now();
     }
 
     public UUID getId() {
         return entityId;
     }
 
-    @PrePersist
-    protected void onCreate() {
-        if (entityId == null) {
-            this.entityId = UUID.randomUUID();
-        }
-        this.createdAt = LocalDateTime.now();
-    }
-
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = LocalDateTime.now();
-    }
-
     @Override
     public boolean equals(final Object other) {
+        if (this == other) return true;
         boolean isEqual = false;
-        if (this == other) {
-            isEqual = true;
-        } else if (other instanceof AbstractEntity that) {
+        if (other instanceof AbstractEntity that) {
             isEqual = Objects.equals(entityId, that.entityId);
         }
         return isEqual;

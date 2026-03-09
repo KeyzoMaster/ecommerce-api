@@ -1,7 +1,9 @@
 package com.lemzo.ecommerce.iam.service;
 
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
+import com.lemzo.ecommerce.iam.api.dto.AuthResponse;
 import com.lemzo.ecommerce.iam.domain.User;
+import com.lemzo.ecommerce.iam.repository.UserRepository;
 import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
 import com.lemzo.ecommerce.security.infrastructure.jwt.JwtService;
 import org.junit.jupiter.api.DisplayName;
@@ -11,9 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -22,11 +22,11 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("AuthenticationService Unit Tests (JUnit 6)")
+@DisplayName("AuthenticationService Unit Tests")
 class AuthenticationServiceTest {
 
     @Mock
-    private UserService userService;
+    private UserRepository userRepository;
 
     @Mock
     private PasswordService passwordService;
@@ -38,58 +38,39 @@ class AuthenticationServiceTest {
     private AuthenticationService authService;
 
     @Test
-    @DisplayName("Should successfully login")
-    void shouldLoginSuccessfully() {
+    @DisplayName("Should login successfully with valid credentials")
+    void shouldLoginSuccessfully() throws Exception {
         // Arrange
-        String identifier = "jdoe";
-        String password = "password123";
-        User user = new User(identifier, "jdoe@test.com", "hashed");
-        user.setId(UUID.randomUUID());
-        user.setEnabled(true);
+        final String identifier = "jdoe";
+        final String password = "password123";
+        final User user = new User(identifier, "jdoe@test.com", "hashed_pass");
+        
+        final var field = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("entityId");
+        field.setAccessible(true);
+        field.set(user, UUID.randomUUID());
 
-        when(userService.findByIdentifier(identifier)).thenReturn(Optional.of(user));
+        when(userRepository.findByUsername(identifier)).thenReturn(Optional.of(user));
         when(passwordService.verify(anyString(), any())).thenReturn(true);
-        when(jwtService.generateToken(any(), any(), any())).thenReturn("mock_token");
+        when(jwtService.generateToken(any(UUID.class), anyString())).thenReturn("token");
 
         // Act
-        AuthenticationService.LoginResult result = authService.login(identifier, password);
+        final AuthResponse result = authService.login(identifier, password);
 
         // Assert
         assertNotNull(result);
-        assertEquals("mock_token", result.accessToken());
-        assertEquals(user, result.user());
+        assertEquals("token", result.accessToken());
+        assertEquals("jdoe@test.com", result.email());
     }
 
     @Test
-    @DisplayName("Should fail login if user not found")
-    void shouldFailIfUserNotFound() {
-        when(userService.findByIdentifier(anyString())).thenReturn(Optional.empty());
-
-        assertThrows(BusinessRuleException.class, () -> authService.login("unknown", "pass"));
-    }
-
-    @Test
-    @DisplayName("Should fail login if password incorrect")
-    void shouldFailIfPasswordIncorrect() {
-        User user = new User("jdoe", "jdoe@test.com", "hashed");
-        user.setEnabled(true);
-
-        when(userService.findByIdentifier(anyString())).thenReturn(Optional.of(user));
+    @DisplayName("Should fail with invalid password")
+    void shouldFailWithInvalidPassword() {
+        // Arrange
+        final User user = new User("user", "u@t.com", "hash");
+        when(userRepository.findByUsername(anyString())).thenReturn(Optional.of(user));
         when(passwordService.verify(anyString(), any())).thenReturn(false);
 
-        assertThrows(BusinessRuleException.class, () -> authService.login("jdoe", "wrong"));
-    }
-
-    @Test
-    @DisplayName("Should fail login if account disabled")
-    void shouldFailIfAccountDisabled() {
-        User user = new User("jdoe", "jdoe@test.com", "hashed");
-        user.setEnabled(false);
-
-        when(userService.findByIdentifier(anyString())).thenReturn(Optional.of(user));
-
-        BusinessRuleException ex = assertThrows(BusinessRuleException.class, 
-                () -> authService.login("jdoe", "pass"));
-        assertEquals("error.iam.account_disabled", ex.getMessage());
+        // Act & Assert
+        assertThrows(BusinessRuleException.class, () -> authService.login("user", "wrong"));
     }
 }

@@ -10,12 +10,17 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
+/**
+ * Tests unitaires pour PaymentGatewayProvider.
+ */
 @ExtendWith(MockitoExtension.class)
-@DisplayName("PaymentGatewayProvider Unit Tests (JUnit 6)")
+@DisplayName("PaymentGatewayProvider Unit Tests")
 class PaymentGatewayProviderTest {
 
     @Mock
@@ -28,16 +33,16 @@ class PaymentGatewayProviderTest {
     @DisplayName("Should return the correct gateway for a valid provider name")
     void shouldReturnCorrectGateway() {
         // Arrange
-        String providerName = "paytech";
-        PaymentPort mockPaytech = mock(PaymentPort.class);
-        Instance<PaymentPort> selectedInstance = mock(Instance.class);
+        final String providerName = "paytech";
+        final var mockPaytech = mock(PaymentPort.class);
+        final var selectedInstance = mock(Instance.class);
 
         when(gateways.select(any(NamedLiteral.class))).thenReturn(selectedInstance);
-        when(selectedInstance.isUnsatisfied()).thenReturn(false);
+        when(selectedInstance.isResolvable()).thenReturn(true);
         when(selectedInstance.get()).thenReturn(mockPaytech);
 
         // Act
-        PaymentPort result = provider.getGateway(providerName);
+        final var result = provider.getGateway(providerName);
 
         // Assert
         assertNotNull(result);
@@ -49,11 +54,11 @@ class PaymentGatewayProviderTest {
     @DisplayName("Should throw IllegalArgumentException for an unknown provider")
     void shouldThrowExceptionForUnknownProvider() {
         // Arrange
-        String unknown = "unknown_pay";
-        Instance<PaymentPort> selectedInstance = mock(Instance.class);
+        final String unknown = "unknown_pay";
+        final var selectedInstance = mock(Instance.class);
 
         when(gateways.select(any(NamedLiteral.class))).thenReturn(selectedInstance);
-        when(selectedInstance.isUnsatisfied()).thenReturn(true);
+        when(selectedInstance.isResolvable()).thenReturn(false);
 
         // Act & Assert
         assertThrows(IllegalArgumentException.class, () -> provider.getGateway(unknown));
@@ -63,12 +68,12 @@ class PaymentGatewayProviderTest {
     @DisplayName("Should handle case-insensitive provider names")
     void shouldHandleCaseInsensitivity() {
         // Arrange
-        String providerName = "Paypal";
-        PaymentPort mockPaypal = mock(PaymentPort.class);
-        Instance<PaymentPort> selectedInstance = mock(Instance.class);
+        final String providerName = "Paypal";
+        final var mockPaypal = mock(PaymentPort.class);
+        final var selectedInstance = mock(Instance.class);
 
         when(gateways.select(any(NamedLiteral.class))).thenReturn(selectedInstance);
-        when(selectedInstance.isUnsatisfied()).thenReturn(false);
+        when(selectedInstance.isResolvable()).thenReturn(true);
         when(selectedInstance.get()).thenReturn(mockPaypal);
 
         // Act

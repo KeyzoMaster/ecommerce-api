@@ -1,15 +1,22 @@
 package com.lemzo.ecommerce.domain.sales.api.dto;
 
-import com.lemzo.ecommerce.core.domain.shipping.ShippingMethod;
-import java.math.BigDecimal;
+import com.lemzo.ecommerce.domain.core.shipping.ShippingMethod;
 
 /**
- * Réponse pour une méthode de livraison avec son coût calculé.
+ * Réponse pour un mode de livraison.
  */
 public record ShippingMethodResponse(
-    ShippingMethod method,
+    String id,
     String label,
-    BigDecimal cost,
     int minDays,
     int maxDays
-) {}
+) {
+    public static ShippingMethodResponse from(final ShippingMethod method) {
+        return new ShippingMethodResponse(
+            method.name(),
+            method.getLabel(),
+            method.getMinDays(),
+            method.getMaxDays()
+        );
+    }
+}

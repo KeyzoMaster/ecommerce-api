@@ -1,23 +1,32 @@
 package com.lemzo.ecommerce.iam.repository;
 
 import com.lemzo.ecommerce.iam.domain.Store;
-import jakarta.data.repository.BasicRepository;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
+import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
-import jakarta.data.page.Page;
-import jakarta.data.page.PageRequest;
+import jakarta.data.repository.Update;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Repository pour les boutiques utilisant Jakarta Data 1.0.
+ * Repository pour les boutiques.
  */
 @Repository
-public interface StoreRepository extends BasicRepository<Store, UUID> {
+public interface StoreRepository {
+
+    @Insert
+    Store insert(Store store);
+
+    @Update
+    Store update(Store store);
 
     @Find
-    Optional<Store> findBySlug(String slug);
+    Optional<Store> findById(UUID id);
 
     @Find
-    Page<Store> findAll(PageRequest pageRequest);
+    Optional<Store> findByName(String name);
+
+    @Delete
+    void delete(Store store);
 }

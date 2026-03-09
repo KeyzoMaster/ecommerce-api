@@ -46,6 +46,7 @@ public class ProductPromotion extends AbstractEntity {
 
     public boolean isActive() {
         final var now = LocalDateTime.now();
-        return now.isAfter(startDate) && now.isBefore(endDate);
+        return Optional.ofNullable(startDate).map(now::isAfter).orElse(true) &&
+               Optional.ofNullable(endDate).map(now::isBefore).orElse(true);
     }
 }

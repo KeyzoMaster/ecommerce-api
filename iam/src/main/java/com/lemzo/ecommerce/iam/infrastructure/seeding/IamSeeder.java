@@ -3,85 +3,112 @@ package com.lemzo.ecommerce.iam.infrastructure.seeding;
 import com.lemzo.ecommerce.core.api.seeding.DataSeeder;
 import com.lemzo.ecommerce.core.api.security.PbacAction;
 import com.lemzo.ecommerce.core.api.security.ResourceType;
+import com.lemzo.ecommerce.core.domain.Address;
 import com.lemzo.ecommerce.iam.domain.Permission;
 import com.lemzo.ecommerce.iam.domain.Role;
 import com.lemzo.ecommerce.iam.domain.User;
+import com.lemzo.ecommerce.iam.domain.UserFactory;
 import com.lemzo.ecommerce.iam.repository.PermissionRepository;
 import com.lemzo.ecommerce.iam.repository.RoleRepository;
 import com.lemzo.ecommerce.iam.repository.UserRepository;
-import com.lemzo.ecommerce.iam.service.UserService;
+import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Seeder pour les utilisateurs et la configuration PBAC initiale.
+ * Seeder pour les données IAM (Rôles, Permissions, Utilisateurs).
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class IamSeeder implements DataSeeder {
 
     private static final Logger LOGGER = Logger.getLogger(IamSeeder.class.getName());
 
-    private final UserService userService;
-    private final RoleRepository roleRepository;
     private final PermissionRepository permissionRepository;
+    private final RoleRepository roleRepository;
     private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
     @Override
     @Transactional
     public void seed() {
-        // 1. Assurer l'existence des permissions nécessaires
-        final var platManage = getOrCreatePermission(ResourceType.PLATFORM, PbacAction.MANAGE);
-        final var storeCreate = getOrCreatePermission(ResourceType.STORE, PbacAction.CREATE);
-        final var catRead = getOrCreatePermission(ResourceType.CATALOG, PbacAction.READ);
-        final var catCreate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.CREATE);
-        final var catUpdate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.UPDATE);
-        final var prodUpdate = getOrCreatePermission(ResourceType.PRODUCT, PbacAction.UPDATE);
-        final var salesRead = getOrCreatePermission(ResourceType.SALES, PbacAction.READ);
-        final var salesManage = getOrCreatePermission(ResourceType.SALES, PbacAction.MANAGE);
-        final var orderCreate = getOrCreatePermission(ResourceType.ORDER, PbacAction.CREATE);
-        final var orderRead = getOrCreatePermission(ResourceType.ORDER, PbacAction.READ);
-        final var viewStats = getOrCreatePermission(ResourceType.ANALYTICS, PbacAction.VIEW_ANALYTICS);
-        final var applyCoupon = getOrCreatePermission(ResourceType.MARKETING, PbacAction.APPLY_COUPON);
-
-        // 2. Assurer l'existence des rôles et affecter les permissions
-        final var adminRole = roleRepository.findByName("SUPER_ADMIN")
-                .orElseGet(() -> roleRepository.insert(new Role("SUPER_ADMIN", "Administrateur système")));
-        adminRole.getPermissions().add(platManage);
-        roleRepository.save(adminRole);
-        
-        final var ownerRole = roleRepository.findByName("STORE_OWNER")
-                .orElseGet(() -> roleRepository.insert(new Role("STORE_OWNER", "Propriétaire de boutique")));
-        ownerRole.getPermissions().addAll(Set.of(catRead, catCreate, catUpdate, prodUpdate, salesRead, salesManage, viewStats, storeCreate));
-        roleRepository.save(ownerRole);
-        
-        final var clientRole = roleRepository.findByName("CLIENT")
-                .orElseGet(() -> roleRepository.insert(new Role("CLIENT", "Client standard")));
-        clientRole.getPermissions().addAll(Set.of(catRead, orderCreate, orderRead, applyCoupon));
-        roleRepository.save(clientRole);
-
-        // 3. Création des utilisateurs de test
-        createIfMissing("admin", "admin@ecommerce.local", "admin123", adminRole);
-        createIfMissing("owner", "owner@ecommerce.local", "owner123", ownerRole);
-        createIfMissing("client", "client@ecommerce.local", "client123", clientRole);
-    }
-
-    private Permission getOrCreatePermission(final ResourceType resource, final PbacAction action) {
-        return permissionRepository.findByResourceTypeAndAction(resource, action)
-                .orElseGet(() -> permissionRepository.insert(new Permission(resource, action)));
-    }
-
-    private void createIfMissing(final String username, final String email, final String password, final Role role) {
-        if (userService.findByIdentifier(username).isEmpty()) {
-            LOGGER.info(() -> "Seeding user: " + username + " with role: " + role.getName());
-            final var user = userService.register(username, email, password);
-            user.getRoles().add(role);
-            userRepository.save(user);
+        try (Stream<Permission> existing = permissionRepository.findAll()) {
+            if (existing.findAny().isPresent()) {
+                LOGGER.info("IAM data already seeded. Skipping.");
+                return;
+            }
         }
+
+        LOGGER.info("Seeding IAM data...");
+
+        // 1. Créer toutes les permissions possibles
+        final Set<Permission> allPermissions = Stream.of(ResourceType.values())
+                .flatMap(res -> Stream.of(PbacAction.values())
+                        .map(act -> new Permission(res, act)))
+                .map(permissionRepository::insert)
+                .collect(Collectors.toSet());
+
+        // 2. Créer les Rôles standards
+        final Role adminRole = createRole("ADMIN", "Administrateur système", allPermissions);
+        
+        final Set<Permission> clientPermissions = filterPermissions(allPermissions, 
+                ResourceType.PRODUCT, PbacAction.READ, 
+                ResourceType.ORDER, PbacAction.READ);
+        final Role clientRole = createRole("CLIENT", "Client standard", clientPermissions);
+        
+        final Set<Permission> sellerPermissions = filterPermissions(allPermissions, 
+                ResourceType.PRODUCT, PbacAction.MANAGE, 
+                ResourceType.ORDER, PbacAction.READ);
+        final Role sellerRole = createRole("SELLER", "Vendeur boutique", sellerPermissions);
+
+        // 3. Créer des utilisateurs de test
+        createUser("admin", "admin@ecommerce.local", "admin123", adminRole);
+        createUser("client1", "client1@gmail.com", "password", clientRole);
+        createUser("client2", "client2@gmail.com", "password", clientRole);
+        createUser("vendeur1", "vendeur1@boutique.com", "password", sellerRole);
+
+        LOGGER.info("IAM seeding completed.");
+    }
+
+    private Role createRole(final String name, final String desc, final Set<Permission> permissions) {
+        final Role role = new Role(name, desc);
+        role.setPermissions(permissions);
+        return roleRepository.insert(role);
+    }
+
+    private void createUser(final String username, final String email, final String pass, final Role role) {
+        final String hashedPass = passwordService.hash(pass.toCharArray());
+        final User user = UserFactory.create(username, email, hashedPass);
+        user.getRoles().add(role);
+        
+        final Address address = Address.builder()
+                .technicalId("addr-" + username)
+                .label("Domicile")
+                .street("Rue de Test " + username)
+                .city("Dakar")
+                .country("Sénégal")
+                .build();
+        user.setAddresses(List.of(address));
+        
+        userRepository.insert(user);
+    }
+
+    private Set<Permission> filterPermissions(final Set<Permission> all, final Object... criteria) {
+        return all.stream()
+                .filter(p -> Arrays.stream(criteria)
+                        .anyMatch(c -> p.getSlug().contains(c.toString().toLowerCase())))
+                .collect(Collectors.toSet());
     }
 
     @Override

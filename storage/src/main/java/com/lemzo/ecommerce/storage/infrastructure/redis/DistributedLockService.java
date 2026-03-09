@@ -2,6 +2,8 @@ package com.lemzo.ecommerce.storage.infrastructure.redis;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.params.SetParams;
@@ -14,6 +16,7 @@ import java.util.function.Supplier;
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class DistributedLockService {
 
     private final JedisPoolProvider jedisPoolProvider;
@@ -21,22 +24,22 @@ public class DistributedLockService {
     /**
      * Exécute une action sous un verrou distribué.
      */
-    public <T> Optional<T> withLock(String lockKey, long timeoutSeconds, Supplier<T> action) {
-        var lockValue = UUID.randomUUID().toString();
-        var params = SetParams.setParams().nx().ex(timeoutSeconds);
+    public <T> Optional<T> withLock(final String lockKey, final long timeoutSeconds, final Supplier<T> action) {
+        final String lockValue = UUID.randomUUID().toString();
+        final SetParams params = SetParams.setParams().nx().ex(timeoutSeconds);
 
-        try (var jedis = jedisPoolProvider.getResource()) {
-            var result = jedis.set(lockKey, lockValue, params);
+        try (Jedis jedis = jedisPoolProvider.getResource()) {
+            final String result = jedis.set(lockKey, lockValue, params);
             
             return Optional.ofNullable(result)
                     .filter(res -> res.equals("OK"))
                     .map(res -> executeAndRelease(jedis, lockKey, lockValue, action));
-        } catch (Exception e) {
+        } catch (final Exception _) {
             return Optional.empty();
         }
     }
 
-    private <T> T executeAndRelease(Jedis jedis, String key, String value, Supplier<T> action) {
+    private <T> T executeAndRelease(final Jedis jedis, final String key, final String value, final Supplier<T> action) {
         try {
             return action.get();
         } finally {

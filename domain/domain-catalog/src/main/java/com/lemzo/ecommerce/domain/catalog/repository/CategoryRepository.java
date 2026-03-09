@@ -1,22 +1,26 @@
 package com.lemzo.ecommerce.domain.catalog.repository;
 
 import com.lemzo.ecommerce.domain.catalog.domain.Category;
+import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repository pour les catégories.
+ */
 @Repository
 public interface CategoryRepository {
 
     @Insert
     Category insert(Category category);
 
-    @Save
-    Category save(Category category);
+    @Update
+    Category update(Category category);
 
     @Find
     Optional<Category> findById(UUID id);
@@ -28,5 +32,8 @@ public interface CategoryRepository {
     List<Category> findAll();
 
     @Find
-    List<Category> findByParentIsNull();
+    List<Category> findByParentId(UUID parentId);
+
+    @Delete
+    void delete(Category category);
 }

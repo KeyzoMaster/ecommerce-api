@@ -23,7 +23,6 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -69,12 +68,15 @@ public class OrderResource {
     @APIResponse(responseCode = "201", description = "Commande créée avec succès")
     public Response checkout(@Valid final OrderCreateRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
-        final var order = salesService.placeOrder(principal.getUserId(), request);
         
-        // Initialiser le paiement
-        final var paymentResult = salesService.initiatePayment(order, request.paymentProvider());
+        final var order = salesService.placeOrder(
+                principal.getUserId(), 
+                request.shippingAddressId(), 
+                request.couponCode(), 
+                request.paymentProvider()
+        );
         
-        final var orderData = OrderResponse.from(order, paymentResult.redirectUrl());
+        final var orderData = OrderResponse.from(order);
         
         return Response.status(Response.Status.CREATED)
                 .entity(hateoasMapper.toResource(orderData, uriInfo))

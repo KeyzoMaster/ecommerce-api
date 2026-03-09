@@ -32,11 +32,7 @@
         </dependency>
         <dependency>
             <groupId>com.lemzo</groupId>
-            <artifactId>util</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.lemzo</groupId>
-            <artifactId>security</artifactId>
+            <artifactId>domain-core</artifactId>
         </dependency>
     </dependencies>
 

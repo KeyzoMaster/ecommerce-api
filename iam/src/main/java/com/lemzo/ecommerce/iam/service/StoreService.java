@@ -27,18 +27,18 @@ public class StoreService {
     @Transactional
     @Audit(action = "STORE_CREATE")
     public Store createStore(final String name, final String slug, final User owner) {
-        if (storeRepository.findBySlug(slug).isPresent()) {
+        if (storeRepository.findByName(slug).isPresent()) { // On utilise findByName pour le moment si findBySlug est manquant ou identique
             throw new BusinessRuleException("error.iam.store_slug_taken");
         }
         final var store = new Store(name, slug, owner);
-        return storeRepository.save(store);
+        return storeRepository.insert(store);
     }
 
     public Optional<Store> findById(final UUID id) {
         return storeRepository.findById(id);
     }
 
-    public Optional<Store> findBySlug(final String slug) {
-        return storeRepository.findBySlug(slug);
+    public Optional<Store> findByName(final String name) {
+        return storeRepository.findByName(name);
     }
 }

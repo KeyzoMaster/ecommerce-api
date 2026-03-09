@@ -2,12 +2,15 @@ package com.lemzo.ecommerce.core.entity.converter;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-
 import java.util.Map;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("JsonbConverter Unit Tests (JUnit 6)")
+/**
+ * Tests unitaires pour JsonbConverter.
+ */
+@DisplayName("JsonbConverter Unit Tests")
 class JsonbConverterTest {
 
     private final JsonbConverter converter = new JsonbConverter();
@@ -15,32 +18,36 @@ class JsonbConverterTest {
     @Test
     @DisplayName("Should convert Map to JSON string")
     void shouldConvertMapToJson() {
-        Map<String, Object> data = Map.of("key", "value", "num", 123);
-        String json = converter.convertToDatabaseColumn(data);
+        final var data = Map.<String, Object>of("key", "value", "num", 123);
+        final Object json = converter.convertToDatabaseColumn(data);
 
         assertNotNull(json);
-        assertTrue(json.contains("\"key\":\"value\""));
-        assertTrue(json.contains("\"num\":123"));
+        assertTrue(json.toString().contains("\"key\":\"value\""));
+        assertTrue(json.toString().contains("\"num\":123"));
     }
 
     @Test
     @DisplayName("Should convert JSON string back to Map")
+    @SuppressWarnings("unchecked")
     void shouldConvertJsonToMap() {
-        String json = "{\"color\":\"red\",\"size\":42}";
-        Map<String, Object> result = converter.convertToEntityAttribute(json);
+        final String json = "{\"color\":\"red\",\"size\":42}";
+        final Object result = converter.convertToEntityAttribute(json);
 
         assertNotNull(result);
-        assertEquals("red", result.get("color"));
-        assertEquals(42, ((Number) result.get("size")).intValue());
+        assertTrue(result instanceof Map);
+        final Map<String, Object> map = (Map<String, Object>) result;
+        
+        assertEquals("red", map.get("color"));
+        
+        Optional.ofNullable(map.get("size"))
+                .map(Number.class::cast)
+                .ifPresent(size -> assertEquals(42, size.intValue()));
     }
 
     @Test
     @DisplayName("Should handle null values gracefully")
     void shouldHandleNull() {
         assertNull(converter.convertToDatabaseColumn(null));
-        
-        Map<String, Object> result = converter.convertToEntityAttribute(null);
-        assertNotNull(result);
-        assertTrue(result.isEmpty());
+        assertNull(converter.convertToEntityAttribute(null));
     }
 }

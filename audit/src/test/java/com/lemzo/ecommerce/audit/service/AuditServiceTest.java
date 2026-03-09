@@ -1,5 +1,6 @@
 package com.lemzo.ecommerce.audit.service;
 
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import jakarta.enterprise.concurrent.ManagedExecutorService;
@@ -13,8 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -24,7 +25,7 @@ import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-@DisplayName("AuditService Unit Tests (JUnit 6)")
+@DisplayName("AuditService Unit Tests")
 class AuditServiceTest {
 
     @Mock
@@ -41,7 +42,7 @@ class AuditServiceTest {
 
     @BeforeEach
     void setUp() {
-        when(mongoDatabase.getCollection(anyString())).thenReturn(mongoCollection);
+        lenient().when(mongoDatabase.getCollection(anyString())).thenReturn(mongoCollection);
         auditService.init();
     }
 
@@ -49,29 +50,29 @@ class AuditServiceTest {
     @DisplayName("Should submit audit log to executor")
     void shouldSubmitAuditLogToExecutor() {
         // Arrange
-        UUID userId = UUID.randomUUID();
-        String action = "TEST_ACTION";
+        final UUID userId = UUID.randomUUID();
+        final String action = "TEST_ACTION";
         
         // Mock executor.submit to execute the runnable immediately
         when(executor.submit(any(Runnable.class))).thenAnswer(invocation -> {
-            Runnable runnable = invocation.getArgument(0);
+            final Runnable runnable = invocation.getArgument(0);
             runnable.run();
             return mock(Future.class);
         });
 
         // Act
-        auditService.log(userId, action, "ResourceType", "ResId", "Details", "127.0.0.1", "Agent");
+        auditService.log(userId, action, ResourceType.PRODUCT, "ResId", Map.of("key", "value"), "127.0.0.1", "Agent");
 
         // Assert
         verify(executor).submit(any(Runnable.class));
         
-        ArgumentCaptor<Document> captor = ArgumentCaptor.forClass(Document.class);
+        final ArgumentCaptor<Document> captor = ArgumentCaptor.forClass(Document.class);
         verify(mongoCollection).insertOne(captor.capture());
         
-        Document captured = captor.getValue();
+        final Document captured = captor.getValue();
         assertEquals(userId.toString(), captured.getString("userId"));
         assertEquals(action, captured.getString("action"));
-        assertEquals("ResourceType", captured.getString("resourceType"));
+        assertEquals("PRODUCT", captured.getString("resourceType"));
         assertNotNull(captured.getString("timestamp"));
     }
 
@@ -85,14 +86,14 @@ class AuditServiceTest {
         });
 
         // Act
-        auditService.log(null, "ANONYMOUS_ACTION", "Res", "ID", "Det", "IP", "Agent");
+        auditService.log(null, "ANONYMOUS_ACTION", ResourceType.PLATFORM, "ID", null, "IP", "Agent");
 
         // Assert
-        ArgumentCaptor<Document> captor = ArgumentCaptor.forClass(Document.class);
+        final ArgumentCaptor<Document> captor = ArgumentCaptor.forClass(Document.class);
         verify(mongoCollection).insertOne(captor.capture());
         
-        Document captured = captor.getValue();
-        assertEquals(null, captured.getString("userId"));
+        final Document captured = captor.getValue();
+        assertEquals("anonymous", captured.getString("userId"));
         assertEquals("ANONYMOUS_ACTION", captured.getString("action"));
     }
 }

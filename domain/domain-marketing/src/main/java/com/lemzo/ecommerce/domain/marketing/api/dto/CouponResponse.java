@@ -3,6 +3,7 @@ package com.lemzo.ecommerce.domain.marketing.api.dto;
 import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -20,8 +21,10 @@ public record CouponResponse(
     boolean expired
 ) {
     public static CouponResponse from(final Coupon coupon) {
-        final var now = LocalDateTime.now();
-        final var isExpired = coupon.getEndDate() != null && now.isAfter(coupon.getEndDate());
+        final LocalDateTime now = LocalDateTime.now();
+        final boolean isExpired = Optional.ofNullable(coupon.getEndDate())
+                .map(now::isAfter)
+                .orElse(false);
         
         return new CouponResponse(
             coupon.getId(),

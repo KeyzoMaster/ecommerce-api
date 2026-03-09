@@ -2,8 +2,12 @@ package com.lemzo.ecommerce.iam.service;
 
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import com.lemzo.ecommerce.core.domain.Address;
+import com.lemzo.ecommerce.domain.core.iam.UserPort;
+import com.lemzo.ecommerce.iam.domain.Permission;
 import com.lemzo.ecommerce.iam.domain.User;
+import com.lemzo.ecommerce.iam.domain.UserFactory;
 import com.lemzo.ecommerce.iam.repository.UserRepository;
+import com.lemzo.ecommerce.iam.repository.StoreRepository;
 import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
 import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -16,17 +20,57 @@ import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
- * Service de gestion des utilisateurs.
+ * Service de gestion des utilisateurs implémentant le Port du domaine.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class UserService {
+public class UserService implements UserPort {
 
     private final UserRepository userRepository;
+    private final StoreRepository storeRepository;
     private final PasswordService passwordService;
+
+    @Override
+    public Optional<User> findById(final UUID userId) {
+        return userRepository.findById(userId);
+    }
+
+    @Override
+    public Optional<Address> findAddressById(final UUID userId, final String addressId) {
+        return findById(userId)
+                .flatMap(user -> user.getAddresses().stream()
+                        .filter(addr -> addressId.equals(addr.getTechnicalId()))
+                        .findFirst());
+    }
+
+    @Override
+    public Set<String> getPermissions(final UUID userId) {
+        return findById(userId)
+                .map(user -> Stream.concat(
+                        user.getRoles().stream().flatMap(role -> role.getPermissions().stream()),
+                        user.getAdhocPermissions().stream()
+                )
+                .map(Permission::getSlug)
+                .collect(Collectors.toSet()))
+                .orElse(Set.of());
+    }
+
+    @Override
+    public boolean canAccessStore(final UUID userId, final UUID storeId) {
+        final boolean hasManagePermission = getPermissions(userId).contains("platform:manage");
+        
+        final boolean isOwner = storeRepository.findById(storeId)
+                .map(store -> store.getOwner().getId().equals(userId))
+                .orElse(false);
+
+        return hasManagePermission || isOwner;
+    }
 
     @Transactional
     public User register(final String username, final String email, final String plainPassword) {
@@ -38,13 +82,9 @@ public class UserService {
         }
 
         final String hashedPassword = passwordService.hash(plainPassword.toCharArray());
-        final User user = new User(username, email, hashedPassword);
+        final User user = UserFactory.create(username, email, hashedPassword);
         
-        return userRepository.save(user);
-    }
-
-    public Optional<User> findById(final UUID userId) {
-        return userRepository.findById(userId);
+        return userRepository.insert(user);
     }
 
     public Optional<User> findByIdentifier(final String identifier) {
@@ -55,58 +95,56 @@ public class UserService {
     @Transactional
     @Audit(action = "USER_PROFILE_UPDATE")
     public User updateProfile(final UUID userId, final String firstName, final String lastName) {
-        final User user = userRepository.findById(userId)
+        final User user = findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
         user.setFirstName(firstName);
         user.setLastName(lastName);
         
-        return userRepository.save(user);
+        return userRepository.update(user);
     }
 
     @Transactional
     @Audit(action = "USER_PAYMENT_METHOD_ADD")
     public User addPaymentMethod(final UUID userId, final String type, final Map<String, Object> details) {
-        final User user = userRepository.findById(userId)
+        final User user = findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
         final Map<String, Object> methodDetails = new HashMap<>(details);
         methodDetails.put("type", type);
         user.getPaymentMethods().add(methodDetails);
         
-        return userRepository.save(user);
+        return userRepository.update(user);
     }
 
     @Transactional
     @Audit(action = "USER_ADDRESS_ADD")
     public User addAddress(final UUID userId, final Address address) {
-        final User user = userRepository.findById(userId)
+        final User user = findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
-        if (address.getTechnicalId() == null) {
-            address.setTechnicalId(UUID.randomUUID().toString());
-        }
+        address.setTechnicalId(Optional.ofNullable(address.getTechnicalId()).orElseGet(() -> UUID.randomUUID().toString()));
         
         user.getAddresses().add(address);
         
-        return userRepository.save(user);
+        return userRepository.update(user);
     }
 
     @Transactional
     @Audit(action = "USER_ADDRESS_REMOVE")
     public User removeAddress(final UUID userId, final String addressId) {
-        final User user = userRepository.findById(userId)
+        final User user = findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
         user.getAddresses().removeIf(addr -> addr.getTechnicalId().equals(addressId));
         
-        return userRepository.save(user);
+        return userRepository.update(user);
     }
 
     @Transactional
     @Audit(action = "USER_ADDRESS_UPDATE")
     public User updateAddress(final UUID userId, final String addressId, final Address updatedAddress) {
-        final User user = userRepository.findById(userId)
+        final User user = findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
 
         user.getAddresses().stream()
@@ -120,6 +158,6 @@ public class UserService {
                     addr.setCountry(updatedAddress.getCountry());
                 });
 
-        return userRepository.save(user);
+        return userRepository.update(user);
     }
 }

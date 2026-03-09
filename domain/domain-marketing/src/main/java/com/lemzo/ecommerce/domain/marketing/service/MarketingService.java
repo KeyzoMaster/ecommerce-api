@@ -1,11 +1,12 @@
 package com.lemzo.ecommerce.domain.marketing.service;
 
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
+import com.lemzo.ecommerce.domain.core.marketing.MarketingPort;
 import com.lemzo.ecommerce.domain.marketing.api.dto.CouponCreateRequest;
 import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
+import com.lemzo.ecommerce.domain.marketing.domain.ProductPromotion;
 import com.lemzo.ecommerce.domain.marketing.repository.CouponRepository;
 import com.lemzo.ecommerce.domain.marketing.repository.ProductPromotionRepository;
-import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -14,57 +15,71 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
- * Service de gestion du marketing (coupons, promotions).
+ * Service de gestion des coupons et promotions.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
-public class MarketingService {
+public class MarketingService implements MarketingPort {
 
     private final CouponRepository couponRepository;
     private final ProductPromotionRepository promotionRepository;
 
+    @Override
     @Transactional
-    @Audit(action = "COUPON_CREATE")
-    public Coupon createCoupon(final CouponCreateRequest request) {
-        if (couponRepository.findByCode(request.code()).isPresent()) {
-            throw new BusinessRuleException("error.marketing.coupon_code_exists");
+    public Optional<BigDecimal> applyCoupon(final String code, final BigDecimal orderAmount) {
+        final Coupon coupon = couponRepository.findByCode(code)
+                .orElseThrow(() -> new BusinessRuleException("Coupon invalide"));
+
+        if (!coupon.isValid()) {
+            throw new BusinessRuleException("Coupon expiré ou limite d'utilisation atteinte");
         }
 
-        final var coupon = new Coupon(request.code(), request.type(), request.value());
+        if (orderAmount.compareTo(coupon.getMinOrderAmount()) < 0) {
+            throw new BusinessRuleException("Montant minimum de commande non atteint");
+        }
+
+        coupon.setUsageCount(coupon.getUsageCount() + 1);
+        couponRepository.update(coupon);
+
+        return Optional.of(coupon.getValue());
+    }
+
+    @Transactional
+    public Coupon createCoupon(final CouponCreateRequest request) {
+        if (couponRepository.findByCode(request.code()).isPresent()) {
+            throw new BusinessRuleException("Le coupon " + request.code() + " existe déjà");
+        }
+        
+        final Coupon coupon = new Coupon(request.code(), request.type(), request.value());
         coupon.setMinOrderAmount(Optional.ofNullable(request.minOrderAmount()).orElse(BigDecimal.ZERO));
         coupon.setMaxUsages(request.maxUsages());
         coupon.setStartDate(request.startDate());
         coupon.setEndDate(request.endDate());
-
-        return couponRepository.save(coupon);
+        
+        return couponRepository.insert(coupon);
     }
 
-    public Optional<BigDecimal> applyCoupon(final String code, final BigDecimal currentAmount) {
-        if (code == null || code.isBlank()) {
-            return Optional.empty();
-        }
-
-        return couponRepository.findByCode(code)
-                .filter(Coupon::isValid)
-                .filter(c -> currentAmount.compareTo(c.getMinOrderAmount()) >= 0)
-                .map(c -> calculateDiscount(c, currentAmount));
+    public Optional<BigDecimal> getActivePromotion(final UUID productId) {
+        return promotionRepository.findActivePromotion(productId)
+                .filter(ProductPromotion::isActive)
+                .map(ProductPromotion::getDiscountValue);
     }
 
-    private BigDecimal calculateDiscount(final Coupon coupon, final BigDecimal amount) {
-        return "PERCENTAGE".equals(coupon.getType()) 
-                ? amount.multiply(coupon.getValue().divide(new BigDecimal("100")))
-                : coupon.getValue();
+    public Optional<Coupon> findCouponByCode(final String code) {
+        return couponRepository.findByCode(code);
     }
 
+    @Override
     @Transactional
     public void incrementUsage(final String code) {
         couponRepository.findByCode(code)
                 .ifPresent(c -> {
                     c.setUsageCount(c.getUsageCount() + 1);
-                    couponRepository.save(c);
+                    couponRepository.update(c);
                 });
     }
 }

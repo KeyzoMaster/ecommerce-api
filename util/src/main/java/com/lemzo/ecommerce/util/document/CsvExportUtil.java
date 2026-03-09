@@ -1,5 +1,6 @@
 package com.lemzo.ecommerce.util.document;
 
+import com.lemzo.ecommerce.core.contract.util.CsvExportPort;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.util.List;
 import java.util.Optional;
@@ -7,44 +8,44 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 /**
- * Utilitaire générique pour la génération de fichiers CSV.
+ * Utilitaire pour l'export de données au format CSV.
  */
 @ApplicationScoped
-public class CsvExportUtil {
+public class CsvExportUtil implements CsvExportPort {
 
-    private static final String DEFAULT_SEPARATOR = ";";
-    private static final String DEFAULT_NEWLINE = "\n";
+    public CsvExportUtil() {
+        // Constructeur explicite
+    }
 
     /**
-     * Génère une chaîne CSV à partir d'une liste de données et d'une fonction d'extraction.
+     * Génère une chaîne CSV à partir d'une liste d'objets.
      */
-    public <T> String generateCsv(List<String> headers, List<T> data, Function<T, List<String>> rowMapper) {
-        StringBuilder csv = new StringBuilder();
-        
+    @Override
+    public <T> String generateCsv(final List<String> headers, final List<T> data, final Function<T, List<String>> rowMapper) {
+        final StringBuilder csv = new StringBuilder();
+
         // En-têtes
-        Optional.ofNullable(headers)
-                .filter(h -> !h.isEmpty())
-                .ifPresent(h -> csv.append(String.join(DEFAULT_SEPARATOR, h)).append(DEFAULT_NEWLINE));
-        
+        csv.append(String.join(",", headers)).append("\n");
+
         // Données
-        Optional.ofNullable(data)
-                .orElse(List.of())
-                .stream()
+        data.stream()
                 .map(rowMapper)
                 .map(row -> row.stream()
-                        .map(this::sanitize)
-                        .collect(Collectors.joining(DEFAULT_SEPARATOR)))
-                .forEach(sanitizedRow -> csv.append(sanitizedRow).append(DEFAULT_NEWLINE));
-        
+                        .map(this::escapeCsv)
+                        .collect(Collectors.joining(",")))
+                .forEach(line -> csv.append(line).append("\n"));
+
         return csv.toString();
     }
 
-    private String sanitize(String value) {
+    private String escapeCsv(final String value) {
         return Optional.ofNullable(value)
-                .map(v -> v.replace(DEFAULT_SEPARATOR, ",")
-                           .replace("\n", " ")
-                           .replace("\r", " "))
-                .map(v -> (v.contains(",") || v.contains("\"")) ? "\"" + v.replace("\"", "\"\"") + "\"" : v)
+                .map(val -> {
+                    final String escaped = val.replace("\"", "\"\"");
+                    return (escaped.contains(",") || escaped.contains("\n") || escaped.contains("\""))
+                            ? "\"" + escaped + "\""
+                            : escaped;
+                })
                 .orElse("");
     }
 }

@@ -2,6 +2,7 @@ package com.lemzo.ecommerce.storage.infrastructure.redis;
 
 import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.enterprise.inject.Produces;
 import jakarta.inject.Inject;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 /**
  * Fournisseur sécurisé de ressources Redis (Jedis).
- * Encapsule JedisPool pour éviter les erreurs de proxying CDI.
+ * Produit JedisPool pour injection directe dans d'autres modules.
  */
 @ApplicationScoped
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
@@ -23,12 +24,21 @@ public class JedisPoolProvider {
 
     @Inject
     public JedisPoolProvider(
-            @ConfigProperty(name = "REDIS_HOST", defaultValue = "localhost") String host,
-            @ConfigProperty(name = "REDIS_PORT", defaultValue = "6379") int port) {
+            @ConfigProperty(name = "REDIS_HOST", defaultValue = "localhost") final String host,
+            @ConfigProperty(name = "REDIS_PORT", defaultValue = "6379") final int port) {
         
-        var poolConfig = new JedisPoolConfig();
+        final var poolConfig = new JedisPoolConfig();
         poolConfig.setMaxTotal(128);
         this.jedisPool = new JedisPool(poolConfig, host, port);
+    }
+
+    /**
+     * Produit le JedisPool pour injection CDI.
+     */
+    @Produces
+    @ApplicationScoped
+    public JedisPool produceJedisPool() {
+        return this.jedisPool;
     }
 
     /**
@@ -39,7 +49,7 @@ public class JedisPoolProvider {
     }
 
     /**
-     * Fermeture propre du pool au déchargement du bean.
+     * Fermeture propre du pool.
      */
     @PreDestroy
     public void close() {

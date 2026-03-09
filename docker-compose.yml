@@ -65,6 +65,8 @@ services:
       - MINIO_ACCESS_KEY=minio_user
       - MINIO_SECRET_KEY=minio_password
       - MINIO_BUCKET_NAME=ecommerce
+      - JWT_SECRET=votre_secret_tres_long_et_securise_pour_jwt_prod_123456
+      - JWT_EXPIRATION_MS=3600000
       - app.seeding.enabled=true
     depends_on:
       postgres:

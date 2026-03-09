@@ -13,4 +13,7 @@ import jakarta.enterprise.concurrent.ManagedExecutorDefinition;
 )
 @ApplicationScoped
 public class ConcurrencyConfig {
+    public ConcurrencyConfig() {
+        // Required by CDI
+    }
 }

@@ -3,8 +3,9 @@ package com.lemzo.ecommerce.api.infrastructure.migration;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.context.Initialized;
 import jakarta.enterprise.event.Observes;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.flywaydb.core.Flyway;
+import java.util.Optional;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,34 +16,43 @@ public class FlywayMigrationService {
 
     private static final Logger LOGGER = Logger.getLogger(FlywayMigrationService.class.getName());
 
-    @ConfigProperty(name = "DB_URL", defaultValue = "jdbc:postgresql://localhost:5432/ecommerce_db")
-    private String url;
-
-    @ConfigProperty(name = "DB_USER", defaultValue = "e_user")
-    private String user;
-
-    @ConfigProperty(name = "DB_PASSWORD", defaultValue = "e_password")
-    private String password;
+    public FlywayMigrationService() {
+        // Required by CDI
+    }
 
     /**
      * Observe l'initialisation du contexte applicatif pour lancer Flyway.
      */
-    public void onStart(@Observes @Initialized(ApplicationScoped.class) Object init) {
-        LOGGER.info("Démarrage des migrations Flyway sur : " + url);
+    public void onStart(@Observes @Initialized(ApplicationScoped.class) final Object init) {
+        final String url = Optional.ofNullable(System.getenv("DB_URL"))
+                .orElse("jdbc:postgresql://postgres:5432/ecommerce_db");
+        
+        final String user = Optional.ofNullable(System.getenv("DB_USER"))
+                .orElse("e_user");
+        
+        final String password = Optional.ofNullable(System.getenv("DB_PASSWORD"))
+                .orElse("e_password");
+
+        LOGGER.info(() -> "Démarrage des migrations Flyway sur : " + url + " (User: " + user + ")");
         
         try {
-            Flyway flyway = Flyway.configure()
+            final Flyway flyway = Flyway.configure()
                     .dataSource(url, user, password)
                     .locations("classpath:db/migration")
                     .baselineOnMigrate(true)
+                    .baselineVersion("0")
                     .load();
 
+            LOGGER.info("Exécution de Flyway Repair...");
+            flyway.repair();
+            
+            LOGGER.info("Exécution de Flyway Migrate...");
             flyway.migrate();
+            
             LOGGER.info("Migrations Flyway terminées avec succès.");
-        } catch (Exception e) {
-            LOGGER.severe("Échec des migrations Flyway : " + e.getMessage());
-            // On laisse l'exception remonter pour empêcher le démarrage en état instable
-            throw new RuntimeException("Erreur critique lors de la migration de la base de données", e);
+        } catch (final Throwable throwable) {
+            LOGGER.log(Level.SEVERE, "ERREUR CRITIQUE FLYWAY : " + throwable.getMessage(), throwable);
+            throw new RuntimeException("Migration failed: " + throwable.getMessage(), throwable);
         }
     }
 }

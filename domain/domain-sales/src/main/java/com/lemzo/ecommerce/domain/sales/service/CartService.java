@@ -1,9 +1,9 @@
 package com.lemzo.ecommerce.domain.sales.service;
 
+import com.lemzo.ecommerce.domain.core.catalog.CatalogPort;
 import com.lemzo.ecommerce.domain.sales.domain.Cart;
 import com.lemzo.ecommerce.domain.sales.domain.CartItem;
 import com.lemzo.ecommerce.domain.sales.repository.CartRepository;
-import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class CartService {
 
     private final CartRepository cartRepository;
-    private final CatalogService catalogService;
+    private final CatalogPort catalogPort;
 
     public Optional<Cart> getCart(final UUID userId) {
         return cartRepository.findByUserId(userId);
@@ -32,7 +32,7 @@ public class CartService {
     public Cart addToCart(final UUID userId, final UUID productId, final int quantity) {
         final var currentCart = getCart(userId).orElse(new Cart(userId, new ArrayList<>()));
         
-        final var product = catalogService.findById(productId)
+        final var product = (com.lemzo.ecommerce.domain.catalog.domain.Product) catalogPort.findProductById(productId)
                 .orElseThrow(() -> new IllegalArgumentException("Produit non trouvé"));
 
         final var existingItem = currentCart.items().stream()

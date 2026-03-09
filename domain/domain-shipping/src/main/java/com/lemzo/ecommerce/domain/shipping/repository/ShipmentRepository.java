@@ -4,7 +4,7 @@ import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
 import jakarta.data.repository.Repository;
-import jakarta.data.repository.Save;
+import jakarta.data.repository.Update;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -14,8 +14,8 @@ public interface ShipmentRepository {
     @Insert
     Shipment insert(Shipment shipment);
 
-    @Save
-    Shipment save(Shipment shipment);
+    @Update
+    Shipment update(Shipment shipment);
 
     @Find
     Optional<Shipment> findByOrderId(UUID orderId);

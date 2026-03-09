@@ -1,19 +1,27 @@
 package com.lemzo.ecommerce.iam.domain;
 
-/**
- * Factory pour la création d'utilisateurs de test.
- */
-public class UserFactory {
+import java.util.Collections;
+import java.util.HashSet;
 
-    public static User createDefaultAdmin() {
-        User user = new User("admin", "admin@lemzo.com", "admin1234");
-        user.setEnabled(true);
-        return user;
+/**
+ * Factory pour la création sécurisée d'utilisateurs.
+ * Garantit l'état initial valide de l'entité.
+ */
+public final class UserFactory {
+
+    private UserFactory() {
+        // Classe utilitaire
     }
 
-    public static User createClient(String username) {
-        User user = new User(username, username + "@example.com", "password123");
+    /**
+     * Crée un nouvel utilisateur actif avec les champs de base.
+     */
+    public static User create(final String username, final String email, final String hashedPassword) {
+        final User user = new User(username, email, hashedPassword);
         user.setEnabled(true);
+        user.setRoles(new HashSet<>());
+        user.setAdhocPermissions(new HashSet<>());
+        user.setAddresses(Collections.emptyList());
         return user;
     }
 }

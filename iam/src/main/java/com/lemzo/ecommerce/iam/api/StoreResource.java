@@ -87,7 +87,7 @@ public class StoreResource {
                 .map(store -> {
                     store.setName(request.name());
                     store.setDescription(request.description());
-                    final var saved = storeRepository.save(store);
+                    final var saved = storeRepository.update(store);
                     return Response.ok(hateoasMapper.toResource(StoreResponse.from(saved), uriInfo)).build();
                 })
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());

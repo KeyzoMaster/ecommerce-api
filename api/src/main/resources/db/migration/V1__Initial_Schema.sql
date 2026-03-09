@@ -14,8 +14,9 @@ CREATE TABLE iam_users (
     first_name varchar(100),
     last_name varchar(100),
     enabled boolean NOT NULL DEFAULT true,
-    -- JSONB optimisé (Postgres 18 améliore le traitement parallèle du JSONB)
-    payment_methods jsonb DEFAULT '[]',
+    email_verified_at timestamp with time zone,
+    -- Compatibilité EclipseLink : utilisation de TEXT au lieu de JSONB
+    payment_methods text DEFAULT '[]',
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
 );
@@ -23,18 +24,22 @@ CREATE TABLE iam_users (
 CREATE TABLE iam_user_addresses (
     id uuid PRIMARY KEY DEFAULT uuidv7(),
     user_id uuid NOT NULL REFERENCES iam_users(id) ON DELETE CASCADE,
+    technical_id varchar(100),
     label varchar(50),
     street varchar(255) NOT NULL,
     city varchar(100) NOT NULL,
     zip_code varchar(20),
     country varchar(100) NOT NULL DEFAULT 'Sénégal',
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 CREATE TABLE iam_permissions (
     id uuid PRIMARY KEY DEFAULT uuidv7(),
     resource_type varchar(50) NOT NULL,
     action varchar(50) NOT NULL,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone,
     UNIQUE (resource_type, action)
 );
 
@@ -42,7 +47,9 @@ CREATE TABLE iam_roles (
     id uuid PRIMARY KEY DEFAULT uuidv7(),
     name varchar(100) NOT NULL UNIQUE,
     description text,
-    is_system_role boolean NOT NULL DEFAULT false
+    is_system_role boolean NOT NULL DEFAULT false,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 CREATE TABLE iam_role_permissions (
@@ -57,8 +64,14 @@ CREATE TABLE iam_user_roles (
     PRIMARY KEY (user_id, role_id)
 );
 
+CREATE TABLE iam_user_adhoc_permissions (
+    user_id uuid NOT NULL REFERENCES iam_users(id) ON DELETE CASCADE,
+    permission_id uuid NOT NULL REFERENCES iam_permissions(id) ON DELETE CASCADE,
+    PRIMARY KEY (user_id, permission_id)
+);
+
 -- =============================================================================
--- 2. MODULE CATALOG (PostgreSQL 18 Optimized)
+-- 2. MODULE CATALOG
 -- =============================================================================
 
 CREATE TABLE catalog_categories (
@@ -66,7 +79,9 @@ CREATE TABLE catalog_categories (
     name varchar(255) NOT NULL UNIQUE,
     slug varchar(255) NOT NULL UNIQUE,
     description text,
-    parent_id uuid REFERENCES catalog_categories(id)
+    parent_id uuid REFERENCES catalog_categories(id),
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 CREATE TABLE catalog_products (
@@ -81,14 +96,16 @@ CREATE TABLE catalog_products (
     weight numeric(10,3) DEFAULT 0,
     is_active boolean NOT NULL DEFAULT true,
     category_id uuid REFERENCES catalog_categories(id),
-    attributes jsonb DEFAULT '{}',
-    shipping_config jsonb DEFAULT '{}',
+    attributes text DEFAULT '{}',
+    image_url varchar(255),
+    shipping_config text DEFAULT '{}',
     view_count bigint DEFAULT 0,
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 -- =============================================================================
--- 3. MODULE SALES (Physical Columns for reliability)
+-- 3. MODULE SALES
 -- =============================================================================
 
 CREATE TABLE sales_orders (
@@ -104,7 +121,8 @@ CREATE TABLE sales_orders (
     shipping_city varchar(100),
     shipping_zip_code varchar(20),
     shipping_country varchar(100),
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 CREATE TABLE sales_order_items (
@@ -115,13 +133,13 @@ CREATE TABLE sales_order_items (
     quantity int NOT NULL,
     unit_price numeric(19,4) NOT NULL,
     weight numeric(10,3),
-    -- PostgreSQL 18 Virtual Column
     subtotal numeric(19,4) GENERATED ALWAYS AS (quantity * unit_price) STORED,
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );
 
 -- =============================================================================
--- 4. MODULE MARKETING (PostgreSQL 18 Temporal Constraints)
+-- 4. MODULE MARKETING
 -- =============================================================================
 
 CREATE TABLE marketing_coupons (
@@ -131,13 +149,13 @@ CREATE TABLE marketing_coupons (
     value numeric(19,4) NOT NULL,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
-    usage_limit int,
-    used_count int NOT NULL DEFAULT 0,
+    max_usages int,
+    usage_count int NOT NULL DEFAULT 0,
+    min_order_amount numeric(19,4) NOT NULL DEFAULT 0,
     is_active boolean NOT NULL DEFAULT true,
-    -- PostgreSQL 18: Generated TSTZRANGE for Temporal Constraint
-    validity_period tstzrange GENERATED ALWAYS AS (tstzrange(start_date, end_date, '[)')) STORED,
-    -- Contrainte Temporelle PostgreSQL 18 : Garantit qu'un même code n'a pas de périodes qui se chevauchent
-    CONSTRAINT marketing_coupons_temporal_unique UNIQUE (code, validity_period WITHOUT OVERLAPS)
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone,
+    CONSTRAINT marketing_coupons_temporal_unique EXCLUDE USING gist (code WITH =, tstzrange(start_date, end_date) WITH &&)
 );
 
 CREATE TABLE marketing_product_promotions (
@@ -146,9 +164,9 @@ CREATE TABLE marketing_product_promotions (
     discount_value numeric(19,4) NOT NULL,
     start_date timestamp with time zone NOT NULL,
     end_date timestamp with time zone NOT NULL,
-    validity_period tstzrange GENERATED ALWAYS AS (tstzrange(start_date, end_date, '[)')) STORED,
-    -- Exclusion temporelle native PostgreSQL 18
-    CONSTRAINT promo_temporal_unique UNIQUE (product_id, validity_period WITHOUT OVERLAPS)
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone,
+    CONSTRAINT promo_temporal_unique EXCLUDE USING gist (product_id WITH =, tstzrange(start_date, end_date) WITH &&)
 );
 
 -- =============================================================================
@@ -160,6 +178,7 @@ CREATE TABLE inventory_stocks (
     product_id uuid NOT NULL UNIQUE REFERENCES catalog_products(id) ON DELETE CASCADE,
     quantity int NOT NULL DEFAULT 0,
     low_stock_threshold int NOT NULL DEFAULT 5,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -169,5 +188,6 @@ CREATE TABLE shipping_shipments (
     tracking_number varchar(100) NOT NULL UNIQUE,
     status varchar(50) NOT NULL,
     carrier varchar(100) NOT NULL,
-    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
 );

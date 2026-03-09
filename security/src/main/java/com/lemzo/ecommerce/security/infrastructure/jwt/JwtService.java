@@ -5,17 +5,19 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 import java.util.UUID;
-import java.util.Set;
 
 /**
  * Service de gestion des JSON Web Tokens (JWT).
  */
 @ApplicationScoped
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class JwtService {
 
     private final SecretKey secretKey;
@@ -29,7 +31,7 @@ public class JwtService {
         this.expirationTimeMs = expirationMs;
     }
 
-    public String generateToken(final UUID userId, final String email, final Set<String> permissions) {
+    public String generateToken(final UUID userId, final String email) {
         final Date now = new Date();
         final Date expiryDate = new Date(now.getTime() + expirationTimeMs);
 
@@ -37,7 +39,6 @@ public class JwtService {
                 .id(UUID.randomUUID().toString())
                 .subject(userId.toString())
                 .claim("email", email)
-                .claim("permissions", permissions)
                 .issuedAt(now)
                 .expiration(expiryDate)
                 .signWith(secretKey)
@@ -54,10 +55,5 @@ public class JwtService {
 
     public UUID getUserIdFromToken(final String token) {
         return UUID.fromString(validateToken(token).getSubject());
-    }
-
-    @SuppressWarnings("unchecked")
-    public Set<String> getPermissionsFromToken(final String token) {
-        return (Set<String>) validateToken(token).get("permissions", Set.class);
     }
 }

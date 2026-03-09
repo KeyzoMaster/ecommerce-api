@@ -4,33 +4,36 @@ import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import java.util.Map;
 import java.util.Optional;
 
 /**
- * Convertisseur JPA pour stocker des Map dans des colonnes JSONB.
+ * Convertisseur générique pour les colonnes PostgreSQL JSONB.
+ * Gère le type PGobject retourné par le driver JDBC.
  */
 @Converter
-public class JsonbConverter implements AttributeConverter<Map<String, Object>, String> {
+public class JsonbConverter implements AttributeConverter<Object, Object> {
 
-    private final Jsonb jsonb = JsonbBuilder.create();
-
-    public JsonbConverter() {
-        // Constructeur par défaut requis par JPA
-    }
+    private static final Jsonb jsonb = JsonbBuilder.create();
 
     @Override
-    public String convertToDatabaseColumn(final Map<String, Object> attribute) {
+    public Object convertToDatabaseColumn(final Object attribute) {
         return Optional.ofNullable(attribute)
                 .map(jsonb::toJson)
-                .orElse("{}");
+                .orElse(null);
     }
 
     @Override
-    @SuppressWarnings("unchecked")
-    public Map<String, Object> convertToEntityAttribute(final String dbData) {
-        return Optional.ofNullable(dbData)
-                .map(data -> jsonb.fromJson(data, Map.class))
-                .orElse(Map.of());
+    public Object convertToEntityAttribute(final Object dbData) {
+        if (dbData == null) return null;
+        
+        final String json;
+        if (dbData instanceof String s) {
+            json = s;
+        } else {
+            // Probablement un org.postgresql.util.PGobject
+            json = dbData.toString(); 
+        }
+
+        return jsonb.fromJson(json, Object.class);
     }
 }

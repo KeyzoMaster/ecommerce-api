@@ -1,19 +1,22 @@
 package com.lemzo.ecommerce.domain.sales.infrastructure.security;
 
 import com.lemzo.ecommerce.core.api.security.ResourceType;
+import com.lemzo.ecommerce.core.contract.security.OwnershipProvider;
 import com.lemzo.ecommerce.domain.sales.domain.Order;
 import com.lemzo.ecommerce.domain.sales.repository.OrderRepository;
-import com.lemzo.ecommerce.security.api.pabc.OwnershipProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 /**
- * Provider pour vérifier la propriété d'une commande.
+ * Fournit l'appartenance pour les commandes.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class OrderOwnershipProvider implements OwnershipProvider {
 
     private final OrderRepository orderRepository;
@@ -24,8 +27,8 @@ public class OrderOwnershipProvider implements OwnershipProvider {
     }
 
     @Override
-    public UUID getOwnerId(final UUID orderId) {
-        return orderRepository.findById(orderId)
+    public UUID getOwnerId(final UUID resourceId) {
+        return orderRepository.findById(resourceId)
                 .map(Order::getUserId)
                 .orElse(null);
     }

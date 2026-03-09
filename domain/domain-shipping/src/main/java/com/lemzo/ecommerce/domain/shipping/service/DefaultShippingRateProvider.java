@@ -1,13 +1,12 @@
 package com.lemzo.ecommerce.domain.shipping.service;
 
 import com.lemzo.ecommerce.core.domain.Address;
-import com.lemzo.ecommerce.core.domain.shipping.ShippingMethod;
-import com.lemzo.ecommerce.domain.sales.domain.OrderItem;
-import com.lemzo.ecommerce.domain.sales.service.ShippingRateProvider;
+import com.lemzo.ecommerce.domain.core.sales.OrderLineInfo;
+import com.lemzo.ecommerce.domain.core.shipping.ShippingMethod;
+import com.lemzo.ecommerce.domain.core.shipping.ShippingRateProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Implémentation par défaut du calcul des frais de port.
@@ -18,30 +17,25 @@ public class DefaultShippingRateProvider implements ShippingRateProvider {
     private static final BigDecimal FREE_SHIPPING_THRESHOLD = new BigDecimal("50000");
 
     public DefaultShippingRateProvider() {
-        // Constructeur explicite
+        // Required by CDI
     }
 
     @Override
-    public BigDecimal calculateRate(final Address destination, final ShippingMethod method, 
-                                    final BigDecimal orderAmount, final List<OrderItem> items) {
+    public BigDecimal calculateRate(final Address address, final ShippingMethod method, 
+                                    final BigDecimal itemsTotal, final List<OrderLineInfo> items) {
         
-        if (orderAmount.compareTo(FREE_SHIPPING_THRESHOLD) >= 0) {
+        if (itemsTotal.compareTo(FREE_SHIPPING_THRESHOLD) >= 0) {
             return BigDecimal.ZERO;
         }
 
-        final var totalWeight = items.stream()
-                .map(item -> Optional.ofNullable(item.getWeight()).orElse(BigDecimal.ZERO)
-                        .multiply(BigDecimal.valueOf(item.getQuantity())))
-                .reduce(BigDecimal.ZERO, BigDecimal::add);
+        final BigDecimal baseRate = "Sénégal".equalsIgnoreCase(address.getCountry()) 
+                ? new BigDecimal("2000") 
+                : new BigDecimal("15000");
 
-        final var baseRate = method == ShippingMethod.EXPRESS ? new BigDecimal("2500") : new BigDecimal("1000");
-        
-        // Supplément poids
-        final var weightSurcharge = totalWeight.multiply(new BigDecimal("100"));
-
-        // Multiplicateur zone (simplifié)
-        final var zoneMultiplier = "Sénégal".equalsIgnoreCase(destination.getCountry()) ? BigDecimal.ONE : new BigDecimal("2.5");
-
-        return baseRate.add(weightSurcharge).multiply(zoneMultiplier);
+        return switch (method) {
+            case EXPRESS -> baseRate.add(new BigDecimal("3000"));
+            case PICKUP -> BigDecimal.ZERO;
+            default -> baseRate;
+        };
     }
 }

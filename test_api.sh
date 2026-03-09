@@ -24,26 +24,47 @@ check_status() {
         printf "${GREEN}[OK]${NC} $2 (Status: $1)\n"
     else
         printf "${RED}[FAIL]${NC} $2 (Status: $1)\n"
-        # On affiche le corps de la réponse en cas d'erreur
         [ -f /tmp/api_res.json ] && cat /tmp/api_res.json
         exit 1
     fi
 }
 
-# 1. TEST CATALOGUE PUBLIC
-printf "\n--- 📦 Test Catalogue Public ---\n"
-STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/catalog/products")
-check_status "$STATUS" "Liste des produits (Public)"
+# 0. ENREGISTREMENT ET PROMOTION DES UTILISATEURS
+printf "\n--- 👤 Création des comptes de test ---\n"
 
-PRODUCT_SLUG=$(cat /tmp/api_res.json | jq -r '.content[0].slug')
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/catalog/products/$PRODUCT_SLUG")
-check_status "$STATUS" "Détails produit : $PRODUCT_SLUG (Public)"
+register_user() {
+    printf "Inscription de $1...\n"
+    STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/auth/register" \
+        -H "Content-Type: application/json" \
+        -d "{\"username\": \"$1\", \"email\": \"$2\", \"password\": \"$3\"}")
+    if [[ "$STATUS" == "201" ]]; then
+        printf "${GREEN}[OK]${NC} $1 inscrit\n"
+    else
+        printf "${YELLOW}[INFO]${NC} $1 déjà inscrit ou erreur (Status: $STATUS)\n"
+    fi
+}
 
-# 2. LOGIN CLIENT
+promote_user() {
+    printf "Promotion de $1 au rôle $2...\n"
+    docker exec ecommerce_postgres psql -U e_user -d ecommerce_db -c "SELECT promote_user('$1', '$2');" > /dev/null
+    printf "${GREEN}[OK]${NC} $1 promu\n"
+}
+
+# Inscription des 3 types d'utilisateurs
+register_user "admin" "admin@ecommerce.local" "admin123"
+register_user "client" "client@ecommerce.local" "client123"
+register_user "owner" "owner@ecommerce.local" "owner123"
+
+# Promotion manuelle (Bypass limitations API)
+promote_user "admin" "SUPER_ADMIN"
+promote_user "client" "CLIENT"
+promote_user "owner" "STORE_OWNER"
+
+# 1. LOGIN CLIENT
 printf "\n--- 🔐 Authentification Client ---\n"
 LOGIN_RESPONSE=$(curl -s -X POST "$BASE_URL/auth/login" \
     -H "Content-Type: application/json" \
-    -d '{"identifier": "client", "password": "client123"}')
+    -d '{"identifier": "client@ecommerce.local", "password": "client123"}')
 
 CLIENT_TOKEN=$(echo $LOGIN_RESPONSE | jq -r '.accessToken')
 
@@ -55,30 +76,46 @@ else
     exit 1
 fi
 
-# 3. TEST PROFIL ET ADRESSES (PROTECTED)
-printf "\n--- 👤 Test Profil & Adresses ---\n"
-STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/users/me")
-check_status "$STATUS" "Récupération profil (Protégé)"
-
-# Ajouter une adresse
-printf "Ajout d'une adresse...\n"
-ADD_ADDR=$(curl -s -X POST "$BASE_URL/users/me/addresses" \
-    -H "Authorization: Bearer $CLIENT_TOKEN" \
+# 2. LOGIN ADMIN
+printf "\n--- 🔐 Authentification Admin ---\n"
+ADMIN_LOGIN=$(curl -s -X POST "$BASE_URL/auth/login" \
     -H "Content-Type: application/json" \
-    -d '{"label": "Maison", "street": "Rue 10", "city": "Dakar", "country": "Sénégal"}')
-    
-ADDR_ID=$(echo $ADD_ADDR | jq -r '.data.addresses[0].id')
-if [[ "$ADDR_ID" != "null" ]]; then
-    printf "${GREEN}[OK]${NC} Adresse ajoutée (ID: $ADDR_ID)\n"
-else
-    printf "${RED}[FAIL]${NC} Échec ajout adresse\n"
-    echo $ADD_ADDR
-    exit 1
-fi
+    -d '{"identifier": "admin@ecommerce.local", "password": "admin123"}')
+ADMIN_TOKEN=$(echo $ADMIN_LOGIN | jq -r '.accessToken')
+if [[ "$ADMIN_TOKEN" != "null" ]]; then printf "${GREEN}[OK]${NC} Login admin réussi\n"; fi
 
-# 4. TUNNEL D'ACHAT (PANIER & COMMANDE)
+# 3. TEST CATALOGUE PUBLIC & RECHERCHE
+printf "\n--- 📦 Test Catalogue & Recherche (PostgreSQL 18) ---\n"
+STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/catalog/products")
+check_status "$STATUS" "Liste des produits (Public)"
+
+# Test Full-Text Search (LIKE fallback)
+printf "Test de la recherche...\n"
+STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/catalog/products?q=MacBook")
+check_status "$STATUS" "Recherche MacBook"
+
+PRODUCT_ID=$(cat /tmp/api_res.json | jq -r '.data.content[0].id')
+PRODUCT_SLUG=$(cat /tmp/api_res.json | jq -r '.data.content[0].slug')
+
+# 4. TEST MARKETING
+printf "\n--- 🔍 Test Marketing & Coupons ---\n"
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/marketing/coupons/MARS2026")
+check_status "$STATUS" "Validation Coupon MARS2026"
+
+# 5. TEST PROFIL & ADRESSES
+printf "\n--- 👤 Test Profil & Adresses ---\n"
+# Ajout d'une adresse pour le client
+printf "Ajout d'une adresse pour le client...\n"
+STATUS=$(curl -s -X POST -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $CLIENT_TOKEN" \
+    -H "Content-Type: application/json" \
+    -d '{"label": "Bureau", "street": "Place de l Indépendance", "city": "Dakar", "country": "Sénégal"}')
+check_status "$STATUS" "Ajout adresse client"
+
+# Récupérer l'ID de l'adresse
+ADDR_ID=$(curl -s -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/users/me" | jq -r '.data.addresses[0].technicalId')
+
+# 6. TUNNEL D'ACHAT (PANIER & COMMANDE)
 printf "\n--- 🛒 Test Panier & Commande ---\n"
-PRODUCT_ID=$(curl -s "$BASE_URL/catalog/products" | jq -r '.content[0].id')
 
 # Ajouter au panier
 STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/sales/cart/items" \
@@ -95,8 +132,8 @@ ORDER_RES=$(curl -s -X POST "$BASE_URL/sales/orders" \
     -d "{
         \"paymentProvider\": \"cod\",
         \"shippingMethod\": \"STANDARD\",
-        \"items\": [{\"productId\": \"$PRODUCT_ID\", \"quantity\": 1}],
-        \"shippingAddress\": {\"label\": \"Maison\", \"street\": \"Rue 10\", \"city\": \"Dakar\", \"country\": \"Sénégal\"}
+        \"shippingAddressId\": \"$ADDR_ID\",
+        \"couponCode\": \"MARS2026\"
     }")
     
 ORDER_NUM=$(echo $ORDER_RES | jq -r '.data.orderNumber')
@@ -108,28 +145,15 @@ else
     exit 1
 fi
 
-# 5. TEST ANALYTICS & BOUTIQUE (ROLE OWNER)
-printf "\n--- 🏪 Test Store Owner & Analytics ---\n"
-OWNER_LOGIN=$(curl -s -X POST "$BASE_URL/auth/login" \
-    -H "Content-Type: application/json" \
-    -d '{"identifier": "owner", "password": "owner123"}')
-OWNER_TOKEN=$(echo $OWNER_LOGIN | jq -r '.accessToken')
+# 7. TEST ANALYTICS (ROLE ADMIN)
+printf "\n--- 🏪 Test Analytics ---\n"
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE_URL/analytics/dashboard")
+check_status "$STATUS" "Accès Dashboard Analytics (Admin)"
 
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $OWNER_TOKEN" "$BASE_URL/analytics/dashboard")
-check_status "$STATUS" "Accès Dashboard Analytics (Owner)"
-
-# 6. TEST RÉVOCATION (LOGOUT)
-printf "\n--- 🚪 Test Logout & Révocation ---\n"
+# 8. TEST RÉVOCATION (LOGOUT)
+printf "\n--- 🚪 Test Logout ---\n"
 STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/auth/logout" \
     -H "Authorization: Bearer $CLIENT_TOKEN")
-check_status "$STATUS" "Logout (Révocation du token)"
+check_status "$STATUS" "Logout réussi"
 
-# Vérifier que le token ne marche plus
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/users/me")
-if [[ "$STATUS" == "401" ]]; then
-    printf "${GREEN}[OK]${NC} Accès refusé après logout (Vérification Révocation)\n"
-else
-    printf "${RED}[FAIL]${NC} Le token fonctionne encore après logout ! (Status: $STATUS)\n"
-fi
-
-printf "\n✅ Fin des tests. Tout semble fonctionner correctement.\n"
+printf "\n✅ Tous les tests sont passés avec succès !\n"

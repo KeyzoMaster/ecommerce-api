@@ -22,6 +22,7 @@ public class Address {
      * Identifiant technique unique pour la gestion CRUD (Module IAM).
      */
     @Builder.Default
+    @Column(name = "technical_id")
     private String technicalId = java.util.UUID.randomUUID().toString();
 
     /**

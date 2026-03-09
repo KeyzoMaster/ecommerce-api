@@ -15,13 +15,12 @@ import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.UUID;
 
 /**
  * Filtre JAX-RS pour l'authentification JWT.
+ * Désormais stateless concernant les permissions (HATEOAS).
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -54,18 +53,15 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
             final UUID userId = UUID.fromString(claims.getSubject());
             final String email = claims.get("email", String.class);
             
-            @SuppressWarnings("unchecked")
-            final List<String> permissionsFromClaims = (List<String>) claims.get("permissions", List.class);
-            final Set<String> permissions = new HashSet<>(Optional.ofNullable(permissionsFromClaims).orElse(List.of()));
-
-            final UserPrincipal userPrincipal = new UserPrincipal(userId, email, permissions);
+            // Les permissions sont désormais gérées par AuthorizationService via UserPermissionPort
+            final UserPrincipal userPrincipal = new UserPrincipal(userId, email, new HashSet<>());
             final SecurityContext originalContext = requestContext.getSecurityContext();
 
             requestContext.setSecurityContext(new SecurityContext() {
                 @Override
                 public Principal getUserPrincipal() { return userPrincipal; }
                 @Override
-                public boolean isUserInRole(final String role) { return permissions.contains(role); }
+                public boolean isUserInRole(final String role) { return false; } // Rôles non utilisés directement
                 @Override
                 public boolean isSecure() { return originalContext.isSecure(); }
                 @Override
@@ -73,7 +69,7 @@ public class JwtAuthenticationFilter implements ContainerRequestFilter {
             });
 
         } catch (final Exception _) {
-            // Variable anonyme car l'exception est ignorée à dessein pour les ressources publiques
+            // Ignoré pour les ressources publiques
         }
     }
 }
