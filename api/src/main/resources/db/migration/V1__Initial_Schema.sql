@@ -15,14 +15,12 @@ CREATE TABLE iam_users (
     last_name varchar(100),
     enabled boolean NOT NULL DEFAULT true,
     email_verified_at timestamp with time zone,
-    -- Compatibilité EclipseLink : utilisation de TEXT au lieu de JSONB
-    payment_methods text DEFAULT '[]',
+    payment_methods jsonb DEFAULT '[]',
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
 );
 
 CREATE TABLE iam_user_addresses (
-    id uuid PRIMARY KEY DEFAULT uuidv7(),
     user_id uuid NOT NULL REFERENCES iam_users(id) ON DELETE CASCADE,
     technical_id varchar(100),
     label varchar(50),
@@ -70,6 +68,17 @@ CREATE TABLE iam_user_adhoc_permissions (
     PRIMARY KEY (user_id, permission_id)
 );
 
+CREATE TABLE iam_stores (
+    id uuid PRIMARY KEY DEFAULT uuidv7(),
+    name varchar(255) NOT NULL,
+    slug varchar(255) NOT NULL UNIQUE,
+    description text,
+    owner_id uuid NOT NULL REFERENCES iam_users(id),
+    is_active boolean NOT NULL DEFAULT true,
+    created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at timestamp with time zone
+);
+
 -- =============================================================================
 -- 2. MODULE CATALOG
 -- =============================================================================
@@ -96,9 +105,9 @@ CREATE TABLE catalog_products (
     weight numeric(10,3) DEFAULT 0,
     is_active boolean NOT NULL DEFAULT true,
     category_id uuid REFERENCES catalog_categories(id),
-    attributes text DEFAULT '{}',
+    attributes jsonb DEFAULT '{}',
     image_url varchar(255),
-    shipping_config text DEFAULT '{}',
+    shipping_config jsonb DEFAULT '{}',
     view_count bigint DEFAULT 0,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
@@ -113,8 +122,10 @@ CREATE TABLE sales_orders (
     user_id uuid NOT NULL REFERENCES iam_users(id),
     order_number varchar(100) NOT NULL UNIQUE,
     status varchar(50) NOT NULL,
-    total_price numeric(19,4) NOT NULL DEFAULT 0,
+    total_amount numeric(19,4) NOT NULL DEFAULT 0,
+    currency varchar(3) NOT NULL DEFAULT 'XOF',
     shipping_cost numeric(19,4) NOT NULL DEFAULT 0,
+    shipping_method varchar(100),
     discount_amount numeric(19,4) NOT NULL DEFAULT 0,
     coupon_code varchar(50),
     shipping_street varchar(255),
@@ -133,6 +144,7 @@ CREATE TABLE sales_order_items (
     quantity int NOT NULL,
     unit_price numeric(19,4) NOT NULL,
     weight numeric(10,3),
+    shipping_config jsonb DEFAULT '{}',
     subtotal numeric(19,4) GENERATED ALWAYS AS (quantity * unit_price) STORED,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
@@ -144,7 +156,7 @@ CREATE TABLE sales_order_items (
 
 CREATE TABLE marketing_coupons (
     id uuid PRIMARY KEY DEFAULT uuidv7(),
-    code varchar(50) NOT NULL,
+    code varchar(50) NOT NULL UNIQUE,
     type varchar(20) NOT NULL,
     value numeric(19,4) NOT NULL,
     start_date timestamp with time zone NOT NULL,
@@ -188,6 +200,7 @@ CREATE TABLE shipping_shipments (
     tracking_number varchar(100) NOT NULL UNIQUE,
     status varchar(50) NOT NULL,
     carrier varchar(100) NOT NULL,
+    estimated_delivery_date timestamp with time zone,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
 );

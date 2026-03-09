@@ -18,19 +18,19 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
--- Wrapper pour l'extraction JSONB (Adapté pour colonnes TEXT)
-CREATE OR REPLACE FUNCTION jsonb_attr(data_text text, key_name text) 
+-- Wrapper pour l'extraction JSONB (Optimisé pour colonnes JSONB natives)
+CREATE OR REPLACE FUNCTION jsonb_attr(data_json jsonb, key_name text) 
 RETURNS text AS $$
 BEGIN
-    RETURN (data_text::jsonb) ->> key_name;
+    RETURN data_json ->> key_name;
 END;
 $$ LANGUAGE plpgsql STABLE;
 
 -- Wrapper pour la vérification de validité temporelle (Compatibilité @>)
-CREATE OR REPLACE FUNCTION is_in_period(validity tstzrange) 
+CREATE OR REPLACE FUNCTION is_in_period(range_val tstzrange) 
 RETURNS boolean AS $$
 BEGIN
-    RETURN validity @> CURRENT_TIMESTAMP;
+    RETURN range_val @> CURRENT_TIMESTAMP;
 END;
 $$ LANGUAGE plpgsql STABLE;
 

@@ -48,7 +48,7 @@ public class OrderItem extends AbstractEntity {
      * Sous-total calculé par la base de données.
      */
     @Column(name = "subtotal", insertable = false, updatable = false, 
-            columnDefinition = "numeric GENERATED ALWAYS AS (quantity * unit_price) VIRTUAL")
+            columnDefinition = "numeric GENERATED ALWAYS AS (quantity * unit_price) STORED")
     private BigDecimal subtotal;
 
     public OrderItem(final UUID productId, final UUID storeId, final int quantity, 

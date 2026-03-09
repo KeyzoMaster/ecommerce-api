@@ -10,7 +10,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -28,7 +28,7 @@ public class ShippingService {
     public Shipment createShipment(final UUID orderId, final String carrier) {
         final var trackingNumber = "TRK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
         final var shipment = new Shipment(orderId, trackingNumber, carrier);
-        shipment.setEstimatedDeliveryDate(LocalDateTime.now().plusDays(3));
+        shipment.setEstimatedDeliveryDate(OffsetDateTime.now().plusDays(3));
         return shipmentRepository.insert(shipment);
     }
 

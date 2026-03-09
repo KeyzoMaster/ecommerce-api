@@ -1,7 +1,7 @@
 package com.lemzo.ecommerce.domain.marketing.domain;
 
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * Factory pour les entités du domaine Marketing.
@@ -19,8 +19,8 @@ public final class MarketingFactory {
         final Coupon coupon = new Coupon(code, type, value);
         coupon.setUsageCount(0);
         coupon.setMinOrderAmount(BigDecimal.ZERO);
-        coupon.setStartDate(LocalDateTime.now());
-        coupon.setEndDate(LocalDateTime.now().plusMonths(1));
+        coupon.setStartDate(OffsetDateTime.now());
+        coupon.setEndDate(OffsetDateTime.now().plusMonths(1));
         return coupon;
     }
 }

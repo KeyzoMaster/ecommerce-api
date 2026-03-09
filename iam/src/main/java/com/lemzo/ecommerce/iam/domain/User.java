@@ -4,7 +4,7 @@ import com.lemzo.ecommerce.core.entity.AbstractEntity;
 import com.lemzo.ecommerce.core.entity.converter.JsonbConverter;
 import jakarta.persistence.*;
 import com.lemzo.ecommerce.core.domain.Address;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +44,7 @@ public class User extends AbstractEntity {
     private boolean enabled = true;
 
     @Column(name = "email_verified_at")
-    private LocalDateTime emailVerifiedAt;
+    private OffsetDateTime emailVerifiedAt;
 
     /**
      * Moyens de paiement enregistrés (Mocks).

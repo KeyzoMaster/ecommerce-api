@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 
 /**
@@ -41,10 +41,10 @@ public class Coupon extends AbstractEntity {
     private Integer maxUsages;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private OffsetDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private OffsetDateTime endDate;
 
     public Coupon(final String code, final String type, final BigDecimal value) {
         super();
@@ -54,7 +54,7 @@ public class Coupon extends AbstractEntity {
     }
 
     public boolean isValid() {
-        final var now = LocalDateTime.now();
+        final var now = OffsetDateTime.now();
         final boolean dateStarted = Optional.ofNullable(startDate).map(now::isAfter).orElse(true);
         final boolean notExpired = Optional.ofNullable(endDate).map(now::isBefore).orElse(true);
         final boolean usageAvailable = Optional.ofNullable(maxUsages).map(max -> usageCount < max).orElse(true);

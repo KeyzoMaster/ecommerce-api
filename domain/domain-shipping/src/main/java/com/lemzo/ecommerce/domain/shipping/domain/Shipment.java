@@ -10,7 +10,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -37,7 +37,7 @@ public class Shipment extends AbstractEntity {
     private ShipmentStatus status = ShipmentStatus.PREPARING;
 
     @Column(name = "estimated_delivery_date")
-    private LocalDateTime estimatedDeliveryDate;
+    private OffsetDateTime estimatedDeliveryDate;
 
     public Shipment(final UUID orderId, final String trackingNumber, final String carrier) {
         super();

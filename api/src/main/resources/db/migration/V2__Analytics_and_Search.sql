@@ -11,10 +11,9 @@ GENERATED ALWAYS AS (
 
 CREATE INDEX idx_products_search ON catalog_products USING GIN (search_vector);
 
--- PostgreSQL 18 JSONB Optimization: Index sur les attributs dynamiques
--- Utilisation de jsonb_path_ops pour des performances optimales sur JSONB
-CREATE INDEX idx_products_attributes_jsonb ON catalog_products USING GIN (attributes jsonb_path_ops);
-CREATE INDEX idx_products_shipping_config_jsonb ON catalog_products USING GIN (shipping_config jsonb_path_ops);
+-- PostgreSQL 18 JSONB Native Optimization (GIN indexing)
+CREATE INDEX idx_products_attributes_jsonb ON catalog_products USING GIN (attributes);
+CREATE INDEX idx_products_shipping_config_jsonb ON catalog_products USING GIN (shipping_config);
 
 -- Vue Analytics consolidée
 CREATE OR REPLACE VIEW analytics_product_performance AS

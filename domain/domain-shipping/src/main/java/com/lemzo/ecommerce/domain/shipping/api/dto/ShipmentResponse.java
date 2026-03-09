@@ -1,7 +1,7 @@
 package com.lemzo.ecommerce.domain.shipping.api.dto;
 
 import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -13,7 +13,7 @@ public record ShipmentResponse(
     String trackingNumber,
     String carrier,
     String status,
-    LocalDateTime estimatedDeliveryDate
+    OffsetDateTime estimatedDeliveryDate
 ) {
     public static ShipmentResponse from(final Shipment shipment) {
         return new ShipmentResponse(

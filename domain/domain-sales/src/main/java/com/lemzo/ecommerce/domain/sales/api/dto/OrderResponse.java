@@ -2,7 +2,7 @@ package com.lemzo.ecommerce.domain.sales.api.dto;
 
 import com.lemzo.ecommerce.domain.sales.domain.Order;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.UUID;
 
 /**
@@ -11,7 +11,7 @@ import java.util.UUID;
 public record OrderResponse(
     UUID id,
     String orderNumber,
-    LocalDateTime orderDate,
+    OffsetDateTime orderDate,
     String status,
     BigDecimal totalAmount,
     String paymentUrl

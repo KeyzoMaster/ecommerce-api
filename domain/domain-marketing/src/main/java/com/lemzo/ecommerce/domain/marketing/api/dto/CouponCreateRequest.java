@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 
 /**
  * Requête de création de coupon.
@@ -25,7 +25,7 @@ public record CouponCreateRequest(
     
     Integer maxUsages,
     
-    LocalDateTime startDate,
+    OffsetDateTime startDate,
     
-    LocalDateTime endDate
+    OffsetDateTime endDate
 ) {}

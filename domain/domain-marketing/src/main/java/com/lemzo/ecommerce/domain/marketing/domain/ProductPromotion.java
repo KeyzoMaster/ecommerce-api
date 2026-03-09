@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.AccessLevel;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,13 +30,13 @@ public class ProductPromotion extends AbstractEntity {
     private BigDecimal discountValue;
 
     @Column(name = "start_date", nullable = false)
-    private LocalDateTime startDate;
+    private OffsetDateTime startDate;
 
     @Column(name = "end_date", nullable = false)
-    private LocalDateTime endDate;
+    private OffsetDateTime endDate;
 
     public ProductPromotion(final UUID productId, final BigDecimal discountValue, 
-                            final LocalDateTime startDate, final LocalDateTime endDate) {
+                            final OffsetDateTime startDate, final OffsetDateTime endDate) {
         super();
         this.productId = productId;
         this.discountValue = discountValue;
@@ -45,7 +45,7 @@ public class ProductPromotion extends AbstractEntity {
     }
 
     public boolean isActive() {
-        final var now = LocalDateTime.now();
+        final var now = OffsetDateTime.now();
         return Optional.ofNullable(startDate).map(now::isAfter).orElse(true) &&
                Optional.ofNullable(endDate).map(now::isBefore).orElse(true);
     }
