@@ -1,97 +1,52 @@
 package com.lemzo.ecommerce.util.security;
 
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import jakarta.enterprise.context.ApplicationScoped;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Base64;
-import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
-import java.util.concurrent.*;
 
 /**
- * Service de gestion des jetons temporaires (activation, réinitialisation de mot de passe).
+ * Service utilitaire pour la gestion des jetons opaques (activation, reset).
  */
 @ApplicationScoped
 public class TokenService {
 
-    private final Map<String, TokenData> tokenStore = new ConcurrentHashMap<>();
-    private final SecureRandom random = new SecureRandom();
-    private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+    private static final int BYTE_LENGTH = 32;
 
-    private static final long ACTIVATION_EXPIRY_HOURS = 24;
-    private static final long RESET_EXPIRY_HOURS = 2;
-
-    @PostConstruct
-    public void init() {
-        // Nettoyage périodique des jetons expirés toutes les heures
-        scheduler.scheduleAtFixedRate(this::removeExpiredTokens, 1, 1, TimeUnit.HOURS);
+    public TokenService() {
+        // Constructeur explicite
     }
 
-    @PreDestroy
-    public void shutdown() {
-        scheduler.shutdown();
-    }
-
-    public String generateActivationToken(UUID userId, String email) {
-        return createToken(userId, email, TokenType.ACTIVATION, ACTIVATION_EXPIRY_HOURS);
-    }
-
-    public String generatePasswordResetToken(UUID userId, String email) {
-        return createToken(userId, email, TokenType.PASSWORD_RESET, RESET_EXPIRY_HOURS);
-    }
-
-    public TokenData validateActivationToken(String token) {
-        return validateToken(token, TokenType.ACTIVATION);
-    }
-
-    public TokenData validatePasswordResetToken(String token) {
-        return validateToken(token, TokenType.PASSWORD_RESET);
-    }
-
-    public void invalidateToken(String token) {
-        tokenStore.remove(token);
-    }
-
-    private String createToken(UUID userId, String email, TokenType type, long expiryHours) {
-        String token = generateSafeTokenString();
-        TokenData data = new TokenData(userId, email, type, System.currentTimeMillis(), expiryHours);
-        tokenStore.put(token, data);
-        return token;
-    }
-
-    private TokenData validateToken(String token, TokenType expectedType) {
-        return Optional.ofNullable(token)
-                .map(tokenStore::get)
-                .filter(data -> data.type().equals(expectedType))
-                .filter(data -> !isExpired(data))
-                .or(() -> {
-                    Optional.ofNullable(token).ifPresent(tokenStore::remove);
-                    return Optional.empty();
-                })
-                .orElse(null);
-    }
-
-    private boolean isExpired(TokenData data) {
-        long age = System.currentTimeMillis() - data.createdAt();
-        return age > TimeUnit.HOURS.toMillis(data.expiryHours());
-    }
-
-    private void removeExpiredTokens() {
-        tokenStore.entrySet().removeIf(entry -> isExpired(entry.getValue()));
-    }
-
-    private String generateSafeTokenString() {
-        byte[] bytes = new byte[32];
-        random.nextBytes(bytes);
+    /**
+     * Génère un jeton aléatoire sécurisé encodé en Base64.
+     */
+    public String generateSecureToken() {
+        final SecureRandom secureRandom = new SecureRandom();
+        final byte[] bytes = new byte[BYTE_LENGTH];
+        secureRandom.nextBytes(bytes);
         return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
     }
 
-    public enum TokenType {
-        ACTIVATION, PASSWORD_RESET
-    }
-
-    public record TokenData(UUID userId, String email, TokenType type, long createdAt, long expiryHours) {
+    /**
+     * Hache un jeton pour stockage en base de données (SHA-256).
+     */
+    public String hashToken(final String token) {
+        try {
+            final MessageDigest messageDigest = MessageDigest.getInstance("SHA-256");
+            final byte[] hash = messageDigest.digest(token.getBytes(StandardCharsets.UTF_8));
+            final StringBuilder hexString = new StringBuilder();
+            for (final byte b : hash) {
+                final String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (final NoSuchAlgorithmException exception) {
+            throw new RuntimeException("Erreur hachage", exception);
+        }
     }
 }

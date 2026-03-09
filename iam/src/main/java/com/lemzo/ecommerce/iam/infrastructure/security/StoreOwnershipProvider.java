@@ -6,16 +6,17 @@ import com.lemzo.ecommerce.iam.repository.StoreRepository;
 import com.lemzo.ecommerce.security.api.pabc.OwnershipProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 /**
  * Provider pour vérifier la propriété d'une boutique.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class StoreOwnershipProvider implements OwnershipProvider {
 
-    @Inject
-    private StoreRepository storeRepository;
+    private final StoreRepository storeRepository;
 
     @Override
     public ResourceType getResourceType() {
@@ -23,7 +24,7 @@ public class StoreOwnershipProvider implements OwnershipProvider {
     }
 
     @Override
-    public UUID getOwnerId(UUID storeId) {
+    public UUID getOwnerId(final UUID storeId) {
         return storeRepository.findById(storeId)
                 .map(Store::getOwnerId)
                 .orElse(null);

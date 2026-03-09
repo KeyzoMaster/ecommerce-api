@@ -8,53 +8,40 @@ import jakarta.enterprise.context.ApplicationScoped;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 /**
- * Implémentation réaliste et simple des frais de port.
- * Basé sur le poids total, la destination et le montant de la commande.
+ * Implémentation par défaut du calcul des frais de port.
  */
 @ApplicationScoped
 public class DefaultShippingRateProvider implements ShippingRateProvider {
 
     private static final BigDecimal FREE_SHIPPING_THRESHOLD = new BigDecimal("50000");
-    private static final BigDecimal RATE_PER_KG = new BigDecimal("500");
+
+    public DefaultShippingRateProvider() {
+        // Constructeur explicite
+    }
 
     @Override
-    public BigDecimal calculateRate(UUID storeId, Address destination, ShippingMethod method, BigDecimal orderAmount, List<OrderItem> items) {
+    public BigDecimal calculateRate(final Address destination, final ShippingMethod method, 
+                                    final BigDecimal orderAmount, final List<OrderItem> items) {
         
-        // 1. Règle de gratuité simple
         if (orderAmount.compareTo(FREE_SHIPPING_THRESHOLD) >= 0) {
             return BigDecimal.ZERO;
         }
 
-        // 2. Calcul du poids total
-        BigDecimal totalWeight = Optional.ofNullable(items).orElse(List.of()).stream()
+        final var totalWeight = items.stream()
                 .map(item -> Optional.ofNullable(item.getWeight()).orElse(BigDecimal.ZERO)
-                        .multiply(new BigDecimal(item.getQuantity())))
+                        .multiply(BigDecimal.valueOf(item.getQuantity())))
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        // 3. Tarif de base selon le mode
-        BigDecimal baseRate = switch (method) {
-            case EXPRESS -> new BigDecimal("5000");
-            case STANDARD -> new BigDecimal("2000");
-            case RELAY -> new BigDecimal("1500");
-            case PICKUP -> BigDecimal.ZERO;
-        };
+        final var baseRate = method == ShippingMethod.EXPRESS ? new BigDecimal("2500") : new BigDecimal("1000");
+        
+        // Supplément poids
+        final var weightSurcharge = totalWeight.multiply(new BigDecimal("100"));
 
-        if (method == ShippingMethod.PICKUP) return BigDecimal.ZERO;
+        // Multiplicateur zone (simplifié)
+        final var zoneMultiplier = "Sénégal".equalsIgnoreCase(destination.getCountry()) ? BigDecimal.ONE : new BigDecimal("2.5");
 
-        // 4. Majoration par zone (simplifiée)
-        BigDecimal zoneMultiplier = isLocal(destination) ? BigDecimal.ONE : new BigDecimal("2.5");
-
-        // Formule : (Base + (Poids * 500)) * Multiplicateur Zone
-        return baseRate.add(totalWeight.multiply(RATE_PER_KG)).multiply(zoneMultiplier);
-    }
-
-    private boolean isLocal(Address address) {
-        return Optional.ofNullable(address)
-                .map(Address::getCountry)
-                .map(c -> c.equalsIgnoreCase("Sénégal") || c.equalsIgnoreCase("Senegal"))
-                .orElse(true);
+        return baseRate.add(weightSurcharge).multiply(zoneMultiplier);
     }
 }

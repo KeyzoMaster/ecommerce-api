@@ -3,6 +3,7 @@ package com.lemzo.ecommerce.audit.infrastructure;
 import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.audit.service.AuditService;
 import com.lemzo.ecommerce.core.api.security.AuthenticatedUser;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
@@ -10,6 +11,8 @@ import jakarta.interceptor.Interceptor;
 import jakarta.interceptor.InvocationContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
+import lombok.RequiredArgsConstructor;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,39 +22,38 @@ import java.util.UUID;
 @Audit
 @Interceptor
 @Priority(Interceptor.Priority.APPLICATION)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class AuditInterceptor {
 
-    @Inject
-    private AuditService auditService;
+    private final AuditService auditService;
 
     @Context
     private SecurityContext securityContext;
 
     @AroundInvoke
-    public Object auditMethod(InvocationContext context) throws Exception {
-        var annotation = Optional.ofNullable(context.getMethod().getAnnotation(Audit.class))
+    public Object auditMethod(final InvocationContext context) throws Exception {
+        final Optional<Audit> auditAnnotation = Optional.ofNullable(context.getMethod().getAnnotation(Audit.class))
                 .or(() -> Optional.ofNullable(context.getTarget().getClass().getAnnotation(Audit.class)));
 
-        String action = annotation.map(Audit::action)
-                .filter(a -> !a.isBlank())
+        final String auditAction = auditAnnotation.map(Audit::action)
+                .filter(actionName -> !actionName.isBlank())
                 .orElseGet(() -> context.getMethod().getName());
-        
-        String resourceType = context.getTarget().getClass().getSimpleName();
 
-        UUID userId = Optional.ofNullable(securityContext)
+        final UUID authUserId = Optional.ofNullable(securityContext)
                 .map(SecurityContext::getUserPrincipal)
                 .filter(AuthenticatedUser.class::isInstance)
                 .map(AuthenticatedUser.class::cast)
                 .map(AuthenticatedUser::getUserId)
-                .orElse(null); // Passé au service qui gère l'absence d'utilisateur
+                .orElse(null);
 
-        // Enregistre l'audit avant l'exécution
+        final ResourceType auditResourceType = ResourceType.PLATFORM;
+
         auditService.log(
-                userId,
-                action,
-                resourceType,
+                authUserId,
+                auditAction,
+                auditResourceType,
                 "-",
-                "Audit automatique de la méthode " + context.getMethod().getName(),
+                Map.of("method", context.getMethod().getName(), "target", context.getTarget().getClass().getName()),
                 "0.0.0.0",
                 "Jakarta EE Interceptor"
         );

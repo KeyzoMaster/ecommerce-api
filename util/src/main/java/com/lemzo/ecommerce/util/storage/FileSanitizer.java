@@ -6,33 +6,31 @@ import java.util.Set;
 
 /**
  * Utilitaire de sécurisation des contenus de fichiers.
- * Prévient notamment la CSV/Excel Formula Injection.
+ * Prévient notamment l'injection de code via CSV (CSV Injection).
  */
 @ApplicationScoped
 public class FileSanitizer {
 
-    private static final Set<Character> DANGEROUS_CHARS = Set.of('=', '+', '-', '@', '\t', '\r');
+    private static final Set<Character> DANGEROUS_CHARS = Set.of('=', '+', '-', '@');
+
+    public FileSanitizer() {
+        // Constructeur explicite
+    }
 
     /**
-     * Assainit une chaîne de caractères pour un export Excel/CSV.
-     * Si la chaîne commence par un caractère dangereux, elle est préfixée par une apostrophe (').
+     * Assainit une chaîne de caractères pour l'export Excel/CSV.
      */
-    public String sanitizeForExcel(String input) {
+    public String sanitizeForExcel(final String input) {
         return Optional.ofNullable(input)
                 .filter(s -> !s.isEmpty())
-                .map(s -> {
-                    char firstChar = s.charAt(0);
-                    if (DANGEROUS_CHARS.contains(firstChar)) {
-                        return "'" + s;
-                    }
-                    return s;
-                }).orElse(input);
+                .map(s -> DANGEROUS_CHARS.contains(s.charAt(0)) ? "'" + s : s)
+                .orElse(input);
     }
 
     /**
      * Assainit un objet quelconque.
      */
-    public Object sanitizeObject(Object value) {
+    public Object sanitizeObject(final Object value) {
         if (value instanceof String s) {
             return sanitizeForExcel(s);
         }
@@ -42,18 +40,18 @@ public class FileSanitizer {
     /**
      * Assainit un nom de fichier pour éviter les injections de chemin.
      */
-    public String sanitizeFileName(String fileName) {
-        if (fileName == null) return "file_" + System.currentTimeMillis();
-        return fileName.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_");
+    public String sanitizeFileName(final String fileName) {
+        return Optional.ofNullable(fileName)
+                .map(f -> f.replaceAll("[^a-zA-Z0-9\\.\\-_]", "_"))
+                .orElseGet(() -> "file_" + System.currentTimeMillis());
     }
 
     /**
      * Vérifie si le type MIME est une image sécurisée.
      */
-    public boolean isSafeImage(String contentType) {
-        if (contentType == null) return false;
-        return contentType.startsWith("image/png") || 
-               contentType.startsWith("image/jpeg") || 
-               contentType.startsWith("image/webp");
+    public boolean isSafeImage(final String contentType) {
+        return Optional.ofNullable(contentType)
+                .map(c -> c.startsWith("image/png") || c.startsWith("image/jpeg") || c.startsWith("image/webp"))
+                .orElse(false);
     }
 }

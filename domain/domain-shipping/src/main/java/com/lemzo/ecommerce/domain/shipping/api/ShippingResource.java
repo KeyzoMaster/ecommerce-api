@@ -2,8 +2,8 @@ package com.lemzo.ecommerce.domain.shipping.api;
 
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
-import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.shipping.api.dto.ShipmentResponse;
 import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
 import com.lemzo.ecommerce.domain.shipping.service.ShippingService;
@@ -14,38 +14,35 @@ import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 
 /**
- * Ressource JAX-RS pour le suivi des expéditions.
+ * Ressource pour le suivi des expéditions.
  */
-@Path("/shipping/shipments")
+@Path("/shipping")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Expédition", description = "Suivi et mise à jour des livraisons")
-@SecurityRequirement(name = "jwt")
+@Tag(name = "Expéditions", description = "Suivi des colis et livraisons")
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ShippingResource {
 
-    @Inject
-    private ShippingService shippingService;
-
-    @Inject
-    private ShipmentRepository shipmentRepository;
-
-    @Inject
-    private HateoasMapper hateoasMapper;
+    private final ShippingService shippingService;
+    private final ShipmentRepository shipmentRepository;
+    private final HateoasMapper hateoasMapper;
 
     @Context
     private UriInfo uriInfo;
 
     @GET
     @Path("/order/{orderId}")
-    @HasPermission(resource = ResourceType.SALES, action = PbacAction.READ)
-    @Operation(summary = "Suivre une expédition", description = "Retourne les informations de livraison pour une commande")
-    public Response getByOrder(@PathParam("orderId") UUID orderId) {
+    @Operation(summary = "Suivre une expédition par son ID de commande")
+    public Response getByOrder(@PathParam("orderId") final UUID orderId) {
         return shipmentRepository.findByOrderId(orderId)
                 .map(ShipmentResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
@@ -55,13 +52,11 @@ public class ShippingResource {
 
     @PATCH
     @Path("/{trackingNumber}/status")
-    @HasPermission(resource = ResourceType.SALES, action = PbacAction.UPDATE)
-    @Operation(summary = "Mettre à jour le statut", description = "Change l'état de l'expédition")
-    public Response updateStatus(
-            @PathParam("trackingNumber") String trackingNumber,
-            @QueryParam("status") Shipment.ShippingStatus status) {
-        
-        var shipment = shippingService.updateStatus(trackingNumber, status);
-        return Response.ok(hateoasMapper.toResource(ShipmentResponse.from(shipment), uriInfo)).build();
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.MANAGE)
+    @Operation(summary = "Mettre à jour le statut d'une expédition")
+    public Response updateStatus(@PathParam("trackingNumber") final String trackingNumber, 
+                                 @QueryParam("status") final Shipment.ShipmentStatus status) {
+        final var shipment = shippingService.updateStatus(trackingNumber, status);
+        return Response.ok(ShipmentResponse.from(shipment)).build();
     }
 }

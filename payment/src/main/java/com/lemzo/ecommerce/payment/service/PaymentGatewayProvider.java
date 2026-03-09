@@ -5,26 +5,28 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Instance;
 import jakarta.enterprise.inject.literal.NamedLiteral;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import java.util.Optional;
 
 /**
  * Service pour fournir la passerelle de paiement appropriée.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class PaymentGatewayProvider {
 
-    @Inject
-    private Instance<PaymentPort> gateways;
+    private final Instance<PaymentPort> gateways;
 
     /**
      * Récupère un adaptateur par son nom (ex: "stripe", "paypal").
      */
-    public PaymentPort getGateway(String provider) {
-        Instance<PaymentPort> selected = gateways.select(NamedLiteral.of(provider.toLowerCase()));
-        
-        if (selected.isUnsatisfied()) {
-            throw new IllegalArgumentException("Passerelle de paiement non supportée : " + provider);
-        }
-        
-        return selected.get();
+    public PaymentPort getGateway(final String provider) {
+        return Optional.of(gateways.select(NamedLiteral.of(provider.toLowerCase())))
+                .filter(Instance::isResolvable)
+                .map(Instance::get)
+                .orElseThrow(() -> new IllegalArgumentException("Passerelle de paiement non supportée : " + provider));
     }
 }

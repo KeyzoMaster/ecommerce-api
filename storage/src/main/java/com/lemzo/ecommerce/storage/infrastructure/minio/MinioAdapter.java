@@ -4,64 +4,53 @@ import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.contract.storage.StoragePort;
 import io.minio.*;
 import io.minio.http.Method;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import org.eclipse.microprofile.config.inject.ConfigProperty;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Adaptateur MinIO pour le stockage des fichiers avec support du partitionnement hiérarchique.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class MinioAdapter implements StoragePort {
 
-    private static final Logger LOGGER = Logger.getLogger(MinioAdapter.class.getName());
     private static final DateTimeFormatter DATE_PATH_FORMATTER = DateTimeFormatter.ofPattern("yyyy/MM");
+    private static final long DEFAULT_PART_SIZE = 10_485_760L; // 10MB
 
-    @Inject
-    private MinioClient minioClient;
+    private final MinioClient minioClient;
 
-    @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce-bucket")
+    @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce")
     private String bucketName;
 
-    @PostConstruct
-    public void init() {
-        try {
-            boolean exists = minioClient.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-            if (!exists) {
-                LOGGER.info("Création du bucket MinIO: " + bucketName);
-                minioClient.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
-            }
-        } catch (Exception e) {
-            LOGGER.log(Level.SEVERE, "Erreur initialisation bucket MinIO " + bucketName, e);
-        }
-    }
-
     @Override
-    public String storePartitioned(InputStream content, String fileName, String contentType, 
-                                   UUID userId, ResourceType type, UUID... resourceIds) {
+    public String storePartitioned(final InputStream content, final String fileName, final String contentType, 
+                                   final UUID userId, final ResourceType type, final UUID... resourceIds) {
         try {
-            String hierarchyPath = buildHierarchyPath(userId, type, resourceIds);
-            String sanitizedName = sanitizeFileName(fileName);
-            String fullPath = hierarchyPath + "/" + sanitizedName;
+            final var hierarchyPath = buildHierarchyPath(userId, type, resourceIds);
+            final var sanitizedName = sanitizeFileName(fileName);
+            final var fullPath = hierarchyPath + "/" + sanitizedName;
 
             minioClient.putObject(PutObjectArgs.builder()
                     .bucket(bucketName)
                     .object(fullPath)
-                    .stream(content, -1, 10485760) // Part size 10MB
+                    .stream(content, -1, DEFAULT_PART_SIZE)
                     .contentType(contentType)
                     .build());
 
@@ -71,97 +60,31 @@ public class MinioAdapter implements StoragePort {
         }
     }
 
-    private String buildHierarchyPath(UUID userId, ResourceType type, UUID[] resourceIds) {
-        List<String> segments = new ArrayList<>();
-        segments.add("users");
-        segments.add(userId.toString());
+    private String buildHierarchyPath(final UUID userId, final ResourceType type, final UUID[] resourceIds) {
+        final var userSegment = Stream.of("users", userId.toString());
+        
+        final var typeHierarchy = Stream.iterate(type, Objects::nonNull, ResourceType::getParent)
+                .map(t -> t.name().toLowerCase())
+                .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {
+                    Collections.reverse(list);
+                    return list.stream();
+                }));
 
-        // Remonter la hiérarchie des types
-        List<String> typeHierarchy = new ArrayList<>();
-        ResourceType current = type;
-        while (current != null) {
-            typeHierarchy.add(current.name().toLowerCase());
-            current = current.getParent();
-        }
-        Collections.reverse(typeHierarchy);
-        segments.addAll(typeHierarchy);
+        final var resourceSegments = Arrays.stream(Optional.ofNullable(resourceIds).orElse(new UUID[0]))
+                .map(UUID::toString);
 
-        // Ajouter les IDs de ressources fournis
-        for (UUID id : resourceIds) {
-            segments.add(id.toString());
-        }
-
-        return String.join("/", segments);
+        return Stream.concat(Stream.concat(userSegment, typeHierarchy), resourceSegments)
+                .collect(Collectors.joining("/"));
     }
 
-    private String sanitizeFileName(String rawName) {
-        return Paths.get(rawName).getFileName().toString().replaceAll("[^a-zA-Z0-9.\\-_]", "_");
-    }
-
-    private String getSecurePath(String rawPath) {
-        Path path = Paths.get(rawPath).normalize();
-        if (path.toString().contains("..") || path.isAbsolute()) {
-            throw new SecurityException("Tentative de traversée de répertoire détectée.");
-        }
-        String sanitizedName = sanitizeFileName(rawPath);
-        String datePath = LocalDate.now().format(DATE_PATH_FORMATTER);
-        return String.format("%s/%s", datePath, sanitizedName);
+    private String sanitizeFileName(final String rawName) {
+        return Optional.ofNullable(rawName)
+                .map(name -> Paths.get(name).getFileName().toString().replaceAll("[^a-zA-Z0-9.\\-_]", "_"))
+                .orElseGet(() -> "file_" + System.currentTimeMillis());
     }
 
     @Override
-    public String store(InputStream content, String fileName, String contentType, long size) {
-        try {
-            String securePath = getSecurePath(fileName);
-            minioClient.putObject(PutObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(securePath)
-                    .stream(content, size, -1)
-                    .contentType(contentType)
-                    .build());
-            return securePath;
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors du stockage du fichier " + fileName, e);
-        }
-    }
-
-    @Override
-    public InputStream fetch(String path) {
-        try {
-            return minioClient.getObject(GetObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(path)
-                    .build());
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la récupération du fichier " + path, e);
-        }
-    }
-
-    @Override
-    public void delete(String path) {
-        try {
-            minioClient.removeObject(RemoveObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(path)
-                    .build());
-        } catch (Exception e) {
-            throw new RuntimeException("Erreur lors de la suppression du fichier " + path, e);
-        }
-    }
-
-    @Override
-    public long getFileSize(String path) {
-        try {
-            return minioClient.statObject(StatObjectArgs.builder()
-                    .bucket(bucketName)
-                    .object(path)
-                    .build()).size();
-        } catch (Exception e) {
-            return 0L;
-        }
-    }
-
-    @Override
-    public String getPresignedUrl(String path, int expiryMinutes) {
+    public String getPresignedUrl(final String path, final int expiryMinutes) {
         try {
             return minioClient.getPresignedObjectUrl(GetPresignedObjectUrlArgs.builder()
                     .method(Method.GET)
@@ -171,6 +94,18 @@ public class MinioAdapter implements StoragePort {
                     .build());
         } catch (Exception e) {
             throw new RuntimeException("Erreur génération URL présignée", e);
+        }
+    }
+
+    @Override
+    public void delete(final String path) {
+        try {
+            minioClient.removeObject(RemoveObjectArgs.builder()
+                    .bucket(bucketName)
+                    .object(path)
+                    .build());
+        } catch (Exception e) {
+            throw new RuntimeException("Erreur lors de la suppression du fichier " + path, e);
         }
     }
 }

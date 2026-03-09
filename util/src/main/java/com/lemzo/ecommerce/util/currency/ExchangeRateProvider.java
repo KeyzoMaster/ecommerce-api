@@ -4,12 +4,12 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 /**
- * Interface pour la récupération des taux de change.
+ * Fournisseur de taux de change.
  */
+@FunctionalInterface
 public interface ExchangeRateProvider {
-
     /**
-     * Récupère le taux de change entre deux devises.
+     * Retourne le taux de change entre deux devises.
      */
-    BigDecimal getExchangeRate(Currency from, Currency to);
+    BigDecimal getExchangeRate(final Currency from, final Currency to);
 }

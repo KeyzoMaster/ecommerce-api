@@ -8,8 +8,10 @@ import jakarta.ws.rs.Priorities;
 import jakarta.ws.rs.container.ContainerRequestContext;
 import jakarta.ws.rs.container.ContainerRequestFilter;
 import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.ext.Provider;
+import lombok.RequiredArgsConstructor;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.HashSet;
@@ -23,58 +25,55 @@ import java.util.UUID;
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class JwtAuthenticationFilter implements ContainerRequestFilter {
 
-    @Inject
-    private JwtService jwtService;
-
-    @Inject
-    private TokenRevocationService tokenRevocationService;
+    private final JwtService jwtService;
+    private final TokenRevocationService tokenRevocationService;
 
     @Override
-    public void filter(ContainerRequestContext requestContext) throws IOException {
+    public void filter(final ContainerRequestContext requestContext) throws IOException {
         Optional.ofNullable(requestContext.getHeaderString(HttpHeaders.AUTHORIZATION))
                 .filter(authHeader -> authHeader.startsWith("Bearer "))
                 .map(authHeader -> authHeader.substring(7))
-                .ifPresent(token -> {
-                    try {
-                        Claims claims = jwtService.validateToken(token);
-                        
-                        // Vérifier la révocation via JTI
-                        if (tokenRevocationService.isRevoked(claims.getId())) {
-                            requestContext.abortWith(jakarta.ws.rs.core.Response
-                                    .status(jakarta.ws.rs.core.Response.Status.UNAUTHORIZED)
-                                    .entity("Token has been revoked.")
-                                    .build());
-                            return;
-                        }
+                .ifPresent(token -> processToken(requestContext, token));
+    }
 
-                        UUID userId = UUID.fromString(claims.getSubject());
-                        String email = claims.get("email", String.class);
-                        
-                        @SuppressWarnings("unchecked")
-                        Set<String> permissions = new HashSet<>(
-                                Optional.ofNullable(claims.get("permissions", List.class))
-                                        .orElseGet(List::of)
-                        );
+    private void processToken(final ContainerRequestContext requestContext, final String token) {
+        try {
+            final Claims claims = jwtService.validateToken(token);
+            
+            if (tokenRevocationService.isRevoked(claims.getId())) {
+                requestContext.abortWith(Response
+                        .status(Response.Status.UNAUTHORIZED)
+                        .entity("Token has been revoked.")
+                        .build());
+                return;
+            }
 
-                        UserPrincipal principal = new UserPrincipal(userId, email, permissions);
+            final UUID userId = UUID.fromString(claims.getSubject());
+            final String email = claims.get("email", String.class);
+            
+            @SuppressWarnings("unchecked")
+            final List<String> permissionsFromClaims = (List<String>) claims.get("permissions", List.class);
+            final Set<String> permissions = new HashSet<>(Optional.ofNullable(permissionsFromClaims).orElse(List.of()));
 
-                        SecurityContext originalContext = requestContext.getSecurityContext();
-                        requestContext.setSecurityContext(new SecurityContext() {
-                            @Override
-                            public Principal getUserPrincipal() { return principal; }
-                            @Override
-                            public boolean isUserInRole(String role) { return permissions.contains(role); }
-                            @Override
-                            public boolean isSecure() { return originalContext.isSecure(); }
-                            @Override
-                            public String getAuthenticationScheme() { return "Bearer"; }
-                        });
+            final UserPrincipal userPrincipal = new UserPrincipal(userId, email, permissions);
+            final SecurityContext originalContext = requestContext.getSecurityContext();
 
-                    } catch (Exception e) {
-                        // Token invalide ou expiré
-                    }
-                });
+            requestContext.setSecurityContext(new SecurityContext() {
+                @Override
+                public Principal getUserPrincipal() { return userPrincipal; }
+                @Override
+                public boolean isUserInRole(final String role) { return permissions.contains(role); }
+                @Override
+                public boolean isSecure() { return originalContext.isSecure(); }
+                @Override
+                public String getAuthenticationScheme() { return "Bearer"; }
+            });
+
+        } catch (final Exception _) {
+            // Variable anonyme car l'exception est ignorée à dessein pour les ressources publiques
+        }
     }
 }

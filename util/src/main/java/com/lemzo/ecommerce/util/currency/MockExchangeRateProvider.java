@@ -5,18 +5,18 @@ import java.math.BigDecimal;
 import java.util.Currency;
 
 /**
- * Implémentation de test pour les taux de change.
+ * Implémentation de test pour le taux de change.
  */
 @ApplicationScoped
 public class MockExchangeRateProvider implements ExchangeRateProvider {
 
     @Override
-    public BigDecimal getExchangeRate(Currency from, Currency to) {
-        if (from.getCurrencyCode().equals("EUR") && to.getCurrencyCode().equals("USD")) {
-            return new BigDecimal("1.08");
+    public BigDecimal getExchangeRate(final Currency from, final Currency target) {
+        if ("USD".equals(from.getCurrencyCode()) && "XOF".equals(target.getCurrencyCode())) {
+            return new BigDecimal("600");
         }
-        if (from.getCurrencyCode().equals("USD") && to.getCurrencyCode().equals("EUR")) {
-            return new BigDecimal("0.93");
+        if ("XOF".equals(from.getCurrencyCode()) && "USD".equals(target.getCurrencyCode())) {
+            return new BigDecimal("0.0016");
         }
         return BigDecimal.ONE;
     }

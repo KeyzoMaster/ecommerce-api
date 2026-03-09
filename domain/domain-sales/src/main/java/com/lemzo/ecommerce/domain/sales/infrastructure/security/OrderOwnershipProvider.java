@@ -6,17 +6,17 @@ import com.lemzo.ecommerce.domain.sales.repository.OrderRepository;
 import com.lemzo.ecommerce.security.api.pabc.OwnershipProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import java.util.UUID;
 
 /**
  * Provider pour vérifier la propriété d'une commande.
- * Une commande appartient au client qui l'a passée.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class OrderOwnershipProvider implements OwnershipProvider {
 
-    @Inject
-    private OrderRepository orderRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public ResourceType getResourceType() {
@@ -24,7 +24,7 @@ public class OrderOwnershipProvider implements OwnershipProvider {
     }
 
     @Override
-    public UUID getOwnerId(UUID orderId) {
+    public UUID getOwnerId(final UUID orderId) {
         return orderRepository.findById(orderId)
                 .map(Order::getUserId)
                 .orElse(null);

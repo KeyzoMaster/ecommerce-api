@@ -10,17 +10,16 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class PasswordService {
 
-    private final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
-
-    // Paramètres recommandés (à ajuster selon les performances du serveur)
     private static final int ITERATIONS = 2;
-    private static final int MEMORY = 65536;
+    private static final int MEMORY = 65_536;
     private static final int PARALLELISM = 1;
+
+    private final Argon2 argon2 = Argon2Factory.create(Argon2Factory.Argon2Types.ARGON2id);
 
     /**
      * Hache un mot de passe en clair.
      */
-    public String hash(char[] password) {
+    public String hash(final char[] password) {
         try {
             return argon2.hash(ITERATIONS, MEMORY, PARALLELISM, password);
         } finally {
@@ -29,9 +28,9 @@ public class PasswordService {
     }
 
     /**
-     * Vérifie un mot de passe par rapport à un hash.
+     * Vérifie un mot de passe par rapport à un hachage.
      */
-    public boolean verify(String hash, char[] password) {
+    public boolean verify(final String hash, final char[] password) {
         try {
             return argon2.verify(hash, password);
         } finally {

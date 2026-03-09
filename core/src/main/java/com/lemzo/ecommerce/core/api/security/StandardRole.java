@@ -17,16 +17,17 @@ public enum StandardRole {
         SALES, Set.of(READ, CREATE)
     )),
     STORE_OWNER(Map.of(
+        STORE, Set.of(READ, UPDATE),
         CATALOG, Set.of(READ, CREATE, UPDATE, DELETE),
-        SALES, Set.of(READ, UPDATE, APPROVE),
-        INVENTORY, Set.of(READ, UPDATE, MANAGE_STOCK),
+        SALES, Set.of(READ, UPDATE, MANAGE),
+        INVENTORY, Set.of(READ, UPDATE),
         ANALYTICS, Set.of(VIEW_ANALYTICS)
     ));
 
     private final Map<ResourceType, Set<PbacAction>> permissions;
 
-    StandardRole(Map<ResourceType, Set<PbacAction>> permissions) {
-        this.permissions = permissions;
+    StandardRole(final Map<ResourceType, Set<PbacAction>> permissions) {
+        this.permissions = Map.copyOf(permissions);
     }
 
     public Map<ResourceType, Set<PbacAction>> getPermissions() {

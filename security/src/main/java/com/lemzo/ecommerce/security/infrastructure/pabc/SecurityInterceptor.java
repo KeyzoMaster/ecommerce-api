@@ -13,7 +13,8 @@ import jakarta.ws.rs.ForbiddenException;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
-import java.lang.reflect.Parameter;
+import lombok.RequiredArgsConstructor;
+import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -26,52 +27,53 @@ import java.util.stream.IntStream;
 @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ) 
 @Interceptor
 @Priority(Interceptor.Priority.PLATFORM_BEFORE)
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class SecurityInterceptor {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityInterceptor.class.getName());
 
+    private final AuthorizationService authorizationService;
+
     @Context
     private SecurityContext securityContext;
 
-    @Inject
-    private AuthorizationService authorizationService;
-
     @AroundInvoke
-    public Object checkPermission(InvocationContext context) throws Exception {
-        var annotation = Optional.ofNullable(context.getMethod().getAnnotation(HasPermission.class))
+    public Object checkPermission(final InvocationContext context) throws Exception {
+        final var annotation = Optional.ofNullable(context.getMethod().getAnnotation(HasPermission.class))
                 .or(() -> Optional.ofNullable(context.getTarget().getClass().getAnnotation(HasPermission.class)));
 
         if (annotation.isEmpty()) {
             return context.proceed();
         }
 
-        ResourceType resource = annotation.get().resource();
-        PbacAction action = annotation.get().action();
+        final var resource = annotation.get().resource();
+        final var action = annotation.get().action();
         
-        // Extraction de l'ID cible si demandé
-        UUID targetId = annotation.get().checkOwnership() ? 
+        final var targetId = annotation.get().checkOwnership() ? 
                 extractResourceId(context).orElse(null) : null;
 
         if (!authorizationService.isAuthorized(securityContext, resource, action, targetId)) {
-            LOGGER.warning(String.format("Accès refusé pour %s sur %s", 
-                    Optional.ofNullable(securityContext.getUserPrincipal()).map(p -> p.getName()).orElse("ANONYMOUS"),
-                    resource.name()));
+            final var principalName = Optional.ofNullable(securityContext.getUserPrincipal())
+                    .map(Principal::getName)
+                    .orElse("ANONYMOUS");
+            
+            LOGGER.warning(() -> String.format("Accès refusé pour %s sur %s:%s", principalName, resource, action));
             throw new ForbiddenException("Accès refusé : permissions ou propriété manquantes.");
         }
 
         return context.proceed();
     }
 
-    private Optional<UUID> extractResourceId(InvocationContext context) {
-        var parameters = context.getMethod().getParameters();
-        var args = context.getParameters();
+    private Optional<UUID> extractResourceId(final InvocationContext context) {
+        final var parameters = context.getMethod().getParameters();
+        final var args = context.getParameters();
 
         return IntStream.range(0, parameters.length)
                 .filter(i -> parameters[i].isAnnotationPresent(PathParam.class))
                 .mapToObj(i -> {
                     try {
                         return Optional.of(UUID.fromString(args[i].toString()));
-                    } catch (Exception e) {
+                    } catch (final Exception e) {
                         return Optional.<UUID>empty();
                     }
                 })

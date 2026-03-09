@@ -1,13 +1,14 @@
 package com.lemzo.ecommerce.domain.analytics.api.dto;
 
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
+import java.math.BigDecimal;
 import java.util.List;
 
-@Schema(description = "Données consolidées du tableau de bord analytics")
+/**
+ * Réponse globale pour le tableau de bord analytics.
+ */
 public record AnalyticsDashboardResponse(
-    @Schema(description = "Évolution des ventes sur les 30 derniers jours")
-    List<DailySalesStats> dailyTrends,
-    
-    @Schema(description = "Top 10 des produits les plus vendus")
-    List<TopProductStats> topProducts
+    BigDecimal totalRevenue,
+    long totalOrders,
+    List<TopProductStats> topProducts,
+    List<DailySalesStats> dailyTrends
 ) {}

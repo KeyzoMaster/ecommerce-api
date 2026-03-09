@@ -1,36 +1,44 @@
 package com.lemzo.ecommerce.domain.shipping.service;
 
-import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.core.api.exception.ResourceNotFoundException;
 import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
 import com.lemzo.ecommerce.domain.shipping.repository.ShipmentRepository;
+import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
+/**
+ * Service de gestion des expéditions.
+ */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ShippingService {
 
-    @Inject
-    private ShipmentRepository shipmentRepository;
+    private final ShipmentRepository shipmentRepository;
 
     @Transactional
     @Audit(action = "SHIPMENT_CREATE")
-    public Shipment initiateShipment(UUID orderId, String carrier) {
-        String trackingNumber = "TRK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        Shipment shipment = new Shipment(orderId, trackingNumber, carrier);
-        return shipmentRepository.insert(shipment);
+    public Shipment createShipment(final UUID orderId, final String carrier) {
+        final var trackingNumber = "TRK-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        final var shipment = new Shipment(orderId, trackingNumber, carrier);
+        shipment.setEstimatedDeliveryDate(LocalDateTime.now().plusDays(3));
+        return shipmentRepository.save(shipment);
     }
 
     @Transactional
-    @Audit(action = "SHIPMENT_UPDATE_STATUS")
-    public Shipment updateStatus(String trackingNumber, Shipment.ShippingStatus status) {
-        return shipmentRepository.findByTrackingNumber(trackingNumber)
-                .map(shipment -> {
-                    shipment.setStatus(status);
-                    return shipmentRepository.save(shipment);
-                })
-                .orElseThrow(() -> new ResourceNotFoundException("Expédition non trouvée : " + trackingNumber));
+    @Audit(action = "SHIPMENT_STATUS_UPDATE")
+    public Shipment updateStatus(final String trackingNumber, final Shipment.ShipmentStatus status) {
+        final var shipment = shipmentRepository.findByTrackingNumber(trackingNumber)
+                .orElseThrow(() -> new ResourceNotFoundException("Expédition non trouvée"));
+        
+        shipment.setStatus(status);
+        return shipmentRepository.save(shipment);
     }
 }

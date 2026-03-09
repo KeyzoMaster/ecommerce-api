@@ -1,87 +1,74 @@
 package com.lemzo.ecommerce.domain.catalog.api;
 
-import com.lemzo.ecommerce.core.api.dto.Link;
-import com.lemzo.ecommerce.core.api.dto.RestResponse;
+import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
-import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.catalog.api.dto.CategoryCreateRequest;
 import com.lemzo.ecommerce.domain.catalog.api.dto.CategoryResponse;
-import com.lemzo.ecommerce.domain.catalog.domain.Category;
 import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
-import jakarta.ws.rs.core.*;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.UriInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
- * Ressource JAX-RS pour la gestion des catégories.
+ * Ressource pour la gestion des catégories de produits.
  */
 @Path("/catalog/categories")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Catalogue", description = "Gestion des produits et catégories")
+@Tag(name = "Catalogue : Catégories", description = "Gestion des catégories du catalogue")
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CategoryResource {
 
-    @Inject
-    private CatalogService catalogService;
+    private final CatalogService catalogService;
+    private final HateoasMapper hateoasMapper;
 
     @Context
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Lister les catégories", description = "Retourne la liste complète des catégories")
+    @Operation(summary = "Lister les catégories", description = "Retourne toutes les catégories du catalogue")
     public Response list() {
-        var categories = catalogService.getAllCategories();
-        var responses = categories.stream()
-                .map(this::buildCategoryResource)
-                .toList();
-        return Response.ok(responses).build();
+        final var responses = catalogService.getAllCategories().stream()
+                .map(CategoryResponse::from)
+                .collect(Collectors.toList());
+        return Response.ok(hateoasMapper.toResource(responses, uriInfo)).build();
     }
 
     @POST
     @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
-    @Operation(summary = "Créer une catégorie")
-    public Response create(@Valid CategoryCreateRequest request) {
-        var category = catalogService.createCategory(
-                request.name(), request.slug(), request.description(), request.parentId()
-        );
+    @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie au catalogue")
+    @APIResponse(responseCode = "201", description = "Catégorie créée")
+    public Response create(@Valid final CategoryCreateRequest request) {
+        final var category = catalogService.createCategory(
+                request.name(), request.slug(), request.description(), request.parentId());
         return Response.status(Response.Status.CREATED)
-                .entity(buildCategoryResource(category))
+                .entity(hateoasMapper.toResource(CategoryResponse.from(category), uriInfo))
                 .build();
     }
 
     @GET
     @Path("/{id}")
     @Operation(summary = "Détails d'une catégorie")
-    public Response get(@PathParam("id") UUID id) {
-        return catalogService.getCategoryById(id)
-                .map(this::buildCategoryResource)
+    public Response getById(@PathParam("id") final UUID id) {
+        return catalogService.findCategoryById(id)
+                .map(CategoryResponse::from)
+                .map(res -> hateoasMapper.toResource(res, uriInfo))
                 .map(res -> Response.ok(res).build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
-    }
-
-    private RestResponse<CategoryResponse> buildCategoryResource(Category category) {
-        List<Link> links = new ArrayList<>();
-        String selfHref = uriInfo.getBaseUriBuilder()
-                .path(CategoryResource.class)
-                .path(category.getId().toString())
-                .build().toString();
-
-        links.add(Link.self(selfHref));
-        
-        if (category.getParent() != null) {
-            links.add(Link.of("parent", uriInfo.getBaseUriBuilder()
-                    .path(CategoryResource.class)
-                    .path(category.getParent().getId().toString())
-                    .build().toString(), "GET"));
-        }
-
-        return RestResponse.of(CategoryResponse.from(category), links);
     }
 }

@@ -1,22 +1,23 @@
 package com.lemzo.ecommerce.audit.domain;
 
 import lombok.Builder;
+import lombok.Data;
 import java.time.LocalDateTime;
-import java.util.UUID;
+import java.util.Map;
 
 /**
- * Modèle de log d'audit pour MongoDB.
+ * Représentation d'un log d'audit pour MongoDB.
  */
+@Data
 @Builder
-public record AuditLog(
-        String id,
-        UUID userId,
-        String action,
-        String resourceType,
-        String resourceId,
-        String details,
-        String clientIp,
-        String userAgent,
-        LocalDateTime timestamp
-) {
+public class AuditLog {
+    private String logId;
+    private String userId;
+    private String action;
+    private String resourceType;
+    private String resourceId;
+    private Map<String, Object> details;
+    private String clientIp;
+    private String userAgent;
+    private LocalDateTime timestamp;
 }

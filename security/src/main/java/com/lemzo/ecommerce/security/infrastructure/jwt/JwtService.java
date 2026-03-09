@@ -3,8 +3,8 @@ package com.lemzo.ecommerce.security.infrastructure.jwt;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
-import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Inject;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -18,48 +18,46 @@ import java.util.Set;
 @ApplicationScoped
 public class JwtService {
 
-    @ConfigProperty(name = "JWT_SECRET", defaultValue = "votre_secret_tres_long_et_securise_pour_jwt")
-    private String secret;
+    private final SecretKey secretKey;
+    private final long expirationTimeMs;
 
-    @ConfigProperty(name = "JWT_EXPIRATION_MS", defaultValue = "3600000") // 1 heure par défaut
-    private long expirationMs;
-
-    private SecretKey key;
-
-    @PostConstruct
-    public void init() {
-        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    @Inject
+    public JwtService(
+            @ConfigProperty(name = "JWT_SECRET", defaultValue = "votre_secret_tres_long_et_securise_pour_jwt") final String secret,
+            @ConfigProperty(name = "JWT_EXPIRATION_MS", defaultValue = "3600000") final long expirationMs) {
+        this.secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+        this.expirationTimeMs = expirationMs;
     }
 
-    public String generateToken(UUID userId, String email, Set<String> permissions) {
-        Date now = new Date();
-        Date expiryDate = new Date(now.getTime() + expirationMs);
+    public String generateToken(final UUID userId, final String email, final Set<String> permissions) {
+        final Date now = new Date();
+        final Date expiryDate = new Date(now.getTime() + expirationTimeMs);
 
         return Jwts.builder()
-                .id(UUID.randomUUID().toString()) // JTI unique pour révocation
+                .id(UUID.randomUUID().toString())
                 .subject(userId.toString())
                 .claim("email", email)
                 .claim("permissions", permissions)
                 .issuedAt(now)
                 .expiration(expiryDate)
-                .signWith(key)
+                .signWith(secretKey)
                 .compact();
     }
 
-    public Claims validateToken(String token) {
+    public Claims validateToken(final String token) {
         return Jwts.parser()
-                .verifyWith(key)
+                .verifyWith(secretKey)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
     }
 
-    public UUID getUserIdFromToken(String token) {
+    public UUID getUserIdFromToken(final String token) {
         return UUID.fromString(validateToken(token).getSubject());
     }
 
     @SuppressWarnings("unchecked")
-    public Set<String> getPermissionsFromToken(String token) {
+    public Set<String> getPermissionsFromToken(final String token) {
         return (Set<String>) validateToken(token).get("permissions", Set.class);
     }
 }

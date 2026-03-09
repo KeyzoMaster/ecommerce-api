@@ -10,7 +10,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Mapper global d'exceptions pour transformer toute Throwable en ErrorResponse standardisée.
+ * Mapper global d'exceptions.
  */
 @Provider
 public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
@@ -18,25 +18,25 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
     private static final Logger LOGGER = Logger.getLogger(GlobalExceptionMapper.class.getName());
 
     @Override
-    public Response toResponse(Throwable exception) {
-        return switch (exception) {
-            case ResourceNotFoundException ex -> build(Response.Status.NOT_FOUND, ex.getMessage());
-            case ResourceConflictException ex -> build(Response.Status.CONFLICT, ex.getMessage());
-            case BusinessRuleException ex -> build(Response.Status.BAD_REQUEST, ex.getMessage());
-            case WebApplicationException ex -> {
-                var status = Optional.ofNullable(Response.Status.fromStatusCode(ex.getResponse().getStatus()))
+    public Response toResponse(final Throwable throwable) {
+        return switch (throwable) {
+            case ResourceNotFoundException _ -> build(Response.Status.NOT_FOUND, throwable.getMessage());
+            case ResourceConflictException _ -> build(Response.Status.CONFLICT, throwable.getMessage());
+            case BusinessRuleException _ -> build(Response.Status.BAD_REQUEST, throwable.getMessage());
+            case WebApplicationException exception -> {
+                final Response.Status status = Optional.ofNullable(Response.Status.fromStatusCode(exception.getResponse().getStatus()))
                         .orElse(Response.Status.INTERNAL_SERVER_ERROR);
-                yield build(status, ex.getMessage());
+                yield build(status, exception.getMessage());
             }
             default -> {
-                LOGGER.log(Level.SEVERE, "Exception non gérée détectée", exception);
+                LOGGER.log(Level.SEVERE, "Exception non gérée détectée", throwable);
                 yield build(Response.Status.INTERNAL_SERVER_ERROR, "Une erreur inattendue est survenue.");
             }
         };
     }
 
-    private Response build(Response.Status status, String message) {
-        var errorResponse = ErrorResponse.of(
+    private Response build(final Response.Status status, final String message) {
+        final ErrorResponse errorResponse = ErrorResponse.create(
                 status.getStatusCode(),
                 status.getReasonPhrase(),
                 message

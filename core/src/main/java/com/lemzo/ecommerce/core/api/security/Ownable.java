@@ -5,6 +5,7 @@ import java.util.UUID;
 /**
  * Interface pour les entités ayant un propriétaire identifié.
  */
+@FunctionalInterface
 public interface Ownable {
     /**
      * Retourne l'identifiant de l'utilisateur propriétaire.

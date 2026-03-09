@@ -1,13 +1,18 @@
 package com.lemzo.ecommerce.iam.service;
 
-import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
-import com.lemzo.ecommerce.iam.domain.User;
+import com.lemzo.ecommerce.iam.api.dto.AuthResponse;
+import com.lemzo.ecommerce.iam.domain.Permission;
+import com.lemzo.ecommerce.iam.domain.Role;
+import com.lemzo.ecommerce.iam.repository.UserRepository;
 import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
 import com.lemzo.ecommerce.security.infrastructure.jwt.JwtService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import com.lemzo.ecommerce.iam.domain.Permission;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -16,37 +21,25 @@ import java.util.stream.Stream;
  * Service d'authentification.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AuthenticationService {
 
-    @Inject
-    private UserService userService;
+    private final UserRepository userRepository;
+    private final PasswordService passwordService;
+    private final JwtService jwtService;
 
-    @Inject
-    private PasswordService passwordService;
-
-    @Inject
-    private JwtService jwtService;
-
-    public record LoginResult(String accessToken, String refreshToken, User user) {}
-
-    /**
-     * Authentifie un utilisateur et génère les jetons JWT.
-     */
-    @Audit(action = "USER_LOGIN")
-    public LoginResult login(String identifier, String password) {
-        User user = userService.findByIdentifier(identifier)
+    public AuthResponse login(final String identifier, final String password) {
+        final var user = userRepository.findByUsername(identifier)
+                .or(() -> userRepository.findByEmail(identifier))
+                .filter(u -> passwordService.verify(u.getPassword(), password.toCharArray()))
                 .orElseThrow(() -> new BusinessRuleException("error.iam.invalid_credentials"));
 
         if (!user.isEnabled()) {
             throw new BusinessRuleException("error.iam.account_disabled");
         }
 
-        if (!passwordService.verify(user.getPassword(), password.toCharArray())) {
-            throw new BusinessRuleException("error.iam.invalid_credentials");
-        }
-
-        // Calcul dynamique des permissions (Rôles -> Permissions + Ad-hoc Permissions)
-        Set<String> permissions = Stream.concat(
+        final var permissions = Stream.concat(
                 user.getRoles().stream()
                         .flatMap(role -> role.getPermissions().stream()),
                 user.getAdhocPermissions().stream()
@@ -54,9 +47,9 @@ public class AuthenticationService {
         .map(Permission::getSlug)
         .collect(Collectors.toSet());
 
-        String accessToken = jwtService.generateToken(user.getId(), user.getEmail(), permissions);
-        String refreshToken = jwtService.generateToken(user.getId(), user.getEmail(), permissions); 
+        final var accessToken = jwtService.generateToken(user.getId(), user.getEmail(), permissions);
+        final var refreshToken = jwtService.generateToken(user.getId(), user.getEmail(), permissions);
 
-        return new LoginResult(accessToken, refreshToken, user);
+        return new AuthResponse(accessToken, refreshToken, user.getEmail(), permissions);
     }
 }

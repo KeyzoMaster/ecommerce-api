@@ -1,34 +1,21 @@
 package com.lemzo.ecommerce.domain.sales.api.dto;
 
-import com.lemzo.ecommerce.core.domain.Address;
-import jakarta.validation.constraints.NotEmpty;
+import com.lemzo.ecommerce.core.domain.shipping.ShippingMethod;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import org.eclipse.microprofile.openapi.annotations.media.Schema;
-import java.util.List;
-import java.util.UUID;
 
-@Schema(description = "Requête pour la création d'une commande")
+/**
+ * Requête de création de commande.
+ */
 public record OrderCreateRequest(
-    @NotEmpty 
-    @Schema(description = "Liste des articles de la commande")
-    List<OrderItemRequest> items,
-
-    @NotNull
-    @Schema(description = "Passerelle de paiement (ex: stripe, paypal)", example = "stripe")
+    @NotBlank(message = "L'adresse de livraison est requise")
+    String shippingAddressId,
+    
+    @NotNull(message = "La méthode de livraison est requise")
+    ShippingMethod shippingMethod,
+    
+    @NotBlank(message = "La passerelle de paiement est requise")
     String paymentProvider,
-
-    @Schema(description = "Mode de livraison choisi", example = "EXPRESS")
-    String shippingMethod,
-
-    @Schema(description = "Code promo optionnel", example = "SOLDE2026")
-    String couponCode,
-
-    @NotNull
-    @Schema(description = "Adresse de livraison")
-    Address shippingAddress
-) {
-    public record OrderItemRequest(
-        @NotNull @Schema(description = "ID du produit") UUID productId,
-        @NotNull @Schema(description = "Quantité", example = "1") int quantity
-    ) {}
-}
+    
+    String couponCode
+) {}

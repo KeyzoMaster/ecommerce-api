@@ -5,39 +5,44 @@ import jakarta.persistence.Id;
 import jakarta.persistence.MappedSuperclass;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
-import java.time.LocalDateTime;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import java.io.Serializable;
+import java.time.LocalDateTime;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
- * Base classe pour toutes les entités du système.
- * Utilise UUID v7 (PostgreSQL 18) pour des index optimisés.
+ * Classe de base pour toutes les entités.
  */
+@MappedSuperclass
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@MappedSuperclass
-public abstract class AbstractEntity {
+public abstract class AbstractEntity implements Serializable {
 
     @Id
-    @Column(name = "id", updatable = false, nullable = false, columnDefinition = "uuid DEFAULT uuidv7()")
-    private UUID id;
+    @Column(name = "id", updatable = false, nullable = false)
+    private UUID entityId;
 
-    @Column(name = "created_at", updatable = false, nullable = false)
+    @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
 
-    @Column(name = "deleted_at")
-    private LocalDateTime deletedAt;
+    protected AbstractEntity() {
+        // Requis par JPA
+    }
+
+    public UUID getId() {
+        return entityId;
+    }
 
     @PrePersist
     protected void onCreate() {
+        if (entityId == null) {
+            this.entityId = UUID.randomUUID();
+        }
         this.createdAt = LocalDateTime.now();
     }
 
@@ -46,11 +51,19 @@ public abstract class AbstractEntity {
         this.updatedAt = LocalDateTime.now();
     }
 
-    public boolean isDeleted() {
-        return deletedAt != null;
+    @Override
+    public boolean equals(final Object other) {
+        boolean isEqual = false;
+        if (this == other) {
+            isEqual = true;
+        } else if (other instanceof AbstractEntity that) {
+            isEqual = Objects.equals(entityId, that.entityId);
+        }
+        return isEqual;
     }
 
-    public void delete() {
-        this.deletedAt = LocalDateTime.now();
+    @Override
+    public int hashCode() {
+        return Objects.hash(entityId);
     }
 }

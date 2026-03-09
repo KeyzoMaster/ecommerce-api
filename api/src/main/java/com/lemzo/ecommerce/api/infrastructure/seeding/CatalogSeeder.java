@@ -1,31 +1,27 @@
 package com.lemzo.ecommerce.api.infrastructure.seeding;
 
 import com.lemzo.ecommerce.core.api.seeding.DataSeeder;
-import com.lemzo.ecommerce.domain.catalog.domain.Category;
 import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
-import com.lemzo.ecommerce.iam.domain.User;
-import com.lemzo.ecommerce.iam.service.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Map;
-import java.util.UUID;
 import java.util.logging.Logger;
 
 /**
- * Seeder global pour le catalogue (api module).
+ * Seeder global pour le catalogue.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CatalogSeeder implements DataSeeder {
 
     private static final Logger LOGGER = Logger.getLogger(CatalogSeeder.class.getName());
-
-    @Inject
-    private CatalogService catalogService;
-
-    @Inject
-    private UserService userService;
+    private final CatalogService catalogService;
 
     @Override
     @Transactional
@@ -38,18 +34,12 @@ public class CatalogSeeder implements DataSeeder {
         LOGGER.info("Seeding catalogue...");
 
         // 1. Création des catégories
-        Category electronics = catalogService.createCategory("Électronique", "electronics", "Produits high-tech", null);
-        Category smartphones = catalogService.createCategory("Smartphones", "smartphones", "Téléphones mobiles", electronics.getId());
-        Category fashion = catalogService.createCategory("Mode", "fashion", "Vêtements et accessoires", null);
+        final var electronics = catalogService.createCategory("Électronique", "electronics", "Produits high-tech", null);
+        final var smartphones = catalogService.createCategory("Smartphones", "smartphones", "Téléphones mobiles", electronics.getId());
+        final var fashion = catalogService.createCategory("Mode", "fashion", "Vêtements et accessoires", null);
 
-        // 2. Récupération du store owner (créé par IamSeeder)
-        UUID ownerId = userService.findByIdentifier("owner")
-                .map(User::getId)
-                .orElseGet(() -> UUID.fromString("00000000-0000-0000-0000-000000000000"));
-
-        // 3. Création des produits
+        // 2. Création des produits (ownerId n'est plus requis ici, géré par hiérarchie ou non géré dans ce POC)
         catalogService.createProduct(
-                ownerId,
                 "iPhone 15 Pro",
                 "iphone-15-pro",
                 "IPH15P",
@@ -62,7 +52,6 @@ public class CatalogSeeder implements DataSeeder {
         );
 
         catalogService.createProduct(
-                ownerId,
                 "MacBook Air M3",
                 "macbook-air-m3",
                 "MBA-M3",
@@ -75,7 +64,6 @@ public class CatalogSeeder implements DataSeeder {
         );
 
         catalogService.createProduct(
-                ownerId,
                 "T-Shirt Coton Bio",
                 "tshirt-coton-bio",
                 "TS-BIO-01",
@@ -92,6 +80,6 @@ public class CatalogSeeder implements DataSeeder {
 
     @Override
     public int priority() {
-        return 2; // Après les utilisateurs
+        return 2;
     }
 }

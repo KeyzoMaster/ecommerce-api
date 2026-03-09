@@ -4,28 +4,22 @@ import com.lemzo.ecommerce.core.api.dto.Link;
 import com.lemzo.ecommerce.core.api.dto.RestResponse;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.ws.rs.core.UriInfo;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Utilitaire pour construire des réponses HATEOAS.
+ * Mapper utilitaire pour construire des ressources HATEOAS.
  */
 @ApplicationScoped
 public class HateoasMapper {
 
-    /**
-     * Enveloppe des données avec un lien "self" automatique.
-     */
-    public <T> RestResponse<T> toResource(T data, UriInfo uriInfo) {
-        List<Link> links = new ArrayList<>();
-        links.add(Link.self(uriInfo.getAbsolutePath().toString()));
-        return RestResponse.of(data, links);
+    public <T> RestResponse<T> toResource(final T data, final UriInfo uriInfo) {
+        final List<Link> links = List.of(
+                Link.self(uriInfo.getAbsolutePath().toString())
+        );
+        return RestResponse.create(data, links);
     }
 
-    /**
-     * Enveloppe des données avec plusieurs liens.
-     */
-    public <T> RestResponse<T> toResource(T data, List<Link> links) {
-        return RestResponse.of(data, links);
+    public <T> RestResponse<T> toResource(final T data, final List<Link> links) {
+        return RestResponse.create(data, List.copyOf(links));
     }
 }

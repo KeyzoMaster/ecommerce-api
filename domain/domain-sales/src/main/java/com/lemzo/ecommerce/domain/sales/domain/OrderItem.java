@@ -2,16 +2,11 @@ package com.lemzo.ecommerce.domain.sales.domain;
 
 import com.lemzo.ecommerce.core.entity.AbstractEntity;
 import com.lemzo.ecommerce.core.entity.converter.JsonbConverter;
-import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 import java.math.BigDecimal;
 import java.util.Map;
 import java.util.UUID;
@@ -23,7 +18,7 @@ import java.util.UUID;
 @Table(name = "sales_order_items")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class OrderItem extends AbstractEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,14 +45,16 @@ public class OrderItem extends AbstractEntity {
     private Map<String, Object> shippingConfig;
 
     /**
-     * Sous-total calculé par la base de données (quantity * unit_price).
-     * Virtual Generated Column PostgreSQL 18.
+     * Sous-total calculé par la base de données.
      */
     @Column(name = "subtotal", insertable = false, updatable = false, 
             columnDefinition = "numeric GENERATED ALWAYS AS (quantity * unit_price) VIRTUAL")
     private BigDecimal subtotal;
 
-    public OrderItem(UUID productId, UUID storeId, int quantity, BigDecimal unitPrice, BigDecimal weight, Map<String, Object> shippingConfig) {
+    public OrderItem(final UUID productId, final UUID storeId, final int quantity, 
+                     final BigDecimal unitPrice, final BigDecimal weight, 
+                     final Map<String, Object> shippingConfig) {
+        super();
         this.productId = productId;
         this.storeId = storeId;
         this.quantity = quantity;

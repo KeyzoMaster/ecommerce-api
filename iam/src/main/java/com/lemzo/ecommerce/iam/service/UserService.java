@@ -1,68 +1,61 @@
 package com.lemzo.ecommerce.iam.service;
 
-import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import com.lemzo.ecommerce.core.domain.Address;
 import com.lemzo.ecommerce.iam.domain.User;
 import com.lemzo.ecommerce.iam.repository.UserRepository;
 import com.lemzo.ecommerce.security.infrastructure.hashing.PasswordService;
+import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
-import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.Map;
 
 /**
  * Service de gestion des utilisateurs.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class UserService {
 
-    @Inject
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final PasswordService passwordService;
 
-    @Inject
-    private PasswordService passwordService;
-
-    /**
-     * Crée un nouvel utilisateur.
-     */
     @Transactional
-    @Audit(action = "USER_CREATE")
-    public User createUser(String username, String email, String plainPassword) {
-        if (userRepository.existsByEmail(email)) {
-            throw new BusinessRuleException("error.iam.email_already_exists");
+    public User register(final String username, final String email, final String plainPassword) {
+        if (userRepository.findByUsername(username).isPresent()) {
+            throw new BusinessRuleException("error.iam.username_taken");
         }
-        if (userRepository.existsByUsername(username)) {
-            throw new BusinessRuleException("error.iam.username_already_exists");
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new BusinessRuleException("error.iam.email_taken");
         }
 
-        String hashedPassword = passwordService.hash(plainPassword.toCharArray());
-        User user = new User(username, email, hashedPassword);
+        final String hashedPassword = passwordService.hash(plainPassword.toCharArray());
+        final User user = new User(username, email, hashedPassword);
         
-        return userRepository.insert(user);
+        return userRepository.save(user);
     }
 
-    /**
-     * Récupère un utilisateur par son identifiant.
-     */
-    public Optional<User> findById(UUID id) {
-        return userRepository.findById(id);
+    public Optional<User> findById(final UUID userId) {
+        return userRepository.findById(userId);
     }
 
-    /**
-     * Récupère un utilisateur par son email ou username.
-     */
-    public Optional<User> findByIdentifier(String identifier) {
-        return userRepository.findByEmail(identifier)
-                .or(() -> userRepository.findByUsername(identifier));
+    public Optional<User> findByIdentifier(final String identifier) {
+        return userRepository.findByUsername(identifier)
+                .or(() -> userRepository.findByEmail(identifier));
     }
 
     @Transactional
     @Audit(action = "USER_PROFILE_UPDATE")
-    public User updateProfile(UUID userId, String firstName, String lastName) {
-        User user = userRepository.findById(userId)
+    public User updateProfile(final UUID userId, final String firstName, final String lastName) {
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
         user.setFirstName(firstName);
@@ -73,25 +66,25 @@ public class UserService {
 
     @Transactional
     @Audit(action = "USER_PAYMENT_METHOD_ADD")
-    public User addPaymentMethod(UUID userId, String type, Map<String, Object> details) {
-        User user = userRepository.findById(userId)
+    public User addPaymentMethod(final UUID userId, final String type, final Map<String, Object> details) {
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
-        details.put("type", type);
-        user.getPaymentMethods().add(details);
+        final Map<String, Object> methodDetails = new HashMap<>(details);
+        methodDetails.put("type", type);
+        user.getPaymentMethods().add(methodDetails);
         
         return userRepository.save(user);
     }
 
     @Transactional
     @Audit(action = "USER_ADDRESS_ADD")
-    public User addAddress(UUID userId, Address address) {
-        User user = userRepository.findById(userId)
+    public User addAddress(final UUID userId, final Address address) {
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
-        // S'assurer qu'un ID est généré si non fourni
-        if (address.getId() == null) {
-            address.setId(java.util.UUID.randomUUID().toString());
+        if (address.getTechnicalId() == null) {
+            address.setTechnicalId(UUID.randomUUID().toString());
         }
         
         user.getAddresses().add(address);
@@ -101,23 +94,23 @@ public class UserService {
 
     @Transactional
     @Audit(action = "USER_ADDRESS_REMOVE")
-    public User removeAddress(UUID userId, String addressId) {
-        User user = userRepository.findById(userId)
+    public User removeAddress(final UUID userId, final String addressId) {
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
         
-        user.getAddresses().removeIf(addr -> addr.getId().equals(addressId));
+        user.getAddresses().removeIf(addr -> addr.getTechnicalId().equals(addressId));
         
         return userRepository.save(user);
     }
 
     @Transactional
     @Audit(action = "USER_ADDRESS_UPDATE")
-    public User updateAddress(UUID userId, String addressId, Address updatedAddress) {
-        User user = userRepository.findById(userId)
+    public User updateAddress(final UUID userId, final String addressId, final Address updatedAddress) {
+        final User user = userRepository.findById(userId)
                 .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
 
         user.getAddresses().stream()
-                .filter(addr -> addr.getId().equals(addressId))
+                .filter(addr -> addr.getTechnicalId().equals(addressId))
                 .findFirst()
                 .ifPresent(addr -> {
                     addr.setLabel(updatedAddress.getLabel());

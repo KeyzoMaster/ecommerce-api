@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -15,7 +16,7 @@ import java.util.Set;
 @Table(name = "iam_roles")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Role extends AbstractEntity {
 
     @Column(nullable = false, unique = true)
@@ -34,7 +35,8 @@ public class Role extends AbstractEntity {
     )
     private Set<Permission> permissions = new HashSet<>();
 
-    public Role(String name, String description) {
+    public Role(final String name, final String description) {
+        super();
         this.name = name;
         this.description = description;
     }

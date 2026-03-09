@@ -28,6 +28,10 @@
         </dependency>
         <dependency>
             <groupId>com.lemzo</groupId>
+            <artifactId>iam</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lemzo</groupId>
             <artifactId>security</artifactId>
         </dependency>
         <dependency>
@@ -52,12 +56,12 @@
         </dependency>
     </dependencies>
 
-        <build>
+    <build>
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        </build>
-        </project>
+    </build>
+</project>

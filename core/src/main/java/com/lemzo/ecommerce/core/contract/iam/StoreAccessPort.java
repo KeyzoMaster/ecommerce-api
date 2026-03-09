@@ -1,14 +1,14 @@
 package com.lemzo.ecommerce.core.contract.iam;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Port pour accéder aux informations de base des boutiques depuis les autres modules.
+ * Port pour vérifier l'accès aux boutiques (implémenté par IAM).
  */
+@FunctionalInterface
 public interface StoreAccessPort {
     /**
-     * Retourne l'identifiant du propriétaire d'une boutique.
+     * Vérifie si l'utilisateur possède ou gère la boutique.
      */
-    Optional<UUID> getStoreOwnerId(UUID storeId);
+    boolean canAccessStore(UUID userId, UUID storeId);
 }

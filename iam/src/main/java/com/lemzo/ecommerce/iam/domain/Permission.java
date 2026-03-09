@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 
 /**
  * Entité représentant une permission spécifique sur une ressource.
@@ -17,7 +18,7 @@ import lombok.Setter;
 })
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Permission extends AbstractEntity {
 
     @Enumerated(EnumType.STRING)
@@ -28,7 +29,8 @@ public class Permission extends AbstractEntity {
     @Column(nullable = false)
     private PbacAction action;
 
-    public Permission(ResourceType resourceType, PbacAction action) {
+    public Permission(final ResourceType resourceType, final PbacAction action) {
+        super();
         this.resourceType = resourceType;
         this.action = action;
     }

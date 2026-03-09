@@ -1,18 +1,19 @@
 package com.lemzo.ecommerce.core.api.seeding;
 
 /**
- * Interface pour les composants de remplissage de base de données.
+ * Contrat pour les composants de seeding de données.
  */
+@FunctionalInterface
 public interface DataSeeder {
     /**
-     * Exécute le remplissage des données.
+     * Exécute le seeding.
      */
     void seed();
-    
+
     /**
-     * Définit l'ordre d'exécution (priorité basse = exécuté en premier).
+     * Priorité d'exécution (plus bas = premier).
      */
     default int priority() {
-        return 0;
+        return 10;
     }
 }

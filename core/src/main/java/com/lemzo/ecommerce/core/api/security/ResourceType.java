@@ -8,40 +8,20 @@ import java.util.Set;
  */
 public enum ResourceType {
 
-    /** Racine système. */
-    PLATFORM(null, Set.of(MANAGE, READ, EXPORT)),
-
-    /** Gestion des utilisateurs (Enfant de PLATFORM). */
-    IAM(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, MANAGE)),
-
-    /** Gestion des boutiques (Enfant de PLATFORM). */
-    STORE(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, MANAGE)),
-
-    /** Catalogue racine. */
-    CATALOG(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, EXPORT, IMPORT)),
-
-    /** Produits (Enfant de CATALOG). */
-    PRODUCT(CATALOG, Set.of(READ, CREATE, UPDATE, DELETE)),
-
-    /** Ventes racine. */
-    SALES(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, APPROVE, REJECT, CANCEL, EXPORT)),
-
-    /** Commandes (Enfant de SALES). */
+    PLATFORM(null, Set.of(MANAGE)),
+    STORE(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE)),
+    CATALOG(STORE, Set.of(READ, CREATE, UPDATE, DELETE)),
+    PRODUCT(CATALOG, Set.of(READ, UPDATE, DELETE)),
+    SALES(STORE, Set.of(READ, MANAGE)),
     ORDER(SALES, Set.of(READ, CREATE, UPDATE)),
-
-    /** Stocks (Enfant de PRODUCT). */
-    INVENTORY(PRODUCT, Set.of(READ, UPDATE, MANAGE_STOCK, EXPORT)),
-
-    /** Marketing racine. */
-    MARKETING(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, APPLY_COUPON)),
-
-    /** Analytics (Enfant de PLATFORM). */
-    ANALYTICS(PLATFORM, Set.of(READ, VIEW_ANALYTICS, EXPORT));
+    INVENTORY(STORE, Set.of(READ, UPDATE)),
+    MARKETING(STORE, Set.of(READ, CREATE, APPLY_COUPON)),
+    ANALYTICS(STORE, Set.of(VIEW_ANALYTICS));
 
     private final ResourceType parent;
     private final Set<PbacAction> supportedActions;
 
-    ResourceType(ResourceType parent, Set<PbacAction> supportedActions) {
+    ResourceType(final ResourceType parent, final Set<PbacAction> supportedActions) {
         this.parent = parent;
         this.supportedActions = supportedActions;
     }
@@ -50,7 +30,7 @@ public enum ResourceType {
         return parent;
     }
 
-    public boolean supports(PbacAction action) {
+    public boolean supports(final PbacAction action) {
         return supportedActions.contains(action);
     }
 }

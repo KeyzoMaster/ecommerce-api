@@ -1,6 +1,7 @@
 package com.lemzo.ecommerce.payment.infrastructure.cod;
 
 import com.lemzo.ecommerce.core.contract.payment.PaymentPort;
+import com.lemzo.ecommerce.core.contract.payment.PaymentResult;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Named;
 import java.math.BigDecimal;
@@ -13,22 +14,19 @@ import java.util.UUID;
 @Named("cod")
 public class CodAdapter implements PaymentPort {
 
-    @Override
-    public PaymentResult initiate(BigDecimal amount, String currency, String orderId, String description) {
-        // Pour COD, il n'y a pas de redirection, on confirme l'intention immédiatement
-        String ref = "COD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
-        return PaymentResult.ok(ref, null);
+    public CodAdapter() {
+        // Constructeur explicite
     }
 
     @Override
-    public PaymentStatus getStatus(String transactionId) {
-        // Le statut reste PENDING tant que le livreur n'a pas encaissé
-        return PaymentStatus.PENDING;
+    public PaymentResult initiate(final BigDecimal amount, final String currency, final String orderId, final String description) {
+        final var ref = "COD-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+        return PaymentResult.success(ref, null);
     }
 
     @Override
-    public PaymentResult refund(String transactionId, BigDecimal amount) {
-        // Le remboursement COD est géré manuellement ou via avoir
-        return PaymentResult.error("NOT_SUPPORTED", "Le remboursement automatique n'est pas supporté pour le COD");
+    public PaymentResult verify(final String transactionId) {
+        // En COD, on considère que c'est en attente jusqu'à livraison physique
+        return PaymentResult.success(transactionId, null);
     }
 }

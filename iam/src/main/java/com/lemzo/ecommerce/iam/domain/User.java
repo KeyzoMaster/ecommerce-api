@@ -1,16 +1,19 @@
 package com.lemzo.ecommerce.iam.domain;
 
 import com.lemzo.ecommerce.core.entity.AbstractEntity;
+import com.lemzo.ecommerce.core.entity.converter.JsonbConverter;
 import jakarta.persistence.*;
 import com.lemzo.ecommerce.core.domain.Address;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 
 /**
  * Entité représentant un utilisateur du système.
@@ -19,7 +22,7 @@ import lombok.Setter;
 @Table(name = "iam_users")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class User extends AbstractEntity {
 
     @Column(nullable = false, unique = true)
@@ -45,11 +48,10 @@ public class User extends AbstractEntity {
 
     /**
      * Moyens de paiement enregistrés (Mocks).
-     * Exemple : [{"type": "WAVE", "phone": "77..."}, {"type": "CARD", "last4": "4242"}]
      */
-    @Convert(converter = com.lemzo.ecommerce.core.entity.converter.JsonbConverter.class)
+    @Convert(converter = JsonbConverter.class)
     @Column(name = "payment_methods", columnDefinition = "jsonb")
-    private java.util.List<java.util.Map<String, Object>> paymentMethods = new java.util.ArrayList<>();
+    private List<Map<String, Object>> paymentMethods = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "iam_user_addresses", joinColumns = @JoinColumn(name = "user_id"))
@@ -74,7 +76,8 @@ public class User extends AbstractEntity {
     )
     private Set<Permission> adhocPermissions = new HashSet<>();
 
-    public User(String username, String email, String password) {
+    public User(final String username, final String email, final String password) {
+        super();
         this.username = username;
         this.email = email;
         this.password = password;

@@ -1,66 +1,65 @@
 package com.lemzo.ecommerce.audit.service;
 
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.concurrent.ManagedExecutorService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- * Service d'audit utilisant MongoDB et les Threads Virtuels (Jakarta EE 11).
+ * Service d'audit utilisant MongoDB et les Virtual Threads.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class AuditService {
 
     private static final Logger LOGGER = Logger.getLogger(AuditService.class.getName());
     private static final String COLLECTION_NAME = "audit_logs";
 
-    @Inject
-    private MongoDatabase mongoDatabase;
+    private final MongoDatabase mongoDatabase;
+    private final ManagedExecutorService executor;
 
-    /**
-     * Utilise le ManagedExecutorService standard du serveur.
-     * Dans Jakarta EE 11 / GlassFish 8, ce pool peut être configuré pour utiliser les Virtual Threads (Project Loom).
-     */
-    @Inject
-    private ManagedExecutorService executor;
-
-    private MongoCollection<Document> collection;
+    private MongoCollection<Document> auditCollection;
 
     @PostConstruct
     public void init() {
-        this.collection = mongoDatabase.getCollection(COLLECTION_NAME);
+        this.auditCollection = mongoDatabase.getCollection(COLLECTION_NAME);
     }
 
-    /**
-     * Enregistre un log d'audit de manière asynchrone sur un Thread Virtuel.
-     */
-    public void log(UUID userId, String action, String resourceType, String resourceId, 
-                    String details, String clientIp, String userAgent) {
+    public void log(final UUID userId, final String action, final ResourceType resourceType, 
+                    final String resourceId, final Map<String, Object> details, 
+                    final String clientIp, final String userAgent) {
         
         executor.submit(() -> {
-            Document doc = new Document()
-                    .append("userId", userId != null ? userId.toString() : null)
+            final Document auditDocument = new Document()
+                    .append("userId", Optional.ofNullable(userId).map(UUID::toString).orElse("anonymous"))
                     .append("action", action)
-                    .append("resourceType", resourceType)
+                    .append("resourceType", Optional.ofNullable(resourceType).map(Enum::name).orElse("PLATFORM"))
                     .append("resourceId", resourceId)
-                    .append("details", details)
+                    .append("details", new Document(Optional.ofNullable(details).orElse(Map.of())))
                     .append("clientIp", clientIp)
                     .append("userAgent", userAgent)
                     .append("timestamp", LocalDateTime.now(ZoneId.of("UTC")).toString());
 
             try {
-                collection.insertOne(doc);
-                LOGGER.fine("Audit log sauvegardé via Virtual Thread: " + action);
-            } catch (Exception e) {
-                LOGGER.log(Level.SEVERE, "Échec de sauvegarde asynchrone du log d'audit", e);
+                auditCollection.insertOne(auditDocument);
+                if (LOGGER.isLoggable(Level.FINE)) {
+                    LOGGER.fine(() -> "Audit sauvegardé: " + action);
+                }
+            } catch (final Exception exception) {
+                LOGGER.log(Level.SEVERE, "Erreur audit", exception);
             }
         });
     }

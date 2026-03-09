@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -16,7 +17,7 @@ import java.util.UUID;
 @Table(name = "iam_stores")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store extends AbstractEntity implements Ownable {
 
     @Column(nullable = false, unique = true)
@@ -34,7 +35,8 @@ public class Store extends AbstractEntity implements Ownable {
     @Column(name = "is_active", nullable = false)
     private boolean active = true;
 
-    public Store(String name, String slug, User owner) {
+    public Store(final String name, final String slug, final User owner) {
+        super();
         this.name = name;
         this.slug = slug;
         this.owner = owner;

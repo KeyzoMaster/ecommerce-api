@@ -1,73 +1,60 @@
 package com.lemzo.ecommerce.domain.analytics.api;
 
 import com.lemzo.ecommerce.core.api.security.HasPermission;
-import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.api.security.PbacAction;
-import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
-import com.lemzo.ecommerce.domain.analytics.api.dto.AnalyticsDashboardResponse;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.analytics.service.AnalyticsService;
 import jakarta.inject.Inject;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.GET;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
-import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import jakarta.ws.rs.core.UriInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
-import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
- * Ressource JAX-RS pour la consultation des analytics.
+ * Ressource pour la consultation des statistiques.
  */
 @Path("/analytics")
 @Produces(MediaType.APPLICATION_JSON)
-@Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Analytics", description = "Statistiques et rapports de ventes")
-@SecurityRequirement(name = "jwt")
+@Tag(name = "Analytics", description = "Tableaux de bord et rapports")
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AnalyticsResource {
 
-    @Inject
-    private AnalyticsService analyticsService;
-
-    @Inject
-    private HateoasMapper hateoasMapper;
-
-    @Context
-    private UriInfo uriInfo;
+    private final AnalyticsService analyticsService;
 
     @GET
     @Path("/dashboard")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
-    @Operation(summary = "Obtenir les stats du dashboard", description = "Retourne les tendances avec liens hypermédias")
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
+    @Operation(summary = "Récupérer les stats du tableau de bord")
     public Response getDashboard() {
-        AnalyticsDashboardResponse stats = analyticsService.getDashboardStats();
-        return Response.ok(hateoasMapper.toResource(stats, uriInfo)).build();
+        return Response.ok(analyticsService.getDashboard()).build();
     }
 
     @GET
-    @Path("/export/products/csv")
-    @Produces("text/csv; charset=UTF-8")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
-    @Operation(summary = "Exporter le top produits", description = "Génère un rapport CSV des produits les plus vendus")
-    public Response exportProductsCsv() {
-        String csv = analyticsService.exportTopProductsToCsv();
+    @Path("/export/top-products")
+    @Produces("text/csv")
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
+    @Operation(summary = "Exporter le top produits en CSV")
+    public Response exportTopProducts() {
+        final var csv = analyticsService.exportTopProductsCsv();
         return Response.ok(csv)
-                .header("Content-Disposition", "attachment; filename=\"top_produits.csv\"")
+                .header("Content-Disposition", "attachment; filename=\"top_products.csv\"")
                 .build();
     }
 
     @GET
-    @Path("/export/sales/csv")
-    @Produces("text/csv; charset=UTF-8")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
-    @Operation(summary = "Exporter les ventes", description = "Génère un rapport CSV des ventes quotidiennes")
-    public Response exportSalesCsv() {
-        String csv = analyticsService.exportDailyTrendsToCsv();
+    @Path("/export/daily-trends")
+    @Produces("text/csv")
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
+    @Operation(summary = "Exporter les tendances quotidiennes en CSV")
+    public Response exportDailyTrends() {
+        final var csv = analyticsService.exportDailyTrendsCsv();
         return Response.ok(csv)
-                .header("Content-Disposition", "attachment; filename=\"ventes_journalieres.csv\"")
+                .header("Content-Disposition", "attachment; filename=\"daily_trends.csv\"")
                 .build();
     }
 }

@@ -2,20 +2,11 @@ package com.lemzo.ecommerce.domain.sales.domain;
 
 import com.lemzo.ecommerce.core.domain.Address;
 import com.lemzo.ecommerce.core.entity.AbstractEntity;
-import jakarta.persistence.AttributeOverride;
-import jakarta.persistence.AttributeOverrides;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.AccessLevel;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +19,7 @@ import java.util.UUID;
 @Table(name = "sales_orders")
 @Getter
 @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Order extends AbstractEntity {
 
     @Column(name = "user_id", nullable = false)
@@ -42,11 +33,10 @@ public class Order extends AbstractEntity {
     private OrderStatus status = OrderStatus.PENDING;
 
     /**
-     * Prix total de la commande (Articles + Frais de port - Remises).
-     * Calculé en Java lors du passage de commande.
+     * Montant total de la commande (Articles + Frais de port - Remises).
      */
-    @Column(name = "total_price", nullable = false)
-    private BigDecimal totalPrice = BigDecimal.ZERO;
+    @Column(name = "total_amount", nullable = false)
+    private BigDecimal totalAmount = BigDecimal.ZERO;
 
     @Column(nullable = false, length = 3)
     private String currency = "XOF";
@@ -75,7 +65,13 @@ public class Order extends AbstractEntity {
     @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<OrderItem> items = new ArrayList<>();
 
-    public void addItem(OrderItem item) {
+    public Order(final UUID userId, final String orderNumber) {
+        super();
+        this.userId = userId;
+        this.orderNumber = orderNumber;
+    }
+
+    public void addItem(final OrderItem item) {
         items.add(item);
         item.setOrder(this);
     }

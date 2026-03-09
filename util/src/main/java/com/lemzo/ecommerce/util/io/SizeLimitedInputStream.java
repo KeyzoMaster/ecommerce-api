@@ -1,50 +1,44 @@
 package com.lemzo.ecommerce.util.io;
 
-import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
 import java.io.FilterInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * Wrapper d'InputStream qui limite la lecture à un nombre maximal d'octets.
- * Prévient les attaques par déni de service via de très gros fichiers.
+ * InputStream qui limite la quantité de données lues pour éviter les attaques DoS.
  */
 public class SizeLimitedInputStream extends FilterInputStream {
 
     private final long maxSize;
-    private long bytesRead = 0;
+    private long bytesRead;
 
-    public SizeLimitedInputStream(InputStream in, long maxSize) {
-        super(in);
+    public SizeLimitedInputStream(final InputStream inputStream, final long maxSize) {
+        super(inputStream);
         this.maxSize = maxSize;
     }
 
     @Override
     public int read() throws IOException {
-        int b = super.read();
-        if (b != -1) {
-            updateCount(1);
+        final int byteRead = super.read();
+        if (byteRead != -1) {
+            checkSize(1);
         }
-        return b;
+        return byteRead;
     }
 
     @Override
-    public int read(byte[] b, int off, int len) throws IOException {
-        int n = super.read(b, off, len);
-        if (n != -1) {
-            updateCount(n);
+    public int read(final byte[] buffer, final int offset, final int length) throws IOException {
+        final int bytesCount = super.read(buffer, offset, length);
+        if (bytesCount != -1) {
+            checkSize(bytesCount);
         }
-        return n;
+        return bytesCount;
     }
 
-    private void updateCount(int n) {
-        bytesRead += n;
+    private void checkSize(final long count) throws IOException {
+        bytesRead += count;
         if (bytesRead > maxSize) {
-            throw new BusinessRuleException("error.storage.quota_exceeded");
+            throw new IOException("Taille maximale du flux dépassée : " + maxSize);
         }
-    }
-
-    public long getBytesRead() {
-        return bytesRead;
     }
 }

@@ -13,6 +13,7 @@ import com.lemzo.ecommerce.iam.service.UserService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 import java.util.Set;
 import java.util.logging.Logger;
 
@@ -20,50 +21,45 @@ import java.util.logging.Logger;
  * Seeder pour les utilisateurs et la configuration PBAC initiale.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class IamSeeder implements DataSeeder {
 
     private static final Logger LOGGER = Logger.getLogger(IamSeeder.class.getName());
 
-    @Inject
-    private UserService userService;
-
-    @Inject
-    private RoleRepository roleRepository;
-
-    @Inject
-    private PermissionRepository permissionRepository;
-
-    @Inject
-    private UserRepository userRepository;
+    private final UserService userService;
+    private final RoleRepository roleRepository;
+    private final PermissionRepository permissionRepository;
+    private final UserRepository userRepository;
 
     @Override
     @Transactional
     public void seed() {
         // 1. Assurer l'existence des permissions nécessaires
-        Permission platManage = getOrCreatePermission(ResourceType.PLATFORM, PbacAction.MANAGE);
-        Permission catRead = getOrCreatePermission(ResourceType.CATALOG, PbacAction.READ);
-        Permission catCreate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.CREATE);
-        Permission catUpdate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.UPDATE);
-        Permission prodUpdate = getOrCreatePermission(ResourceType.PRODUCT, PbacAction.UPDATE);
-        Permission salesRead = getOrCreatePermission(ResourceType.SALES, PbacAction.READ);
-        Permission salesManage = getOrCreatePermission(ResourceType.SALES, PbacAction.MANAGE);
-        Permission orderCreate = getOrCreatePermission(ResourceType.ORDER, PbacAction.CREATE);
-        Permission orderRead = getOrCreatePermission(ResourceType.ORDER, PbacAction.READ);
-        Permission viewStats = getOrCreatePermission(ResourceType.ANALYTICS, PbacAction.VIEW_ANALYTICS);
-        Permission applyCoupon = getOrCreatePermission(ResourceType.MARKETING, PbacAction.APPLY_COUPON);
+        final var platManage = getOrCreatePermission(ResourceType.PLATFORM, PbacAction.MANAGE);
+        final var storeCreate = getOrCreatePermission(ResourceType.STORE, PbacAction.CREATE);
+        final var catRead = getOrCreatePermission(ResourceType.CATALOG, PbacAction.READ);
+        final var catCreate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.CREATE);
+        final var catUpdate = getOrCreatePermission(ResourceType.CATALOG, PbacAction.UPDATE);
+        final var prodUpdate = getOrCreatePermission(ResourceType.PRODUCT, PbacAction.UPDATE);
+        final var salesRead = getOrCreatePermission(ResourceType.SALES, PbacAction.READ);
+        final var salesManage = getOrCreatePermission(ResourceType.SALES, PbacAction.MANAGE);
+        final var orderCreate = getOrCreatePermission(ResourceType.ORDER, PbacAction.CREATE);
+        final var orderRead = getOrCreatePermission(ResourceType.ORDER, PbacAction.READ);
+        final var viewStats = getOrCreatePermission(ResourceType.ANALYTICS, PbacAction.VIEW_ANALYTICS);
+        final var applyCoupon = getOrCreatePermission(ResourceType.MARKETING, PbacAction.APPLY_COUPON);
 
         // 2. Assurer l'existence des rôles et affecter les permissions
-        Role adminRole = roleRepository.findByName("SUPER_ADMIN")
+        final var adminRole = roleRepository.findByName("SUPER_ADMIN")
                 .orElseGet(() -> roleRepository.insert(new Role("SUPER_ADMIN", "Administrateur système")));
         adminRole.getPermissions().add(platManage);
         roleRepository.save(adminRole);
         
-        Role ownerRole = roleRepository.findByName("STORE_OWNER")
+        final var ownerRole = roleRepository.findByName("STORE_OWNER")
                 .orElseGet(() -> roleRepository.insert(new Role("STORE_OWNER", "Propriétaire de boutique")));
-        ownerRole.getPermissions().addAll(Set.of(catRead, catCreate, catUpdate, prodUpdate, salesRead, salesManage, viewStats));
+        ownerRole.getPermissions().addAll(Set.of(catRead, catCreate, catUpdate, prodUpdate, salesRead, salesManage, viewStats, storeCreate));
         roleRepository.save(ownerRole);
         
-        Role clientRole = roleRepository.findByName("CLIENT")
+        final var clientRole = roleRepository.findByName("CLIENT")
                 .orElseGet(() -> roleRepository.insert(new Role("CLIENT", "Client standard")));
         clientRole.getPermissions().addAll(Set.of(catRead, orderCreate, orderRead, applyCoupon));
         roleRepository.save(clientRole);
@@ -74,15 +70,15 @@ public class IamSeeder implements DataSeeder {
         createIfMissing("client", "client@ecommerce.local", "client123", clientRole);
     }
 
-    private Permission getOrCreatePermission(ResourceType resource, PbacAction action) {
+    private Permission getOrCreatePermission(final ResourceType resource, final PbacAction action) {
         return permissionRepository.findByResourceTypeAndAction(resource, action)
                 .orElseGet(() -> permissionRepository.insert(new Permission(resource, action)));
     }
 
-    private void createIfMissing(String username, String email, String password, Role role) {
+    private void createIfMissing(final String username, final String email, final String password, final Role role) {
         if (userService.findByIdentifier(username).isEmpty()) {
-            LOGGER.info("Seeding user: " + username + " with role: " + role.getName());
-            User user = userService.createUser(username, email, password);
+            LOGGER.info(() -> "Seeding user: " + username + " with role: " + role.getName());
+            final var user = userService.register(username, email, password);
             user.getRoles().add(role);
             userRepository.save(user);
         }

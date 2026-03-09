@@ -11,9 +11,11 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.SecurityContext;
 import jakarta.ws.rs.core.UriInfo;
+import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
-import java.util.UUID;
 
 /**
  * Ressource pour la gestion du panier utilisateur.
@@ -21,14 +23,13 @@ import java.util.UUID;
 @Path("/sales/cart")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Tag(name = "Panier", description = "Gestion des articles du panier (Redis)")
+@Tag(name = "Ventes : Panier", description = "Gestion du panier d'achat")
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CartResource {
 
-    @Inject
-    private CartService cartService;
-
-    @Inject
-    private HateoasMapper hateoasMapper;
+    private final CartService cartService;
+    private final HateoasMapper hateoasMapper;
 
     @Context
     private SecurityContext securityContext;
@@ -37,35 +38,36 @@ public class CartResource {
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Consulter mon panier", description = "Retourne le contenu actuel du panier de l'utilisateur")
+    @Operation(summary = "Récupérer mon panier")
     public Response getCart() {
-        var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
-        Cart cart = cartService.getCart(principal.getUserId());
+        final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
+        final var cart = cartService.getCart(principal.getUserId()).orElse(new Cart(principal.getUserId(), java.util.List.of()));
         return Response.ok(hateoasMapper.toResource(cart, uriInfo)).build();
     }
 
     @POST
     @Path("/items")
-    @Operation(summary = "Ajouter un article", description = "Ajoute un produit au panier")
-    public Response addItem(@QueryParam("productId") UUID productId, @QueryParam("quantity") @DefaultValue("1") int quantity) {
-        var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
-        Cart cart = cartService.addItem(principal.getUserId(), productId, quantity);
+    @Operation(summary = "Ajouter un produit au panier")
+    public Response addItem(@QueryParam("productId") final java.util.UUID productId, 
+                            @QueryParam("quantity") @DefaultValue("1") final int quantity) {
+        final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
+        final var cart = cartService.addToCart(principal.getUserId(), productId, quantity);
         return Response.ok(hateoasMapper.toResource(cart, uriInfo)).build();
     }
 
     @DELETE
     @Path("/items/{productId}")
-    @Operation(summary = "Retirer un article", description = "Supprime un produit du panier")
-    public Response removeItem(@PathParam("productId") UUID productId) {
-        var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
-        Cart cart = cartService.removeItem(principal.getUserId(), productId);
+    @Operation(summary = "Retirer un produit du panier")
+    public Response removeItem(@PathParam("productId") final java.util.UUID productId) {
+        final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
+        final var cart = cartService.removeFromCart(principal.getUserId(), productId);
         return Response.ok(hateoasMapper.toResource(cart, uriInfo)).build();
     }
 
     @DELETE
-    @Operation(summary = "Vider le panier", description = "Supprime tous les articles du panier")
+    @Operation(summary = "Vider le panier")
     public Response clearCart() {
-        var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
+        final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         cartService.clearCart(principal.getUserId());
         return Response.noContent().build();
     }

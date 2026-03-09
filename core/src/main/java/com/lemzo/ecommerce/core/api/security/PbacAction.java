@@ -7,32 +7,16 @@ import java.util.Set;
  * Définit les actions possibles avec logique d'implicité.
  */
 public enum PbacAction {
-    READ, CREATE, UPDATE, DELETE, MANAGE, 
-    APPROVE, REJECT, CANCEL, EXPORT, IMPORT,
-    VIEW_ANALYTICS, MANAGE_STOCK, APPLY_COUPON;
+    READ, CREATE, UPDATE, DELETE, MANAGE, VIEW_ANALYTICS, APPLY_COUPON;
 
     /**
-     * Retourne l'ensemble des actions qui accordent l'action cible.
-     * Exemple: MANAGE accorde tout. UPDATE accorde READ.
+     * Retourne l'ensemble des actions qui accordent implicitement cette action.
      */
     public Set<PbacAction> getGrantingActions() {
-        Set<PbacAction> granting = EnumSet.of(this);
+        final Set<PbacAction> granting = EnumSet.of(this, MANAGE);
         
-        // MANAGE est le super-pouvoir
-        if (this != MANAGE) {
-            granting.add(MANAGE);
-        }
-
         switch (this) {
-            case READ -> {
-                granting.add(UPDATE);
-                granting.add(APPROVE);
-                granting.add(EXPORT);
-            }
-            case VIEW_ANALYTICS -> {
-                granting.add(MANAGE);
-            }
-            // Ajoutez d'autres règles d'implicité ici
+            case READ, VIEW_ANALYTICS -> granting.add(MANAGE);
             default -> {}
         }
         
