@@ -12,6 +12,9 @@ import jakarta.transaction.Transactional;
 import jakarta.data.Order;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
@@ -22,23 +25,22 @@ import java.util.UUID;
  * Service de gestion du catalogue produits.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CatalogService {
 
-    @Inject
-    private ProductRepository productRepository;
-
-    @Inject
-    private CategoryRepository categoryRepository;
+    private final ProductRepository productRepository;
+    private final CategoryRepository categoryRepository;
 
     @Transactional
     @Audit(action = "PRODUCT_CREATE")
     public Product createProduct(UUID storeId, String name, String slug, String sku, BigDecimal price, UUID categoryId, 
                                Map<String, Object> attributes, String imageUrl, BigDecimal weight, 
                                Map<String, Object> shippingConfig) {
-        Category category = categoryRepository.findById(categoryId)
+        var category = categoryRepository.findById(categoryId)
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée: " + categoryId));
 
-        Product product = new Product(name, slug, sku, price, category);
+        var product = new Product(name, slug, sku, price, category);
         product.setStoreId(storeId);
         product.setAttributes(attributes);
         product.setImageUrl(imageUrl);
@@ -53,7 +55,7 @@ public class CatalogService {
     public Product updateProduct(UUID id, String name, String slug, String sku, String description, 
                                BigDecimal price, UUID categoryId, Boolean active, Map<String, Object> attributes, 
                                String imageUrl, BigDecimal weight, Map<String, Object> shippingConfig) {
-        Product product = productRepository.findById(id)
+        var product = productRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé: " + id));
 
         Optional.ofNullable(name).ifPresent(product::setName);
@@ -67,11 +69,9 @@ public class CatalogService {
         Optional.ofNullable(weight).ifPresent(product::setWeight);
         Optional.ofNullable(shippingConfig).ifPresent(product::setShippingConfig);
 
-        if (categoryId != null) {
-            Category category = categoryRepository.findById(categoryId)
-                    .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée: " + categoryId));
-            product.setCategory(category);
-        }
+        Optional.ofNullable(categoryId)
+                .flatMap(categoryRepository::findById)
+                .ifPresent(product::setCategory);
 
         return productRepository.save(product);
     }
@@ -120,7 +120,7 @@ public class CatalogService {
     @Transactional
     @Audit(action = "CATEGORY_CREATE")
     public Category createCategory(String name, String slug, String description, UUID parentId) {
-        Category category = new Category(name, slug, description);
+        var category = new Category(name, slug, description);
         
         Optional.ofNullable(parentId)
                 .flatMap(categoryRepository::findById)

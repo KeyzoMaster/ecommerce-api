@@ -72,7 +72,13 @@ class SalesServiceTest {
         product.setId(productId);
         product.setWeight(new BigDecimal("0.5"));
         
-        shippingAddress = new Address("Street", "Dakar", "10000", "Sénégal");
+        shippingAddress = Address.builder()
+                .label("Maison")
+                .street("Street")
+                .city("Dakar")
+                .zipCode("10000")
+                .country("Sénégal")
+                .build();
     }
 
     @Test

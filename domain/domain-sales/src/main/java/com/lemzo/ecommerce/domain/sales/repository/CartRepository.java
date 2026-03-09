@@ -1,13 +1,14 @@
 package com.lemzo.ecommerce.domain.sales.repository;
 
 import com.lemzo.ecommerce.domain.sales.domain.Cart;
+import com.lemzo.ecommerce.storage.infrastructure.redis.JedisPoolProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.json.bind.Jsonb;
 import jakarta.json.bind.JsonbBuilder;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import java.util.ArrayList;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -15,34 +16,44 @@ import java.util.UUID;
  * Repository pour la gestion des paniers dans Redis.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CartRepository {
 
-    private static final String CART_PREFIX = "cart:";
+    private static final String KEY_PREFIX = "cart:";
+    private static final int EXPIRATION_SECONDS = 86400; // 24h
+    
+    private final JedisPoolProvider jedisPoolProvider;
     private final Jsonb jsonb = JsonbBuilder.create();
 
-    @Inject
-    private JedisPool jedisPool;
-
+    /**
+     * Sauvegarde le panier dans Redis.
+     */
     public void save(Cart cart) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            String key = CART_PREFIX + cart.userId();
-            jedis.set(key, jsonb.toJson(cart));
-            // Expire après 24 heures d'inactivité
-            jedis.expire(key, 86400);
+        var key = KEY_PREFIX + cart.userId();
+        try (var jedis = jedisPoolProvider.getResource()) {
+            jedis.setex(key, EXPIRATION_SECONDS, jsonb.toJson(cart));
         }
     }
 
+    /**
+     * Récupère le panier d'un utilisateur.
+     */
     public Optional<Cart> findByUserId(UUID userId) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            String data = jedis.get(CART_PREFIX + userId);
-            return Optional.ofNullable(data)
-                    .map(json -> jsonb.fromJson(json, Cart.class));
+        var key = KEY_PREFIX + userId;
+        try (var jedis = jedisPoolProvider.getResource()) {
+            return Optional.ofNullable(jedis.get(key))
+                    .map(data -> jsonb.fromJson(data, Cart.class));
         }
     }
 
+    /**
+     * Supprime le panier d'un utilisateur.
+     */
     public void deleteByUserId(UUID userId) {
-        try (Jedis jedis = jedisPool.getResource()) {
-            jedis.del(CART_PREFIX + userId);
+        var key = KEY_PREFIX + userId;
+        try (var jedis = jedisPoolProvider.getResource()) {
+            jedis.del(key);
         }
     }
 }

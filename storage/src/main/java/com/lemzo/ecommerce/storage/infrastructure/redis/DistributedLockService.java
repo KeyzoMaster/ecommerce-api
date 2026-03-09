@@ -2,45 +2,48 @@ package com.lemzo.ecommerce.storage.infrastructure.redis;
 
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import lombok.RequiredArgsConstructor;
 import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.params.SetParams;
-import java.time.Duration;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.function.Supplier;
-import java.util.logging.Logger;
 
 /**
- * Service de verrouillage distribué basé sur Redis (Jedis).
+ * Service de verrouillage distribué utilisant Redis.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
 public class DistributedLockService {
 
-    private static final Logger LOGGER = Logger.getLogger(DistributedLockService.class.getName());
-    private static final String LOCK_PREFIX = "lock:";
-
-    @Inject
-    private JedisPool jedisPool;
+    private final JedisPoolProvider jedisPoolProvider;
 
     /**
      * Exécute une action sous un verrou distribué.
      */
-    public <T> T executeWithLock(String lockKey, Duration timeout, Supplier<T> action) {
-        String key = LOCK_PREFIX + lockKey;
-        
-        try (Jedis jedis = jedisPool.getResource()) {
-            // NX: Set if not exists, PX: Expiry in milliseconds
-            String result = jedis.set(key, "LOCKED", SetParams.setParams().nx().px(timeout.toMillis()));
+    public <T> Optional<T> withLock(String lockKey, long timeoutSeconds, Supplier<T> action) {
+        var lockValue = UUID.randomUUID().toString();
+        var params = SetParams.setParams().nx().ex(timeoutSeconds);
 
-            if (!"OK".equals(result)) {
-                LOGGER.warning("Impossible d'acquérir le verrou: " + key);
-                throw new RuntimeException("Ressource occupée, veuillez réessayer plus tard.");
-            }
+        try (var jedis = jedisPoolProvider.getResource()) {
+            var result = jedis.set(lockKey, lockValue, params);
+            
+            return Optional.ofNullable(result)
+                    .filter(res -> res.equals("OK"))
+                    .map(res -> executeAndRelease(jedis, lockKey, lockValue, action));
+        } catch (Exception e) {
+            return Optional.empty();
+        }
+    }
 
-            try {
-                return action.get();
-            } finally {
-                jedis.del(key);
-            }
+    private <T> T executeAndRelease(Jedis jedis, String key, String value, Supplier<T> action) {
+        try {
+            return action.get();
+        } finally {
+            // Libération sécurisée : on ne supprime que si on possède le verrou
+            Optional.ofNullable(jedis.get(key))
+                    .filter(value::equals)
+                    .ifPresent(v -> jedis.del(key));
         }
     }
 }

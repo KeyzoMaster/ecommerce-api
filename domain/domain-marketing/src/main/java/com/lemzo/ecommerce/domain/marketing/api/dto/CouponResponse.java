@@ -5,6 +5,7 @@ import com.lemzo.ecommerce.domain.marketing.domain.Coupon.DiscountType;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Schema(description = "Détails d'un coupon de réduction")
@@ -31,13 +32,18 @@ public record CouponResponse(
     boolean active
 ) {
     public static CouponResponse from(Coupon coupon) {
+        var now = LocalDateTime.now();
+        var isExpired = Optional.ofNullable(coupon.getEndDate())
+                .map(end -> now.isAfter(end))
+                .orElse(false);
+
         return new CouponResponse(
             coupon.getId(),
             coupon.getCode(),
             coupon.getType(),
             coupon.getValue(),
             coupon.getEndDate(),
-            coupon.isExpired(),
+            isExpired,
             coupon.isActive()
         );
     }

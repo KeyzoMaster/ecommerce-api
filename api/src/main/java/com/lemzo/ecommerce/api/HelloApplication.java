@@ -11,7 +11,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.security.SecurityScheme;
 import org.eclipse.microprofile.openapi.annotations.security.SecuritySchemes;
 
-@ApplicationPath("/api")
+@ApplicationPath("/v1")
 @OpenAPIDefinition(
     info = @Info(
         title = "E-Commerce API",

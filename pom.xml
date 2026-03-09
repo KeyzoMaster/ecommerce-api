@@ -192,7 +192,7 @@
                 <version>11.3.2</version>
             </dependency>
 
-            <!-- Original Dependencies -->
+            <!-- Library Dependencies -->
             <dependency>
                 <groupId>jakarta.validation</groupId>
                 <artifactId>jakarta.validation-api</artifactId>
@@ -243,12 +243,6 @@
                 <scope>provided</scope>
             </dependency>
             <dependency>
-                <groupId>org.mockito</groupId>
-                <artifactId>mockito-core</artifactId>
-                <version>5.11.0</version>
-                <scope>test</scope>
-            </dependency>
-            <dependency>
                 <groupId>jakarta.enterprise</groupId>
                 <artifactId>jakarta.enterprise.cdi-api</artifactId>
                 <version>4.1.0</version>
@@ -284,6 +278,8 @@
                 <version>6.1.0</version>
                 <scope>provided</scope>
             </dependency>
+
+            <!-- Test Dependencies -->
             <dependency>
                 <groupId>org.junit.jupiter</groupId>
                 <artifactId>junit-jupiter-api</artifactId>
@@ -296,8 +292,6 @@
                 <version>${junit.version}</version>
                 <scope>test</scope>
             </dependency>
-
-            <!-- Test Implementations for Jakarta APIs -->
             <dependency>
                 <groupId>org.glassfish.jersey.core</groupId>
                 <artifactId>jersey-common</artifactId>
@@ -369,13 +363,6 @@
                             <ruleset>category/java/performance.xml</ruleset>
                         </rulesets>
                     </configuration>
-                    <executions>
-                        <execution>
-                            <goals>
-                                <goal>check</goal>
-                            </goals>
-                        </execution>
-                    </executions>
                 </plugin>
             </plugins>
         </pluginManagement>

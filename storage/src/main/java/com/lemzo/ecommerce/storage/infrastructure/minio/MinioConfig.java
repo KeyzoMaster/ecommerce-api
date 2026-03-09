@@ -6,8 +6,10 @@ import io.minio.MinioClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Singleton;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.util.logging.Logger;
+import java.util.Optional;
 
 @ApplicationScoped
 public class MinioConfig {
@@ -35,19 +37,20 @@ public class MinioConfig {
                 .credentials(accessKey, secretKey)
                 .build();
 
-        try {
-            boolean exists = client.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build());
-            if (!exists) {
-                LOGGER.info("Création du bucket MinIO : " + bucketName);
-                client.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+        Optional.ofNullable(client).ifPresent(c -> {
+            try {
+                if (!c.bucketExists(BucketExistsArgs.builder().bucket(bucketName).build())) {
+                    LOGGER.info("Création du bucket MinIO : " + bucketName);
+                    c.makeBucket(MakeBucketArgs.builder().bucket(bucketName).build());
+                }
+            } catch (Exception e) {
+                LOGGER.severe("Impossible d'initialiser le bucket MinIO : " + e.getMessage());
             }
-        } catch (Exception e) {
-            LOGGER.severe("Impossible d'initialiser le bucket MinIO : " + e.getMessage());
-        }
+        });
     }
 
     @Produces
-    @ApplicationScoped
+    @Singleton
     public MinioClient minioClient() {
         return client;
     }

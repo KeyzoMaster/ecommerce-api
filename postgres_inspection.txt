@@ -1,0 +1,297 @@
+[
+    {
+        "Id": "c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a",
+        "Created": "2026-03-09T09:22:32.537790006Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "postgres"
+        ],
+        "State": {
+            "Status": "exited",
+            "Running": false,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 0,
+            "ExitCode": 1,
+            "Error": "",
+            "StartedAt": "2026-03-09T09:22:37.680403893Z",
+            "FinishedAt": "2026-03-09T09:22:38.58494504Z",
+            "Health": {
+                "Status": "unhealthy",
+                "FailingStreak": 0,
+                "Log": []
+            }
+        },
+        "Image": "sha256:69e8582b781cb44fa4557b98ed586fe68361e320d9b12f9707494335634f4f3d",
+        "ResolvConfPath": "/var/lib/docker/containers/c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a/resolv.conf",
+        "HostnamePath": "/var/lib/docker/containers/c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a/hostname",
+        "HostsPath": "/var/lib/docker/containers/c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a/hosts",
+        "LogPath": "/var/lib/docker/containers/c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a/c13f8e946f87b4677a583784c5e42eb8140d3c1d02fbbca7cad548845afb406a-json.log",
+        "Name": "/ecommerce_postgres",
+        "RestartCount": 0,
+        "Driver": "overlayfs",
+        "Platform": "linux",
+        "MountLabel": "",
+        "ProcessLabel": "",
+        "AppArmorProfile": "",
+        "ExecIDs": null,
+        "HostConfig": {
+            "Binds": [
+                "ecommerce_postgres_data:/var/lib/postgresql/data:rw",
+                "/home/lemzo/Documents/Workspace/ecommerce/scripts/postgres:/docker-entrypoint-initdb.d:rw"
+            ],
+            "ContainerIDFile": "",
+            "LogConfig": {
+                "Type": "json-file",
+                "Config": {}
+            },
+            "NetworkMode": "ecommerce_default",
+            "PortBindings": {
+                "5432/tcp": [
+                    {
+                        "HostIp": "",
+                        "HostPort": "5432"
+                    }
+                ]
+            },
+            "RestartPolicy": {
+                "Name": "no",
+                "MaximumRetryCount": 0
+            },
+            "AutoRemove": false,
+            "VolumeDriver": "",
+            "VolumesFrom": null,
+            "ConsoleSize": [
+                0,
+                0
+            ],
+            "CapAdd": null,
+            "CapDrop": null,
+            "CgroupnsMode": "private",
+            "Dns": null,
+            "DnsOptions": null,
+            "DnsSearch": null,
+            "ExtraHosts": [],
+            "GroupAdd": null,
+            "IpcMode": "private",
+            "Cgroup": "",
+            "Links": null,
+            "OomScoreAdj": 0,
+            "PidMode": "",
+            "Privileged": false,
+            "PublishAllPorts": false,
+            "ReadonlyRootfs": false,
+            "SecurityOpt": null,
+            "UTSMode": "",
+            "UsernsMode": "",
+            "ShmSize": 67108864,
+            "Runtime": "runc",
+            "Isolation": "",
+            "CpuShares": 0,
+            "Memory": 0,
+            "NanoCpus": 0,
+            "CgroupParent": "",
+            "BlkioWeight": 0,
+            "BlkioWeightDevice": null,
+            "BlkioDeviceReadBps": null,
+            "BlkioDeviceWriteBps": null,
+            "BlkioDeviceReadIOps": null,
+            "BlkioDeviceWriteIOps": null,
+            "CpuPeriod": 0,
+            "CpuQuota": 0,
+            "CpuRealtimePeriod": 0,
+            "CpuRealtimeRuntime": 0,
+            "CpusetCpus": "",
+            "CpusetMems": "",
+            "Devices": null,
+            "DeviceCgroupRules": null,
+            "DeviceRequests": null,
+            "MemoryReservation": 0,
+            "MemorySwap": 0,
+            "MemorySwappiness": null,
+            "OomKillDisable": null,
+            "PidsLimit": null,
+            "Ulimits": null,
+            "CpuCount": 0,
+            "CpuPercent": 0,
+            "IOMaximumIOps": 0,
+            "IOMaximumBandwidth": 0,
+            "MaskedPaths": [
+                "/proc/acpi",
+                "/proc/asound",
+                "/proc/interrupts",
+                "/proc/kcore",
+                "/proc/keys",
+                "/proc/latency_stats",
+                "/proc/sched_debug",
+                "/proc/scsi",
+                "/proc/timer_list",
+                "/proc/timer_stats",
+                "/sys/devices/virtual/powercap",
+                "/sys/firmware",
+                "/sys/devices/system/cpu/cpu0/thermal_throttle",
+                "/sys/devices/system/cpu/cpu1/thermal_throttle",
+                "/sys/devices/system/cpu/cpu2/thermal_throttle",
+                "/sys/devices/system/cpu/cpu3/thermal_throttle",
+                "/sys/devices/system/cpu/cpu4/thermal_throttle",
+                "/sys/devices/system/cpu/cpu5/thermal_throttle",
+                "/sys/devices/system/cpu/cpu6/thermal_throttle",
+                "/sys/devices/system/cpu/cpu7/thermal_throttle"
+            ],
+            "ReadonlyPaths": [
+                "/proc/bus",
+                "/proc/fs",
+                "/proc/irq",
+                "/proc/sys",
+                "/proc/sysrq-trigger"
+            ]
+        },
+        "Storage": {
+            "RootFS": {
+                "Snapshot": {
+                    "Name": "overlayfs"
+                }
+            }
+        },
+        "Mounts": [
+            {
+                "Type": "volume",
+                "Name": "409e709173416681a0c86a054f3202732b07d782b82a42a887262eb32f9cc0c3",
+                "Source": "/var/lib/docker/volumes/409e709173416681a0c86a054f3202732b07d782b82a42a887262eb32f9cc0c3/_data",
+                "Destination": "/var/lib/postgresql",
+                "Driver": "local",
+                "Mode": "",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "volume",
+                "Name": "ecommerce_postgres_data",
+                "Source": "/var/lib/docker/volumes/ecommerce_postgres_data/_data",
+                "Destination": "/var/lib/postgresql/data",
+                "Driver": "local",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": ""
+            },
+            {
+                "Type": "bind",
+                "Source": "/home/lemzo/Documents/Workspace/ecommerce/scripts/postgres",
+                "Destination": "/docker-entrypoint-initdb.d",
+                "Mode": "rw",
+                "RW": true,
+                "Propagation": "rprivate"
+            }
+        ],
+        "Config": {
+            "Hostname": "c13f8e946f87",
+            "Domainname": "",
+            "User": "",
+            "AttachStdin": false,
+            "AttachStdout": true,
+            "AttachStderr": true,
+            "ExposedPorts": {
+                "5432/tcp": {}
+            },
+            "Tty": false,
+            "OpenStdin": false,
+            "StdinOnce": false,
+            "Env": [
+                "POSTGRES_USER=e_user",
+                "POSTGRES_PASSWORD=e_password",
+                "POSTGRES_DB=ecommerce_db",
+                "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/lib/postgresql/18/bin",
+                "GOSU_VERSION=1.19",
+                "LANG=en_US.utf8",
+                "PG_MAJOR=18",
+                "PG_VERSION=18.3-1.pgdg13+1",
+                "PGDATA=/var/lib/postgresql/18/docker"
+            ],
+            "Cmd": [
+                "postgres"
+            ],
+            "Healthcheck": {
+                "Test": [
+                    "CMD-SHELL",
+                    "pg_isready -U e_user -d ecommerce_db"
+                ],
+                "Interval": 5000000000,
+                "Timeout": 5000000000,
+                "Retries": 5
+            },
+            "Image": "postgres:18",
+            "Volumes": {
+                "/var/lib/postgresql": {}
+            },
+            "WorkingDir": "",
+            "Entrypoint": [
+                "docker-entrypoint.sh"
+            ],
+            "Labels": {
+                "com.docker.compose.config-hash": "faa92a5ddcb5ce5fe18073af8daf60f3e90ecf4abf21537dee19c575d43d6d0e",
+                "com.docker.compose.container-number": "1",
+                "com.docker.compose.depends_on": "",
+                "com.docker.compose.image": "sha256:69e8582b781cb44fa4557b98ed586fe68361e320d9b12f9707494335634f4f3d",
+                "com.docker.compose.oneoff": "False",
+                "com.docker.compose.project": "ecommerce",
+                "com.docker.compose.project.config_files": "/home/lemzo/Documents/Workspace/ecommerce/docker-compose.yml",
+                "com.docker.compose.project.working_dir": "/home/lemzo/Documents/Workspace/ecommerce",
+                "com.docker.compose.service": "postgres",
+                "com.docker.compose.version": "5.1.0"
+            },
+            "StopSignal": "SIGINT"
+        },
+        "NetworkSettings": {
+            "SandboxID": "",
+            "SandboxKey": "",
+            "Ports": {},
+            "Networks": {
+                "ecommerce_default": {
+                    "IPAMConfig": null,
+                    "Links": null,
+                    "Aliases": [
+                        "ecommerce_postgres",
+                        "postgres"
+                    ],
+                    "DriverOpts": null,
+                    "GwPriority": 0,
+                    "NetworkID": "5e45431499336fe721f2efd322d78be160e52b40a6cb03cfae3efb2de072de12",
+                    "EndpointID": "",
+                    "Gateway": "",
+                    "IPAddress": "",
+                    "MacAddress": "",
+                    "IPPrefixLen": 0,
+                    "IPv6Gateway": "",
+                    "GlobalIPv6Address": "",
+                    "GlobalIPv6PrefixLen": 0,
+                    "DNSNames": [
+                        "ecommerce_postgres",
+                        "postgres",
+                        "c13f8e946f87"
+                    ]
+                }
+            }
+        },
+        "ImageManifestDescriptor": {
+            "mediaType": "application/vnd.oci.image.manifest.v1+json",
+            "digest": "sha256:e47309bc9a186ae58078b35a385dc89216d922c0f2f5cbb2bd6390e878dce27e",
+            "size": 3439,
+            "annotations": {
+                "com.docker.official-images.bashbrew.arch": "amd64",
+                "org.opencontainers.image.base.digest": "sha256:b29a157cc8540addda9836c23750e389693bf3b6d9a932a55504899e5601a66b",
+                "org.opencontainers.image.base.name": "debian:trixie-slim",
+                "org.opencontainers.image.created": "2026-02-26T19:22:08Z",
+                "org.opencontainers.image.revision": "6edb0a8c4def40c371514b34aef9037ec82d9110",
+                "org.opencontainers.image.source": "https://github.com/docker-library/postgres.git#6edb0a8c4def40c371514b34aef9037ec82d9110:18/trixie",
+                "org.opencontainers.image.url": "https://hub.docker.com/_/postgres",
+                "org.opencontainers.image.version": "18.3"
+            },
+            "platform": {
+                "architecture": "amd64",
+                "os": "linux"
+            }
+        }
+    }
+]

@@ -43,7 +43,7 @@ class MarketingServiceTest {
         
         assertEquals(new BigDecimal("1000"), discount);
         assertEquals(1, fixedCoupon.getUsedCount());
-        verify(couponRepository).update(fixedCoupon);
+        verify(couponRepository).save(fixedCoupon);
     }
 
     @Test

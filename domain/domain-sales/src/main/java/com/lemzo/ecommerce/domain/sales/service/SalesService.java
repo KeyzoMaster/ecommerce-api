@@ -19,6 +19,9 @@ import com.lemzo.ecommerce.payment.service.PaymentGatewayProvider;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
@@ -29,25 +32,16 @@ import java.util.UUID;
  * Service orchestrant le cycle de vie des ventes.
  */
 @ApplicationScoped
+@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class SalesService {
 
-    @Inject
-    private OrderRepository orderRepository;
-
-    @Inject
-    private ProductRepository productRepository;
-
-    @Inject
-    private InventoryService inventoryService;
-
-    @Inject
-    private PaymentGatewayProvider paymentGatewayProvider;
-
-    @Inject
-    private ShippingRateProvider shippingRateProvider;
-
-    @Inject
-    private MarketingService marketingService;
+    private final OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final InventoryService inventoryService;
+    private final PaymentGatewayProvider paymentGatewayProvider;
+    private final ShippingRateProvider shippingRateProvider;
+    private final MarketingService marketingService;
 
     /**
      * Crée une commande, réserve le stock et initialise le paiement.
@@ -55,68 +49,67 @@ public class SalesService {
     @Transactional
     @Audit(action = "ORDER_PLACE")
     public OrderResponse placeOrder(UUID userId, OrderCreateRequest request) {
-        Order order = new Order();
+        var order = new Order();
         order.setUserId(userId);
         order.setOrderNumber("ORD-" + System.currentTimeMillis());
         order.setStatus(Order.OrderStatus.PENDING);
         order.setShippingAddress(request.shippingAddress());
         order.setCouponCode(request.couponCode());
         
-        String methodStr = Optional.ofNullable(request.shippingMethod()).orElse("STANDARD");
-        ShippingMethod shippingMethod = ShippingMethod.valueOf(methodStr.toUpperCase());
+        var methodStr = Optional.ofNullable(request.shippingMethod()).orElse("STANDARD");
+        var shippingMethod = ShippingMethod.valueOf(methodStr.toUpperCase());
         order.setShippingMethod(shippingMethod.name());
 
-        final BigDecimal[] itemsTotal = {BigDecimal.ZERO};
+        // 1. Transformation fonctionnelle des requêtes en OrderItems avec réservation de stock
+        var items = request.items().stream()
+                .map(itemReq -> {
+                    var product = productRepository.findById(itemReq.productId())
+                            .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé: " + itemReq.productId()));
+                    
+                    inventoryService.reserveStock(product.getId(), itemReq.quantity());
+                    
+                    return new OrderItem(
+                            product.getId(), 
+                            product.getStoreId(),
+                            itemReq.quantity(), 
+                            product.getPrice(),
+                            product.getWeight(),
+                            product.getShippingConfig()
+                    );
+                })
+                .toList();
 
-        // Traitement fonctionnel des articles
-        request.items().forEach(itemReq -> {
-            Product product = productRepository.findById(itemReq.productId())
-                    .orElseThrow(() -> new ResourceNotFoundException("Produit non trouvé: " + itemReq.productId()));
+        items.forEach(order::addItem);
 
-            // 1. Réserver le stock
-            inventoryService.reserveStock(product.getId(), itemReq.quantity());
+        // 2. Calcul des montants via Stream
+        var itemsTotal = items.stream()
+                .map(item -> item.getUnitPrice().multiply(new BigDecimal(item.getQuantity())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-            // 2. Créer la ligne de commande (avec snapshot poids/config)
-            OrderItem item = new OrderItem(
-                    product.getId(), 
-                    product.getStoreId(),
-                    itemReq.quantity(), 
-                    product.getPrice(),
-                    product.getWeight(),
-                    product.getShippingConfig()
-            );
-            order.addItem(item);
-            
-            BigDecimal itemSubtotal = product.getPrice().multiply(new BigDecimal(itemReq.quantity()));
-            itemsTotal[0] = itemsTotal[0].add(itemSubtotal);
-        });
-
-        // 3. Application du coupon de réduction (sur le total des articles)
-        BigDecimal discount = marketingService.validateAndApplyCoupon(request.couponCode(), itemsTotal[0]);
+        // 3. Application du coupon
+        var discount = marketingService.validateAndApplyCoupon(request.couponCode(), itemsTotal);
         order.setDiscountAmount(discount);
 
         // 4. Calcul dynamique des frais de port
-        BigDecimal shippingCost = shippingRateProvider.calculateRate(
+        var shippingCost = shippingRateProvider.calculateRate(
                 null, 
                 order.getShippingAddress(),
                 shippingMethod,
-                itemsTotal[0].subtract(discount), // Le montant pour la gratuité peut dépendre du total après remise ? 
-                // Généralement c'est avant remise pour encourager l'achat mais dépend de la politique.
-                // Restons sur itemsTotal[0] pour la gratuité.
+                itemsTotal.subtract(discount),
                 order.getItems()
         );
         order.setShippingCost(shippingCost);
 
         // 5. Calcul du prix total final
-        BigDecimal finalPrice = itemsTotal[0].subtract(discount).add(shippingCost);
+        var finalPrice = itemsTotal.subtract(discount).add(shippingCost);
         order.setTotalPrice(finalPrice);
 
-        // 6. Sauvegarder la commande
-        Order savedOrder = orderRepository.insert(order);
+        // 6. Persistance
+        var savedOrder = orderRepository.insert(order);
 
-        // 7. Initialiser le paiement
-        PaymentPort gateway = paymentGatewayProvider.getGateway(request.paymentProvider());
-        PaymentPort.PaymentResult paymentResult = gateway.initiate(
+        // 7. Initialisation du paiement
+        var gateway = paymentGatewayProvider.getGateway(request.paymentProvider());
+        var paymentResult = gateway.initiate(
                 finalPrice, 
                 savedOrder.getCurrency(), 
                 savedOrder.getId().toString(), 
@@ -140,7 +133,6 @@ public class SalesService {
      * Récupère les commandes liées à une boutique.
      */
     public List<OrderResponse> getOrdersByStore(UUID storeId) {
-        // Pour simplifier sans pagination ici, ou utiliser un PageRequest par défaut
         return orderRepository.findByStoreId(storeId, jakarta.data.page.PageRequest.ofPage(1).size(50))
                 .stream()
                 .map(o -> OrderResponse.from(o, null))
@@ -153,7 +145,7 @@ public class SalesService {
     @Transactional
     @Audit(action = "ORDER_STATUS_UPDATE")
     public Order updateOrderStatus(UUID orderId, Order.OrderStatus status) {
-        Order order = orderRepository.findById(orderId)
+        var order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Commande non trouvée: " + orderId));
         
         order.setStatus(status);

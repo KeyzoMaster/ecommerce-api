@@ -6,10 +6,12 @@ services:
       POSTGRES_DB: ecommerce_db
       POSTGRES_USER: e_user
       POSTGRES_PASSWORD: e_password
+      PGDATA: /var/lib/postgresql/data/pgdata
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+      - ./scripts/postgres:/docker-entrypoint-initdb.d
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U e_user -d ecommerce_db"]
       interval: 5s
@@ -78,33 +80,18 @@ services:
     image: sonarqube:community
     container_name: ecommerce_sonarqube
     ports:
-      - "9000:9000"
+      - "9005:9000"
     environment:
-      - SONAR_JDBC_URL=jdbc:postgresql://sonar_db:5432/sonar
-      - SONAR_JDBC_USERNAME=sonar
-      - SONAR_JDBC_PASSWORD=sonar
+      - SONAR_JDBC_URL=jdbc:postgresql://postgres:5432/sonar
+      - SONAR_JDBC_USERNAME=e_user
+      - SONAR_JDBC_PASSWORD=e_password
     depends_on:
-      sonar_db:
+      postgres:
         condition: service_healthy
     volumes:
       - sonarqube_data:/opt/sonarqube/data
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
-
-  sonar_db:
-    image: postgres:15
-    container_name: ecommerce_sonar_db
-    environment:
-      - POSTGRES_DB=sonar
-      - POSTGRES_USER=sonar
-      - POSTGRES_PASSWORD=sonar
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sonar"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-    volumes:
-      - sonar_db_data:/var/lib/postgresql/data
 
 volumes:
   postgres_data:
@@ -114,4 +101,3 @@ volumes:
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_logs:
-  sonar_db_data:

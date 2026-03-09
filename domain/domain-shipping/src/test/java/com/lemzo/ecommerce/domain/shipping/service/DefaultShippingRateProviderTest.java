@@ -24,26 +24,31 @@ class DefaultShippingRateProviderTest {
     @BeforeEach
     void setUp() {
         provider = new DefaultShippingRateProvider();
-        address = new Address("Street", "Dakar", "10000", "Sénégal");
+        address = Address.builder()
+                .label("Maison")
+                .street("Street")
+                .city("Dakar")
+                .zipCode("10000")
+                .country("Sénégal")
+                .build();
         storeId = UUID.randomUUID();
     }
 
     @Test
     @DisplayName("Should calculate standard rate for light product")
     void shouldCalculateStandardRate() {
-        OrderItem item = new OrderItem(UUID.randomUUID(), 1, new BigDecimal("1000"), new BigDecimal("0.5"), Map.of());
+        var item = new OrderItem(UUID.randomUUID(), storeId, 1, new BigDecimal("1000"), new BigDecimal("0.5"), Map.of());
         
         BigDecimal rate = provider.calculateRate(storeId, address, ShippingMethod.STANDARD, new BigDecimal("1000"), List.of(item));
         
-        // 2000 (standard base) + 0.5 * 500 (weight) = 2250
+        // Formule actuelle : (2000 base + 0.5 * 500 weight) * 1 zone = 2250
         assertTrue(new BigDecimal("2250").compareTo(rate) == 0);
     }
 
     @Test
     @DisplayName("Should be free if above threshold")
     void shouldBeFreeAboveThreshold() {
-        Map<String, Object> config = Map.of("free_over", 50000);
-        OrderItem item = new OrderItem(UUID.randomUUID(), 1, new BigDecimal("60000"), new BigDecimal("1.0"), config);
+        var item = new OrderItem(UUID.randomUUID(), storeId, 1, new BigDecimal("60000"), new BigDecimal("1.0"), Map.of());
         
         BigDecimal rate = provider.calculateRate(storeId, address, ShippingMethod.STANDARD, new BigDecimal("60000"), List.of(item));
         
@@ -51,26 +56,16 @@ class DefaultShippingRateProviderTest {
     }
 
     @Test
-    @DisplayName("Should apply heavy penalty if method not allowed")
-    void shouldApplyPenaltyIfNotAllowed() {
-        Map<String, Object> config = Map.of("allowed_methods", List.of("EXPRESS"));
-        OrderItem item = new OrderItem(UUID.randomUUID(), 1, new BigDecimal("1000"), new BigDecimal("1.0"), config);
+    @DisplayName("Should apply international multiplier")
+    void shouldApplyInternationalMultiplier() {
+        var internationalAddr = Address.builder()
+                .country("France")
+                .build();
+        var item = new OrderItem(UUID.randomUUID(), storeId, 1, new BigDecimal("1000"), new BigDecimal("0"), Map.of());
         
-        BigDecimal rate = provider.calculateRate(storeId, address, ShippingMethod.STANDARD, new BigDecimal("1000"), List.of(item));
+        BigDecimal rate = provider.calculateRate(storeId, internationalAddr, ShippingMethod.STANDARD, new BigDecimal("1000"), List.of(item));
         
-        assertTrue(new BigDecimal("10000").compareTo(rate) == 0);
-    }
-
-    @Test
-    @DisplayName("Should use custom base rates from config")
-    void shouldUseCaseBaseRates() {
-        Map<String, Object> baseRates = Map.of("EXPRESS", 3500);
-        Map<String, Object> config = Map.of("base_rates", baseRates);
-        OrderItem item = new OrderItem(UUID.randomUUID(), 2, new BigDecimal("1000"), new BigDecimal("0"), config);
-        
-        BigDecimal rate = provider.calculateRate(storeId, address, ShippingMethod.EXPRESS, new BigDecimal("2000"), List.of(item));
-        
-        // (3500 base + 0 weight) * 2 quantity = 7000
-        assertTrue(new BigDecimal("7000").compareTo(rate) == 0);
+        // (2000 base + 0 weight) * 2.5 zone = 5000
+        assertTrue(new BigDecimal("5000").compareTo(rate) == 0);
     }
 }

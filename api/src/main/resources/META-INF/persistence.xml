@@ -5,10 +5,16 @@
              xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd">
 
     <persistence-unit name="ecommercePU" transaction-type="JTA">
-        <jta-data-source>java:app/jdbc/ecommerceDS</jta-data-source>
+        <jta-data-source>java:app/PostgresPool</jta-data-source>
+
+        <!-- Infrastructure et Converters -->
+        <class>com.lemzo.ecommerce.core.entity.converter.JsonbConverter</class>
 
         <!-- Liste explicite des entités pour assurer leur chargement entre les modules -->
         <class>com.lemzo.ecommerce.iam.domain.User</class>
+        <class>com.lemzo.ecommerce.iam.domain.Role</class>
+        <class>com.lemzo.ecommerce.iam.domain.Permission</class>
+        <class>com.lemzo.ecommerce.iam.domain.Store</class>
         <class>com.lemzo.ecommerce.domain.catalog.domain.Category</class>
         <class>com.lemzo.ecommerce.domain.catalog.domain.Product</class>
         <class>com.lemzo.ecommerce.domain.sales.domain.Order</class>
@@ -16,19 +22,18 @@
         <class>com.lemzo.ecommerce.domain.inventory.domain.Stock</class>
         <class>com.lemzo.ecommerce.domain.marketing.domain.Coupon</class>
         <class>com.lemzo.ecommerce.domain.marketing.domain.ProductPromotion</class>
+        <class>com.lemzo.ecommerce.domain.shipping.domain.Shipment</class>
 
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
-            <!-- Stratégie de génération : PostgreSQL 18 gère beaucoup via SQL natif -->
-            <property name="jakarta.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <!-- Désactivation de l'auto-DDL pour laisser Flyway gérer les Temporal Constraints de Postgres 18 -->
+            <property name="jakarta.persistence.schema-generation.database.action" value="none"/>
             
-            <!-- Optimisations EclipseLink (Défaut GlassFish) pour PostgreSQL -->
+            <!-- Optimisations EclipseLink -->
             <property name="eclipselink.target-database" value="PostgreSQL"/>
-            <property name="eclipselink.logging.level.sql" value="FINE"/>
+            <property name="eclipselink.logging.level" value="FINE"/>
             <property name="eclipselink.logging.parameters" value="true"/>
-            
-            <!-- JDBC Fetch Size pour la performance -->
             <property name="eclipselink.jdbc.fetch-size" value="100"/>
         </properties>
     </persistence-unit>

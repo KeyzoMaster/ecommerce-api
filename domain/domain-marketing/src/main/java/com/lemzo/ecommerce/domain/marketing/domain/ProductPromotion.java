@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Entité représentant une promotion sur un produit spécifique.
- * Utilise les contraintes temporelles WITHOUT OVERLAPS de PostgreSQL 18.
+ * Protégée par des Temporal Constraints (WITHOUT OVERLAPS) au niveau de PostgreSQL 18.
  */
 @Entity
 @Table(name = "marketing_product_promotions")
@@ -24,26 +26,28 @@ public class ProductPromotion extends AbstractEntity {
     @Column(name = "product_id", nullable = false)
     private UUID productId;
 
-    @Column(nullable = false)
+    @Column(name = "discount_value", nullable = false)
     private BigDecimal discountValue;
 
-    /**
-     * Période de validité utilisant le type 'tstzrange' de PostgreSQL.
-     * La base de données applique une contrainte d'exclusion : 
-     * EXCLUDE USING gist (product_id WITH =, validity_period WITHOUT OVERLAPS)
-     */
-    @Column(name = "validity_period", columnDefinition = "tstzrange", nullable = false)
-    private String validityPeriod;
+    @Column(name = "start_date", nullable = false)
+    private LocalDateTime startDate;
 
-    /**
-     * Colonne virtuelle calculant si la promotion est actuellement active.
-     */
-    @Column(name = "is_active_now", insertable = false, updatable = false)
-    private boolean activeNow;
+    @Column(name = "end_date", nullable = false)
+    private LocalDateTime endDate;
 
-    public ProductPromotion(UUID productId, BigDecimal discountValue, String validityPeriod) {
+    public ProductPromotion(UUID productId, BigDecimal discountValue, LocalDateTime startDate, LocalDateTime endDate) {
         this.productId = productId;
         this.discountValue = discountValue;
-        this.validityPeriod = validityPeriod;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
+    /**
+     * Vérifie dynamiquement si la promotion est active.
+     */
+    public boolean isActive() {
+        var now = LocalDateTime.now();
+        return Optional.ofNullable(startDate).map(now::isAfter).orElse(true) &&
+               Optional.ofNullable(endDate).map(now::isBefore).orElse(true);
     }
 }
