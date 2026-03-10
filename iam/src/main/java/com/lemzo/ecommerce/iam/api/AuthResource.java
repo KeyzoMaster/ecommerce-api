@@ -10,6 +10,7 @@ import com.lemzo.ecommerce.iam.service.AuthenticationService;
 import com.lemzo.ecommerce.iam.service.UserService;
 import com.lemzo.ecommerce.security.infrastructure.jwt.JwtService;
 import com.lemzo.ecommerce.security.infrastructure.jwt.TokenRevocationService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -18,29 +19,31 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.UriInfo;
 import lombok.RequiredArgsConstructor;
-import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
+
 import java.util.Optional;
 
 /**
  * Ressource JAX-RS pour l'authentification et l'inscription.
  */
-@Path("/auth")
+@Path("/iam/auth")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Authentification", description = "Gestion de l'accès utilisateur et des inscriptions")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class AuthResource {
 
     private final AuthenticationService authService;
     private final UserService userService;
-    private final TokenRevocationService tokenRevocationService;
-    private final JwtService jwtService;
     private final HateoasMapper hateoasMapper;
+    private final JwtService jwtService;
+    private final TokenRevocationService tokenRevocationService;
 
     @Context
     private UriInfo uriInfo;
@@ -86,22 +89,17 @@ public class AuthResource {
         Optional.ofNullable(authHeader)
                 .filter(h -> h.startsWith("Bearer "))
                 .map(h -> h.substring(7))
-                .ifPresent(this::revokeToken);
-        return Response.noContent().build();
-    }
-
-    private void revokeToken(final String token) {
-        try {
-            final var claims = jwtService.validateToken(token);
-            Optional.ofNullable(claims.getExpiration())
-                    .ifPresent(exp -> {
-                        final long ttl = (exp.getTime() - System.currentTimeMillis()) / 1000;
+                .ifPresent(token -> {
+                    try {
+                        final var claims = jwtService.validateToken(token);
+                        final long ttl = (claims.getExpiration().getTime() - System.currentTimeMillis()) / 1000;
                         if (ttl > 0) {
                             tokenRevocationService.revoke(claims.getId(), ttl);
                         }
-                    });
-        } catch (final Exception e) {
-            // Ignorer si le token est déjà invalide
-        }
+                    } catch (final Exception e) {
+                        // Ignorer si le token est déjà invalide
+                    }
+                });
+        return Response.noContent().build();
     }
 }

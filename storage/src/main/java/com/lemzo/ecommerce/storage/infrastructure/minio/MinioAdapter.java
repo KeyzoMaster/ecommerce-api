@@ -6,13 +6,11 @@ import io.minio.*;
 import io.minio.http.Method;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.io.InputStream;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +25,6 @@ import java.util.stream.Stream;
  * Adaptateur MinIO pour le stockage des fichiers avec support du partitionnement hiérarchique.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class MinioAdapter implements StoragePort {
 
@@ -35,12 +32,18 @@ public class MinioAdapter implements StoragePort {
     private static final long DEFAULT_PART_SIZE = 10_485_760L; // 10MB
 
     private final MinioClient minioClient;
+    private final String bucketName;
 
-    @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce")
-    private String bucketName;
+    @Inject
+    public MinioAdapter(
+            final MinioClient minioClient,
+            @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce") final String bucketName) {
+        this.minioClient = minioClient;
+        this.bucketName = bucketName;
+    }
 
     @Override
-    public String storePartitioned(final InputStream content, final String fileName, final String contentType, 
+    public String storePartitioned(final InputStream content, final String fileName, final String contentType,
                                    final UUID userId, final ResourceType type, final UUID... resourceIds) {
         try {
             final var hierarchyPath = buildHierarchyPath(userId, type, resourceIds);
@@ -62,7 +65,7 @@ public class MinioAdapter implements StoragePort {
 
     private String buildHierarchyPath(final UUID userId, final ResourceType type, final UUID[] resourceIds) {
         final var userSegment = Stream.of("users", userId.toString());
-        
+
         final var typeHierarchy = Stream.iterate(type, Objects::nonNull, ResourceType::getParent)
                 .map(t -> t.name().toLowerCase())
                 .collect(Collectors.collectingAndThen(Collectors.toList(), list -> {

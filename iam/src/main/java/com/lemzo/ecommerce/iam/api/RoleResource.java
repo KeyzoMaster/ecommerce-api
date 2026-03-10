@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.iam.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
@@ -8,6 +9,7 @@ import com.lemzo.ecommerce.iam.api.dto.PermissionResponse;
 import com.lemzo.ecommerce.iam.api.dto.RoleCreateRequest;
 import com.lemzo.ecommerce.iam.api.dto.RoleResponse;
 import com.lemzo.ecommerce.iam.service.RoleManagementService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -34,6 +36,7 @@ import java.util.stream.Collectors;
 @SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class RoleResource {
 
     private final RoleManagementService roleManagementService;
@@ -44,7 +47,6 @@ public class RoleResource {
 
     @GET
     @Path("/permissions")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
     @Operation(summary = "Lister toutes les permissions", description = "Retourne la liste des actions possibles par ressource")
     public Response listPermissions() {
         final var permissions = roleManagementService.getAllPermissions().stream()
@@ -54,7 +56,6 @@ public class RoleResource {
     }
 
     @GET
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
     @Operation(summary = "Lister les rôles", description = "Retourne tous les rôles configurés")
     public Response listRoles() {
         final var roles = roleManagementService.getAllRoles().stream()
@@ -64,7 +65,6 @@ public class RoleResource {
     }
 
     @POST
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.MANAGE)
     @Operation(summary = "Créer un rôle personnalisé", description = "Définit un nouveau rôle")
     @APIResponse(responseCode = "201", description = "Rôle créé avec succès")
     public Response createRole(@Valid final RoleCreateRequest request) {

@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.iam.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.dto.RestResponse;
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
@@ -15,6 +16,7 @@ import com.lemzo.ecommerce.iam.api.dto.UserProfileRequest;
 import com.lemzo.ecommerce.iam.api.dto.UserResponse;
 import com.lemzo.ecommerce.iam.domain.User;
 import com.lemzo.ecommerce.iam.service.UserService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -42,6 +44,7 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 @SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class UserResource {
 
     private final UserService userService;
@@ -62,6 +65,7 @@ public class UserResource {
     public Response getMe() {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         return userService.findById(principal.getUserId())
+                .map(u -> (com.lemzo.ecommerce.iam.domain.User) u)
                 .map(this::buildUserResponse)
                 .map(res -> Response.ok(res).build())
                 .orElseThrow(() -> new ResourceNotFoundException("Profil non trouvé"));
@@ -120,9 +124,9 @@ public class UserResource {
     @POST
     @Path("/{id}/avatar")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE, checkOwnership = true)
     @Operation(summary = "Uploader un avatar", description = "Enregistre l'image de profil")
-    public Response uploadAvatar(@PathParam("id") final UUID id, @Context final EntityPart filePart) {
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE, checkOwnership = true)
+    public Response uploadAvatar(@PathParam("id") final UUID id, @FormParam("file") final EntityPart filePart) {
         userService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
 

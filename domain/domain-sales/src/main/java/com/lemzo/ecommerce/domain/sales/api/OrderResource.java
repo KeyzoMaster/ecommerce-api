@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.domain.sales.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.dto.PagedRestResponse;
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
@@ -12,6 +13,7 @@ import com.lemzo.ecommerce.domain.sales.domain.Order;
 import com.lemzo.ecommerce.domain.sales.repository.OrderRepository;
 import com.lemzo.ecommerce.domain.sales.service.SalesService;
 import jakarta.data.page.PageRequest;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -36,8 +38,9 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Ventes : Commandes", description = "Passage et suivi des commandes")
 @SecurityRequirement(name = "jwt")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class OrderResource {
 
     private final SalesService salesService;
@@ -101,7 +104,6 @@ public class OrderResource {
 
     @GET
     @Path("/store/{storeId}")
-    @HasPermission(resource = ResourceType.SALES, action = PbacAction.READ, checkOwnership = true)
     @Operation(summary = "Lister les commandes d'une boutique (pour propriétaire)")
     public Response listByStore(@PathParam("storeId") final UUID storeId,
                                 @QueryParam("page") @DefaultValue("1") final int page,
@@ -117,7 +119,6 @@ public class OrderResource {
 
     @PATCH
     @Path("/{orderId}/status")
-    @HasPermission(resource = ResourceType.SALES, action = PbacAction.MANAGE)
     @Operation(summary = "Mettre à jour le statut d'une commande")
     public Response updateStatus(@PathParam("orderId") final UUID orderId, @QueryParam("status") final Order.OrderStatus status) {
         final var updated = salesService.updateStatus(orderId, status);

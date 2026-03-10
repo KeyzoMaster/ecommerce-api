@@ -5,6 +5,7 @@ import com.lemzo.ecommerce.audit.service.AuditService;
 import com.lemzo.ecommerce.core.api.security.AuthenticatedUser;
 import com.lemzo.ecommerce.core.api.security.ResourceType;
 import jakarta.annotation.Priority;
+import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
@@ -12,6 +13,8 @@ import jakarta.interceptor.InvocationContext;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -22,7 +25,9 @@ import java.util.UUID;
 @Audit
 @Interceptor
 @Priority(Interceptor.Priority.APPLICATION)
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@Dependent
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AuditInterceptor {
 
     private final AuditService auditService;

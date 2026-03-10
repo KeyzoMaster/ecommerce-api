@@ -15,7 +15,7 @@ import java.util.UUID;
  * Fournit l'appartenance pour les commandes.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class OrderOwnershipProvider implements OwnershipProvider {
 

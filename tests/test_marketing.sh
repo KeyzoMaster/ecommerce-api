@@ -9,7 +9,9 @@ printf "${BLUE}====================================================${NC}\n"
 
 # 1. Création de Coupon (Admin)
 printf "\n--- 🎟️  Test Création Coupon ---\n"
-CODE="TEST-$(date +%s)"
+# Augmentation de l'unicité avec Nanosecondes + Nombre Aléatoire
+CODE="TEST-$(date +%s%N)-${RANDOM}"
+
 COUPON_RES=$(curl -s -X POST "$BASE_URL/marketing/coupons" \
     -H "Authorization: Bearer $ADMIN_TOKEN" \
     -H "Content-Type: application/json" \
@@ -20,7 +22,17 @@ COUPON_RES=$(curl -s -X POST "$BASE_URL/marketing/coupons" \
         \"startDate\": \"$(date -u +%Y-%m-%dT%H:%M:%SZ)\",
         \"endDate\": \"2026-12-31T23:59:59Z\"
     }")
-check_status "$(echo "$COUPON_RES" | jq -r '.data.code')" "$CODE" "Création Coupon"
+
+# Extraction du code pour vérification
+CREATED_CODE=$(echo "$COUPON_RES" | jq -r '.data.code // empty')
+
+if [[ "$CREATED_CODE" == "$CODE" ]]; then
+    check_status "$CREATED_CODE" "$CODE" "Création Coupon"
+else
+    printf "${RED}[FAIL]${NC} Création Coupon échouée (Code attendu: $CODE)\n"
+    echo "$COUPON_RES" | jq .
+    exit 1
+fi
 
 # 2. Validation de Coupon
 printf "\n--- ✅ Test Validation Coupon ---\n"
@@ -28,7 +40,8 @@ VALID_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/marketing/coupo
 check_status "$VALID_STATUS" "200" "Coupon valide"
 
 # 3. Test Coupon inexistant
-INVALID_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/marketing/coupons/EXPIRED")
-check_status "$INVALID_STATUS" "404" "Coupon invalide/inexistant"
+printf "\n--- ❌ Test Coupon Invalide ---\n"
+INVALID_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/marketing/coupons/INVALID-CODE")
+check_status "$INVALID_STATUS" "404" "Coupon inexistant"
 
-printf "\n✅ Fin des tests marketing.\n"
+printf "\n✅ Tests marketing terminés avec succès !\n"

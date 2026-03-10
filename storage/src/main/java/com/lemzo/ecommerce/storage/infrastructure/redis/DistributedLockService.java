@@ -15,7 +15,7 @@ import java.util.function.Supplier;
  * Service de verrouillage distribué utilisant Redis.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class DistributedLockService {
 

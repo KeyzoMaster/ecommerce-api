@@ -1,6 +1,7 @@
 package com.lemzo.ecommerce.domain.marketing.repository;
 
 import com.lemzo.ecommerce.domain.marketing.domain.ProductPromotion;
+import jakarta.data.repository.By;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
@@ -21,7 +22,7 @@ public interface ProductPromotionRepository {
     ProductPromotion update(ProductPromotion promotion);
 
     @Find
-    Optional<ProductPromotion> findById(UUID id);
+    Optional<ProductPromotion> findById(@By("id") UUID id);
 
     /**
      * Récupère la promotion active pour un produit.

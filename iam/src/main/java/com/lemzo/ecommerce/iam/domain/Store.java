@@ -20,12 +20,13 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Store extends AbstractEntity implements Ownable {
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @Column(nullable = false, unique = true)
     private String slug;
 
+    @Column
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)

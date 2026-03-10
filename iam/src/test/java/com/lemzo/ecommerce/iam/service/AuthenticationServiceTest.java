@@ -45,7 +45,7 @@ class AuthenticationServiceTest {
         final String password = "password123";
         final User user = new User(identifier, "jdoe@test.com", "hashed_pass");
         
-        final var field = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("entityId");
+        final var field = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("id");
         field.setAccessible(true);
         field.set(user, UUID.randomUUID());
 

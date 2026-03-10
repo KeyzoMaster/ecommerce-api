@@ -27,6 +27,9 @@ public interface StoreRepository {
     @Find
     Optional<Store> findByName(String name);
 
+    @Find
+    Optional<Store> findBySlug(String slug);
+
     @Delete
     void delete(Store store);
 }

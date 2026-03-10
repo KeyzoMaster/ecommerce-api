@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
  * Service par défaut pour la conversion de devises.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class DefaultCurrencyConverter implements CurrencyConverter {
 

@@ -1,685 +1,3 @@
-[2026-03-10T06:21:26.119749Z] [] [INFO] [NCLS-GFLAUNCHER-00005] [jakarta.enterprise.launcher] [tid: _ThreadID=3 _ThreadName=main] [levelValue: 800] [[
-  JVM invocation command line:
-/opt/java/openjdk/bin/java
---module-path
-/opt/glassfish8/glassfish/lib/bootstrap
---add-modules
-ALL-MODULE-PATH
--DWALL_CLOCK_START=2026-03-10T06:21:25.698820018Z
--XX:+UnlockDiagnosticVMOptions
--XX:NewRatio=2
--Xmx512m
---add-opens=java.base/java.io=ALL-UNNAMED
---add-opens=java.base/java.lang=ALL-UNNAMED
---add-opens=java.base/java.util=ALL-UNNAMED
---add-opens=java.base/sun.nio.fs=ALL-UNNAMED
---add-opens=java.base/sun.net.www.protocol.jrt=ALL-UNNAMED
---add-opens=java.naming/javax.naming.spi=org.glassfish.main.jdke
---add-opens=java.rmi/sun.rmi.transport=ALL-UNNAMED
---add-opens=jdk.management/com.sun.management.internal=ALL-UNNAMED
---add-exports=java.naming/com.sun.jndi.ldap=ALL-UNNAMED
---add-exports=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
---add-opens=java.base/jdk.internal.vm.annotation=ALL-UNNAMED
---add-exports=java.base/jdk.internal.loader=ALL-UNNAMED
--javaagent:/opt/glassfish8/glassfish/lib/monitor/flashlight-agent.jar
--Djava.util.logging.manager=org.glassfish.main.jul.GlassFishLogManager
--Djava.util.logging.config.block=true
--Djava.awt.headless=true
--Djdk.corba.allowOutputStreamSubclass=true
--Djdk.tls.rejectClientInitiatedRenegotiation=true
--Djdk.xml.totalEntitySizeLimit=50000000
--Djavax.xml.accessExternalSchema=all
--Djava.security.auth.login.config=/opt/glassfish8/glassfish/domains/domain1/config/login.conf
--Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as
--Djavax.net.ssl.keyStore=/opt/glassfish8/glassfish/domains/domain1/config/keystore.p12
--Djavax.net.ssl.trustStore=/opt/glassfish8/glassfish/domains/domain1/config/cacerts.p12
--Djdbc.drivers=org.apache.derby.jdbc.ClientDriver
--DANTLR_USE_DIRECT_CLASS_LOADING=true
--Dcom.sun.enterprise.config.config_environment_factory_class=com.sun.enterprise.config.serverbeans.AppserverConfigEnvironmentFactory
--Dorg.glassfish.additionalOSGiBundlesToStart=org.apache.felix.shell,org.apache.felix.gogo.runtime,org.apache.felix.gogo.shell,org.apache.felix.gogo.command,org.apache.felix.shell.remote,org.apache.felix.fileinstall
--Dosgi.shell.telnet.port=6666
--Dosgi.shell.telnet.maxconn=1
--Dosgi.shell.telnet.ip=127.0.0.1
--Dgosh.args=--nointeractive
--Dfelix.fileinstall.dir=/opt/glassfish8/glassfish/modules/autostart/
--Dfelix.fileinstall.poll=5000
--Dfelix.fileinstall.log.level=2
--Dfelix.fileinstall.bundles.new.start=true
--Dfelix.fileinstall.bundles.startTransient=true
--Dfelix.fileinstall.disableConfigSave=false
--Dorg.glassfish.gmbal.no.multipleUpperBoundsException=true
--Dcom.ctc.wstx.returnNullForDefaultNamespace=true
--Djdk.attach.allowAttachSelf=true
--Dcom.sun.aas.instanceRoot=/opt/glassfish8/glassfish/domains/domain1
--Dcom.sun.aas.installRoot=/opt/glassfish8/glassfish
--Djava.library.path=/opt/glassfish8/glassfish/lib:/usr/java/packages/lib:/usr/lib64:/lib64:/lib:/usr/lib
-com.sun.enterprise.glassfish.bootstrap.GlassFishMain
--upgrade
-false
--domaindir
-/opt/glassfish8/glassfish/domains/domain1
--read-stdin
-true
--asadmin-args
---host,,,localhost,,,--port,,,4848,,,--secure=false,,,--terse=false,,,--echo=false,,,--interactive=false,,,start-domain,,,--verbose=true,,,--watchdog=false,,,--debug=false,,,--domaindir,,,/opt/glassfish8/glassfish/domains,,,domain1
--domainname
-domain1
--instancename
-server
--type
-DAS
--verbose
-true
--asadmin-modulepath
-/opt/glassfish8/glassfish/lib/bootstrap
--asadmin-classpath
-/opt/glassfish8/glassfish/appserver-cli.jar:/opt/glassfish8/glassfish/admin-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/cli-optional.jar:/opt/glassfish8/glassfish/lib/asadmin/cluster-cli.jar:/opt/glassfish8/glassfish/lib/asadmin/osgi-cli-interactive.jar:/opt/glassfish8/glassfish/lib/asadmin/server-mgmt.jar:/opt/glassfish8/glassfish/modules/admin-util.jar:/opt/glassfish8/glassfish/modules/backup.jar:/opt/glassfish8/glassfish/modules/cluster-common.jar:/opt/glassfish8/glassfish/modules/cluster-ssh.jar:/opt/glassfish8/glassfish/modules/config-api.jar:/opt/glassfish8/glassfish/modules/config-types.jar:/opt/glassfish8/glassfish/modules/common-util.jar:/opt/glassfish8/glassfish/modules/glassfish-api.jar:/opt/glassfish8/glassfish/modules/hk2.jar:/opt/glassfish8/glassfish/modules/hk2-config-generator.jar:/opt/glassfish8/glassfish/modules/internal-api.jar:/opt/glassfish8/glassfish/modules/jackson-core.jar:/opt/glassfish8/glassfish/modules/jakarta.activation-api.jar:/opt/glassfish8/glassfish/modules/jakarta.validation-api.jar:/opt/glassfish8/glassfish/modules/jakarta.xml.bind-api.jar:/opt/glassfish8/glassfish/modules/jaxb-osgi.jar:/opt/glassfish8/glassfish/modules/jettison.jar:/opt/glassfish8/glassfish/modules/jsch.jar:/opt/glassfish8/glassfish/modules/launcher.jar:/opt/glassfish8/glassfish/modules/mimepull.jar
--debug
-false
--asadmin-classname
-com.sun.enterprise.admin.cli.AdminMain]]
-
-[2026-03-10T06:21:28.790422Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.system.core] [tid: _ThreadID=3 _ThreadName=main] [levelValue: 800] [[
-  Loaded server named: server]]
-
-[2026-03-10T06:21:28.897371Z] [GF 8.0.0] [INFO] [] [com.sun.enterprise.server.logging.LogManagerService] [tid: _ThreadID=50 _ThreadName=RunLevelControllerThread-1773123688821] [levelValue: 800] [[
-  Using property file: /opt/glassfish8/glassfish/domains/domain1/config/logging.properties]]
-
-[2026-03-10T06:21:28.990064Z] [GF 8.0.0] [INFO] [NCLS-LOGGING-00009] [com.sun.enterprise.server.logging.LogManagerService] [tid: _ThreadID=50 _ThreadName=RunLevelControllerThread-1773123688821] [levelValue: 800] [[
-  Running GlassFish Version: Eclipse GlassFish 8.0.0 (commit: ca9f02fbdfb5d712d756a320bc8df3847687be96)]]
-
-[2026-03-10T06:21:29.137853Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01115] [jakarta.enterprise.system.core.security] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Realm [admin-realm] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.]]
-
-[2026-03-10T06:21:29.139117Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01115] [jakarta.enterprise.system.core.security] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Realm [file] of classtype [com.sun.enterprise.security.auth.realm.file.FileRealm] successfully created.]]
-
-[2026-03-10T06:21:29.146552Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01115] [jakarta.enterprise.system.core.security] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Realm [certificate] of classtype [com.sun.enterprise.security.auth.realm.certificate.CertificateRealm] successfully created.]]
-
-[2026-03-10T06:21:29.221604Z] [GF 8.0.0] [INFO] [] [org.glassfish.ha.store.spi.BackingStoreFactoryRegistry] [tid: _ThreadID=50 _ThreadName=RunLevelControllerThread-1773123688821] [levelValue: 800] [[
-  Registered org.glassfish.ha.store.adapter.cache.ShoalBackingStoreProxy for persistence-type = replicated in BackingStoreFactoryRegistry]]
-
-[2026-03-10T06:21:29.472221Z] [GF 8.0.0] [INFO] [NCLS-CORE-00087] [jakarta.enterprise.system.core] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Grizzly Framework 5.0.0 started in: 17 ms - bound to [/0.0.0.0:8080]]]
-
-[2026-03-10T06:21:29.494493Z] [GF 8.0.0] [INFO] [NCLS-CORE-00087] [jakarta.enterprise.system.core] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Grizzly Framework 5.0.0 started in: 1 ms - bound to [/0.0.0.0:8181]]]
-
-[2026-03-10T06:21:29.500867Z] [GF 8.0.0] [INFO] [NCLS-CORE-00087] [jakarta.enterprise.system.core] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Grizzly Framework 5.0.0 started in: 0 ms - bound to [/0.0.0.0:4848]]]
-
-[2026-03-10T06:21:29.550484Z] [GF 8.0.0] [INFO] [SEC-SVCS-00100] [jakarta.enterprise.security.services] [tid: _ThreadID=49 _ThreadName=RunLevelControllerThread-1773123688818] [levelValue: 800] [[
-  Authorization Service has successfully initialized.]]
-
-[2026-03-10T06:21:29.576049Z] [GF 8.0.0] [INFO] [NCLS-CORE-00087] [jakarta.enterprise.system.core] [tid: _ThreadID=52 _ThreadName=RunLevelControllerThread-1773123688829] [levelValue: 800] [[
-  Grizzly Framework 5.0.0 started in: 1 ms - bound to [/0.0.0.0:3700]]]
-
-[2026-03-10T06:21:29.681011Z] [GF 8.0.0] [INFO] [NCLS-CORE-00017] [jakarta.enterprise.system.core] [tid: _ThreadID=3 _ThreadName=main] [levelValue: 800] [[
-  Eclipse GlassFish 8.0.0 (commit: ca9f02fbdfb5d712d756a320bc8df3847687be96) startup time: Felix (2,538 ms), startup services (870 ms), total (3,408 ms)]]
-
-[2026-03-10T06:21:29.683499Z] [GF 8.0.0] [INFO] [NCLS-CORE-00018] [jakarta.enterprise.system.core] [tid: _ThreadID=3 _ThreadName=main] [levelValue: 800] [[
-  Total startup time including CLI: 3,984 ms]]
-
-[2026-03-10T06:21:29.741247Z] [GF 8.0.0] [INFO] [NCLS-DEPLOYMENT-02027] [jakarta.enterprise.system.tools.deployment.autodeploy] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Selecting file /opt/glassfish8/glassfish/domains/domain1/autodeploy/api.war for autodeployment]]
-
-[2026-03-10T06:21:29.953740Z] [GF 8.0.0] [INFO] [NCLS-JMX-00005] [jakarta.enterprise.system.jmx] [tid: _ThreadID=99 _ThreadName=Thread-14] [levelValue: 800] [[
-  JMXStartupService has started JMXConnector on JMXService URL service:jmx:rmi://f67c02aa32be:8686/jndi/rmi://f67c02aa32be:8686/jmxrmi]]
-
-[2026-03-10T06:21:30.011669Z] [GF 8.0.0] [INFO] [NCLS-CORE-00087] [jakarta.enterprise.system.core] [tid: _ThreadID=52 _ThreadName=RunLevelControllerThread-1773123688829] [levelValue: 800] [[
-  Grizzly Framework 5.0.0 started in: 0 ms - bound to [/0.0.0.0:7676]]]
-
-[2026-03-10T06:21:34.019973Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01143] [jakarta.enterprise.system.core.security] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Loading policy provider org.glassfish.exousia.modules.def.DefaultPolicy.]]
-
-[2026-03-10T06:21:34.026145Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01010] [jakarta.enterprise.system.core.security] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Entering Security Startup Service.]]
-
-[2026-03-10T06:21:34.034063Z] [GF 8.0.0] [INFO] [NCLS-SECURITY-01011] [jakarta.enterprise.system.core.security] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Security Service(s) started successfully.]]
-
-[2026-03-10T06:21:34.229071Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00198] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created HTTP listener http-listener-1 on host/port 0.0.0.0:8080]]
-
-[2026-03-10T06:21:34.233235Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00198] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created HTTP listener http-listener-2 on host/port 0.0.0.0:8181]]
-
-[2026-03-10T06:21:34.234808Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00198] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created HTTP listener admin-listener on host/port 0.0.0.0:4848]]
-
-[2026-03-10T06:21:34.248802Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00200] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created virtual server server]]
-
-[2026-03-10T06:21:34.250279Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00200] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created virtual server __asadmin]]
-
-[2026-03-10T06:21:34.409200Z] [GF 8.0.0] [INFO] [AS-WEB-CORE-00306] [jakarta.enterprise.web.core] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Setting JAAS app name glassfish-web]]
-
-[2026-03-10T06:21:34.409693Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00201] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Virtual server server loaded default web module ]]
-
-[2026-03-10T06:21:36.451385Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.resource.resourceadapter.com.sun.enterprise.resource.pool] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Created connection pool and added it to PoolManager: Pool [PoolInfo[jndiName=java:app/PostgresPool, applicationName=api, moduleName=null]] PoolSize=0  FreeResources=0  QueueSize=0 matching=off validation=off]]
-
-[2026-03-10T06:21:36.672430Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.server] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
-  Configured server platform: org.eclipse.persistence.platform.server.glassfish.GlassfishPlatform]]
-
-[2026-03-10T06:21:36.787299Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.core.entity.AbstractEntity] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.798072Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.iam.domain.Store] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.800254Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to one mapping element [field owner] is being defaulted to: class com.lemzo.ecommerce.iam.domain.User.]]
-
-[2026-03-10T06:21:36.800812Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.sales.domain.Order] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.805002Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the one to many mapping element [field items] is being defaulted to: class com.lemzo.ecommerce.domain.sales.domain.OrderItem.]]
-
-[2026-03-10T06:21:36.806295Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.iam.domain.Role] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.806964Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to many mapping element [field permissions] is being defaulted to: class com.lemzo.ecommerce.iam.domain.Permission.]]
-
-[2026-03-10T06:21:36.807301Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.inventory.domain.Stock] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.807645Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.shipping.domain.Shipment] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.808741Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.marketing.domain.Coupon] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.809879Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.sales.domain.OrderItem] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.810926Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to one mapping element [field order] is being defaulted to: class com.lemzo.ecommerce.domain.sales.domain.Order.]]
-
-[2026-03-10T06:21:36.811197Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.iam.domain.User] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.813247Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target class (reference) class for the element collection mapping element [field addresses] is being defaulted to: class com.lemzo.ecommerce.core.domain.Address.]]
-
-[2026-03-10T06:21:36.813574Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to many mapping element [field roles] is being defaulted to: class com.lemzo.ecommerce.iam.domain.Role.]]
-
-[2026-03-10T06:21:36.813729Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to many mapping element [field adhocPermissions] is being defaulted to: class com.lemzo.ecommerce.iam.domain.Permission.]]
-
-[2026-03-10T06:21:36.814111Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.iam.domain.Permission] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.815571Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.marketing.domain.ProductPromotion] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.815962Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.catalog.domain.Category] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.816101Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to one mapping element [field parent] is being defaulted to: class com.lemzo.ecommerce.domain.catalog.domain.Category.]]
-
-[2026-03-10T06:21:36.816237Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the one to many mapping element [field children] is being defaulted to: class com.lemzo.ecommerce.domain.catalog.domain.Category.]]
-
-[2026-03-10T06:21:36.816596Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.domain.catalog.domain.Product] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.817074Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target entity (reference) class for the many to one mapping element [field category] is being defaulted to: class com.lemzo.ecommerce.domain.catalog.domain.Category.]]
-
-[2026-03-10T06:21:36.817351Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The access type for the persistent class [class com.lemzo.ecommerce.core.domain.Address] is set to [FIELD].]]
-
-[2026-03-10T06:21:36.822190Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.iam.domain.Store] is being defaulted to: Store.]]
-
-[2026-03-10T06:21:36.825406Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [name] is being defaulted to: NAME.]]
-
-[2026-03-10T06:21:36.825841Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [description] is being defaulted to: DESCRIPTION.]]
-
-[2026-03-10T06:21:36.826081Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [slug] is being defaulted to: SLUG.]]
-
-[2026-03-10T06:21:36.826303Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.sales.domain.Order] is being defaulted to: Order.]]
-
-[2026-03-10T06:21:36.827356Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [currency] is being defaulted to: CURRENCY.]]
-
-[2026-03-10T06:21:36.827574Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [status] is being defaulted to: STATUS.]]
-
-[2026-03-10T06:21:36.829205Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.iam.domain.Role] is being defaulted to: Role.]]
-
-[2026-03-10T06:21:36.829515Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [name] is being defaulted to: NAME.]]
-
-[2026-03-10T06:21:36.829640Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [description] is being defaulted to: DESCRIPTION.]]
-
-[2026-03-10T06:21:36.829826Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.inventory.domain.Stock] is being defaulted to: Stock.]]
-
-[2026-03-10T06:21:36.830025Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [quantity] is being defaulted to: QUANTITY.]]
-
-[2026-03-10T06:21:36.830239Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.shipping.domain.Shipment] is being defaulted to: Shipment.]]
-
-[2026-03-10T06:21:36.830432Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [carrier] is being defaulted to: CARRIER.]]
-
-[2026-03-10T06:21:36.830707Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [status] is being defaulted to: STATUS.]]
-
-[2026-03-10T06:21:36.831029Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.marketing.domain.Coupon] is being defaulted to: Coupon.]]
-
-[2026-03-10T06:21:36.831233Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [code] is being defaulted to: CODE.]]
-
-[2026-03-10T06:21:36.831453Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [type] is being defaulted to: TYPE.]]
-
-[2026-03-10T06:21:36.831568Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [value] is being defaulted to: VALUE.]]
-
-[2026-03-10T06:21:36.831766Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.sales.domain.OrderItem] is being defaulted to: OrderItem.]]
-
-[2026-03-10T06:21:36.833294Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [quantity] is being defaulted to: QUANTITY.]]
-
-[2026-03-10T06:21:36.833650Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.iam.domain.User] is being defaulted to: User.]]
-
-[2026-03-10T06:21:36.833992Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [password] is being defaulted to: PASSWORD.]]
-
-[2026-03-10T06:21:36.834734Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [email] is being defaulted to: EMAIL.]]
-
-[2026-03-10T06:21:36.834870Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [username] is being defaulted to: USERNAME.]]
-
-[2026-03-10T06:21:36.835023Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.iam.domain.Permission] is being defaulted to: Permission.]]
-
-[2026-03-10T06:21:36.835736Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.marketing.domain.ProductPromotion] is being defaulted to: ProductPromotion.]]
-
-[2026-03-10T06:21:36.836114Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.catalog.domain.Category] is being defaulted to: Category.]]
-
-[2026-03-10T06:21:36.836315Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [name] is being defaulted to: NAME.]]
-
-[2026-03-10T06:21:36.836409Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [description] is being defaulted to: DESCRIPTION.]]
-
-[2026-03-10T06:21:36.836530Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [slug] is being defaulted to: SLUG.]]
-
-[2026-03-10T06:21:36.836669Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The alias name for the entity class [class com.lemzo.ecommerce.domain.catalog.domain.Product] is being defaulted to: Product.]]
-
-[2026-03-10T06:21:36.836826Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [description] is being defaulted to: DESCRIPTION.]]
-
-[2026-03-10T06:21:36.837101Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [price] is being defaulted to: PRICE.]]
-
-[2026-03-10T06:21:36.837240Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [name] is being defaulted to: NAME.]]
-
-[2026-03-10T06:21:36.837335Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [currency] is being defaulted to: CURRENCY.]]
-
-[2026-03-10T06:21:36.837425Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [attributes] is being defaulted to: ATTRIBUTES.]]
-
-[2026-03-10T06:21:36.837585Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [sku] is being defaulted to: SKU.]]
-
-[2026-03-10T06:21:36.837681Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The column name for element [slug] is being defaulted to: SLUG.]]
-
-[2026-03-10T06:21:36.838484Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The sequence name for the sequence generator named [SEQ_GEN_SEQUENCE] defined on [null] from [null] is being defaulted to: SEQ_GEN_SEQUENCE.]]
-
-[2026-03-10T06:21:36.838600Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The sequence name for the sequence generator named [SEQ_GEN_IDENTITY] defined on [null] from [null] is being defaulted to: SEQ_GEN_IDENTITY.]]
-
-[2026-03-10T06:21:36.844308Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The primary key column name for the mapping element [field owner] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.855183Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The source primary key column name for the many to many mapping [field permissions] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.855468Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target primary key column name for the many to many mapping [field permissions] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.855741Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The primary key column name for the mapping element [field order] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856030Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The source primary key column name for the many to many mapping [field roles] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856145Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target primary key column name for the many to many mapping [field roles] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856398Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The source primary key column name for the many to many mapping [field adhocPermissions] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856503Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The target primary key column name for the many to many mapping [field adhocPermissions] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856651Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The primary key column name for the mapping element [field parent] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.856828Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The primary key column name for the mapping element [field category] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.860712Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  The primary key column name for the mapping element [field addresses] is being defaulted to: id.]]
-
-[2026-03-10T06:21:36.864650Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.weaver] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  Class com.lemzo.ecommerce.iam.domain.User could not be weaved for change tracking as it is not supported by its mappings.]]
-
-[2026-03-10T06:21:36.882803Z] [GF 8.0.0] [INFO] [] [org.glassfish.web.loader.WebappClassLoader] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  close(), this:
-org.glassfish.web.loader.WebappClassLoader@51d38cef[name=api], urls=[
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-jaxrs2-jakarta-2.2.28.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/classgraph-4.8.179.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/javassist-3.30.2-GA.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-models-jakarta-2.2.28.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-annotations-2.18.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-annotations-jakarta-2.2.28.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-integration-jakarta-2.2.28.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-core-jakarta-2.2.28.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-lang3-3.17.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jakarta.xml.bind-api-3.0.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jakarta.activation-2.0.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-dataformat-yaml-2.18.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/snakeyaml-2.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-databind-2.18.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-core-2.18.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-jakarta-rs-json-provider-2.18.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-jakarta-rs-base-2.18.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-module-jakarta-xmlbind-annotations-2.18.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/core-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-datatype-jsr310-2.18.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/util-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/storage-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jedis-5.2.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/slf4j-api-1.7.36.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-pool2-2.12.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/json-20240303.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/gson-2.11.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/error_prone_annotations-2.27.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/minio-8.5.17.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/simple-xml-safe-2.7.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/guava-33.3.1-jre.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/failureaccess-1.0.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jsr305-3.0.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/checker-qual-3.43.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/j2objc-annotations-3.0.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okhttp-4.12.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okio-3.6.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okio-jvm-3.6.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-common-1.9.10.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-jdk8-1.8.21.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-1.8.21.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/annotations-13.0.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-jdk7-1.8.21.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bcprov-jdk18on-1.78.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-compress-1.27.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-io-2.16.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-codec-1.17.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/snappy-java-1.1.10.7.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/audit-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/mongodb-driver-sync-5.3.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bson-5.3.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/mongodb-driver-core-5.3.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bson-record-codec-5.3.1.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/security-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-api-0.12.6.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-impl-0.12.6.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-jackson-0.12.6.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jBCrypt-0.4.3.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/iam-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/payment-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-core-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-catalog-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-sales-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-inventory-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-marketing-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-analytics-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-shipping-1.0-SNAPSHOT.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/flyway-core-11.3.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-dataformat-toml-2.15.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/flyway-database-postgresql-11.3.2.jar
-file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/api/
-][delegate=true, context=api, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=39, pathTimestamps.size=72, resourceEntryCache.size=68]]]
-
-[2026-03-10T06:21:37.147296Z] [GF 8.0.0] [INFO] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  EclipseLink, version: Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d]]
-
-[2026-03-10T06:21:37.153467Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
-  connecting(DatabaseLogin(
-	platform=>PostgreSQLPlatform
-	user name=> ""
-	connector=>JNDIConnector datasource name=>null
-))]]
-
-[2026-03-10T06:21:37.525498Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  Connected: jdbc:postgresql://postgres:5432/ecommerce_db
-	User: e_user
-	Database: PostgreSQL  Version: 18.3 (Debian 18.3-1.pgdg13+1)
-	Driver: PostgreSQL JDBC Driver  Version: 42.7.9]]
-
-[2026-03-10T06:21:37.526273Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
-  connecting(DatabaseLogin(
-	platform=>PostgreSQLPlatform
-	user name=> ""
-	connector=>JNDIConnector datasource name=>null
-))]]
-
-[2026-03-10T06:21:37.526612Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
-  Connected: jdbc:postgresql://postgres:5432/ecommerce_db
-	User: e_user
-	Database: PostgreSQL  Version: 18.3 (Debian 18.3-1.pgdg13+1)
-	Driver: PostgreSQL JDBC Driver  Version: 42.7.9]]
-
-[2026-03-10T06:21:37.565456Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
-  /file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU login successful]]
-
-[2026-03-10T06:21:37.603902Z] [GF 8.0.0] [INFO] [] [org.jboss.weld.Version] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  WELD-000900: 6.0.4 (Final)]]
-
-[2026-03-10T06:21:39.666008Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.inject.spi] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Enabling Weld for ApplicationInfo[name=api]]]
-
-[2026-03-10T06:21:39.997367Z] [GF 8.0.0] [INFO] [] [org.jboss.weld.Event] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.]]
-
-[2026-03-10T06:21:42.769848Z] [GF 8.0.0] [INFO] [] [org.eclipse.jnosql.jakartapersistence.mapping.spi.JakartaPersistenceExtension] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Processing Jakarta Persistence extension. Found 0 standard repositories, 11 custom repositories.]]
-
-[2026-03-10T06:21:43.772767Z] [GF 8.0.0] [INFO] [] [org.eclipse.krazo.servlet.KrazoContainerInitializer] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Eclipse Krazo version 4.0.1 started]]
-
-[2026-03-10T06:21:43.774672Z] [GF 8.0.0] [INFO] [] [org.glassfish.soteria.servlet.SamRegistrationInstaller] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Initializing Soteria 4.0.2 for context '/api']]
-
-[2026-03-10T06:21:43.785794Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Démarrage des migrations Flyway sur : jdbc:postgresql://postgres:5432/ecommerce_db (User: e_user)]]
-
-[2026-03-10T06:21:44.126952Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Exécution de Flyway Repair...]]
-
-[2026-03-10T06:21:44.196522Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.FlywayExecutor] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Database: jdbc:postgresql://postgres:5432/ecommerce_db (PostgreSQL 18.3)]]
-
-[2026-03-10T06:21:44.209688Z] [GF 8.0.0] [WARNING] [] [org.flywaydb.core.internal.database.base.Database] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 900] [[
-  Flyway upgrade recommended: PostgreSQL 18.3 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.]]
-
-[2026-03-10T06:21:44.235242Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Repair of failed migration in Schema History table "public"."flyway_schema_history" not necessary as table doesn't exist.]]
-
-[2026-03-10T06:21:44.257727Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Schema history table "public"."flyway_schema_history" does not exist yet]]
-
-[2026-03-10T06:21:44.263053Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbRepair] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Successfully repaired schema history table "public"."flyway_schema_history" (execution time 00:00.033s).]]
-
-[2026-03-10T06:21:44.280373Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Exécution de Flyway Migrate...]]
-
-[2026-03-10T06:21:44.302501Z] [GF 8.0.0] [WARNING] [] [org.flywaydb.core.internal.database.base.Database] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 900] [[
-  Flyway upgrade recommended: PostgreSQL 18.3 is newer than this version of Flyway and support has not been tested. The latest supported version of PostgreSQL is 17.]]
-
-[2026-03-10T06:21:44.313244Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Schema history table "public"."flyway_schema_history" does not exist yet]]
-
-[2026-03-10T06:21:44.314405Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbValidate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Successfully validated 4 migrations (execution time 00:00.008s)]]
-
-[2026-03-10T06:21:44.327347Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Creating Schema History table "public"."flyway_schema_history" ...]]
-
-[2026-03-10T06:21:44.383940Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Current version of schema "public": << Empty Schema >>]]
-
-[2026-03-10T06:21:44.417274Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Migrating schema "public" to version "1 - Initial Schema"]]
-
-[2026-03-10T06:21:44.541776Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Migrating schema "public" to version "2 - Analytics and Search"]]
-
-[2026-03-10T06:21:44.574371Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Migrating schema "public" to version "3 - Custom Database Functions"]]
-
-[2026-03-10T06:21:44.601786Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Migrating schema "public" to version "4 - Initial Data"]]
-
-[2026-03-10T06:21:44.628679Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Successfully applied 4 migrations to schema "public", now at version v4 (execution time 00:00.116s)]]
-
-[2026-03-10T06:21:44.631223Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Migrations Flyway terminées avec succès.]]
-
-[2026-03-10T06:21:46.111634Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00172] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  Loading application [api] at [/api]]]
-
-[2026-03-10T06:21:46.233570Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.system.core] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  api was successfully deployed in 16,429 milliseconds.]]
-
-[2026-03-10T06:21:46.237331Z] [GF 8.0.0] [INFO] [NCLS-DEPLOYMENT-02035] [jakarta.enterprise.system.tools.deployment.autodeploy] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
-  [AutoDeploy] Successfully autodeployed : /opt/glassfish8/glassfish/domains/domain1/autodeploy/api.war.]]
-
-[2026-03-10T06:22:21.629446Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
-  SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".]]
-
-[2026-03-10T06:22:21.629496Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
-  SLF4J: Defaulting to no-operation (NOP) logger implementation]]
-
-[2026-03-10T06:22:21.629516Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
-  SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.]]
-
-[2026-03-10T06:22:22.000292Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
-	bind => [admin@ecommerce.local]]]
-
-[2026-03-10T06:22:22.008725Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
-	bind => [admin@ecommerce.local]]]
-
-[2026-03-10T06:22:22.009896Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.cdi.transaction.TransactionalInterceptorBase] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
-  Error during transaction processing
-com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_credentials
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.lambda$login$1(AuthenticationService.java:37)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.login(AuthenticationService.java:37)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.jersey.ext.cdi1x.transaction.internal.WebAppExceptionInterceptor.intercept(WebAppExceptionInterceptor.java:53)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
-	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorBase.proceed(TransactionalInterceptorBase.java:129)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:66)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
-	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
-	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldClientProxy.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource.login(AuthResource.java:71)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.hibernate.validator.cdi.interceptor.spi.ValidationInterceptor.validateMethodInvocation(ValidationInterceptor.java:81)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
-	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
-	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
-	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldClientProxy.login(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
-	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:146)
-	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:189)
-	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
-	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:93)
-	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:470)
-	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:394)
-	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
-	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:274)
-	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
-	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
-	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
-	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
-	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
-	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:266)
-	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:253)
-	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:703)
-	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:422)
-	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:374)
-	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:355)
-	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:309)
-	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:202)
-	at org.apache.catalina.core.StandardWrapper.service(StandardWrapper.java:1316)
-	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200)
 	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
 	at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:563)
 	at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:504)
@@ -705,35 +23,67 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:540)
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:520)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: Exception [EclipseLink-4002] (Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+Error Code: 0
+Call: INSERT INTO catalog_categories (id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+	bind => [0db224f1-1d8f-457a-8337-ce0437ec826e, 2026-03-10T11:41:18.602699433Z, Auto-générée pour les tests, Catégorie Sales, cat-sales-31080, null, null]
+Query: InsertObjectQuery(com.lemzo.ecommerce.domain.catalog.domain.Category@a4e62e00)
+	at org.eclipse.persistence.exceptions.DatabaseException.sqlException(DatabaseException.java:344)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.processExceptionForCommError(DatabaseAccessor.java:1805)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:918)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeNoSelect(DatabaseAccessor.java:982)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.basicExecuteCall(DatabaseAccessor.java:643)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeCall(DatabaseAccessor.java:570)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.basicExecuteCall(AbstractSession.java:2071)
+	at org.eclipse.persistence.sessions.server.ClientSession.executeCall(ClientSession.java:322)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:281)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:267)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.insertObject(DatasourceCallQueryMechanism.java:437)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:194)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:210)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.insertObjectForWrite(DatabaseQueryMechanism.java:514)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommit(InsertObjectQuery.java:86)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommitWithChangeSet(InsertObjectQuery.java:97)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.executeWriteWithChangeSet(DatabaseQueryMechanism.java:326)
+	at org.eclipse.persistence.queries.WriteObjectQuery.executeDatabaseQuery(WriteObjectQuery.java:63)
+	at org.eclipse.persistence.queries.DatabaseQuery.execute(DatabaseQuery.java:937)
+	at org.eclipse.persistence.queries.DatabaseQuery.executeInUnitOfWork(DatabaseQuery.java:836)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWorkObjectLevelModifyQuery(ObjectLevelModifyQuery.java:114)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWork(ObjectLevelModifyQuery.java:91)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.internalExecuteQuery(UnitOfWorkImpl.java:3018)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1866)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1848)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1798)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitNewObjectsForClassWithChangeSet(CommitManager.java:248)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitAllObjectsWithChangeSet(CommitManager.java:147)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.writeAllObjectsWithChangeSet(AbstractSession.java:4401)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabase(UnitOfWorkImpl.java:1518)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabaseWithChangeSet(UnitOfWorkImpl.java:1605)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.issueSQLbeforeCompletion(UnitOfWorkImpl.java:3315)
+	at org.eclipse.persistence.internal.sessions.RepeatableWriteUnitOfWork.issueSQLbeforeCompletion(RepeatableWriteUnitOfWork.java:367)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.beforeCompletion(AbstractSynchronizationListener.java:161)
+	... 90 more
+Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2846)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2531)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:196)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:157)
+	at Connector(__ds_jdbc_ra)//com.sun.gjc.spi.base.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:112)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:910)
+	... 121 more
 ]]
 
-[2026-03-10T06:22:22.087059Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
-	bind => [client@ecommerce.local]]]
-
-[2026-03-10T06:22:22.088892Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
-	bind => [client@ecommerce.local]]]
-
-[2026-03-10T06:22:22.089587Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.cdi.transaction.TransactionalInterceptorBase] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 1000] [[
-  Error during transaction processing
-com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_credentials
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.lambda$login$1(AuthenticationService.java:37)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.login(AuthenticationService.java:37)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.jersey.ext.cdi1x.transaction.internal.WebAppExceptionInterceptor.intercept(WebAppExceptionInterceptor.java:53)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
-	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorBase.proceed(TransactionalInterceptorBase.java:129)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:66)
+[2026-03-10T11:41:18.606168Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.jersey.server.ServerRuntime$Responder] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 1000] [[
+  An exception has been thrown from an exception mapper class org.glassfish.jersey.ext.cdi1x.transaction.internal.TransactionalExceptionMapper$Proxy$_$$_WeldClientProxy.
+jakarta.transaction.TransactionalException: Managed bean with Transactional annotation and TxType of REQUIRED encountered exception during commit/rollback: Transaction marked for rollback.
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.finishTransaction(TransactionalInterceptorRequired.java:109)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:69)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
@@ -742,10 +92,10 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldClientProxy.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource.login(AuthResource.java:71)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.service.CatalogService$Proxy$_$$_WeldSubclass.createCategory(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.service.CatalogService$Proxy$_$$_WeldClientProxy.createCategory(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource.create(CategoryResource.java:66)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldSubclass.create$$super(Unknown Source)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
@@ -754,13 +104,19 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
+	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
+	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
+	at WebappClassLoader//com.lemzo.ecommerce.security.infrastructure.pabc.SecurityInterceptor.checkPermission(SecurityInterceptor.java:72)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldClientProxy.login(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldSubclass.create(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldClientProxy.create(Unknown Source)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
@@ -812,35 +168,86 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:540)
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:520)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: jakarta.transaction.RollbackException: Transaction marked for rollback.
+	at com.sun.enterprise.transaction.JavaEETransactionImpl.commit(JavaEETransactionImpl.java:500)
+	at com.sun.enterprise.transaction.JavaEETransactionManagerSimplified.commit(JavaEETransactionManagerSimplified.java:865)
+	at com.sun.enterprise.transaction.TransactionManagerHelper.commit(TransactionManagerHelper.java:67)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.finishTransaction(TransactionalInterceptorRequired.java:105)
+	... 85 more
+Caused by: jakarta.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+Error Code: 0
+Call: INSERT INTO catalog_categories (id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+	bind => [0db224f1-1d8f-457a-8337-ce0437ec826e, 2026-03-10T11:41:18.602699433Z, Auto-générée pour les tests, Catégorie Sales, cat-sales-31080, null, null]
+Query: InsertObjectQuery(com.lemzo.ecommerce.domain.catalog.domain.Category@a4e62e00)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl$1.handleException(EntityManagerSetupImpl.java:797)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.handleException(AbstractSynchronizationListener.java:278)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.beforeCompletion(AbstractSynchronizationListener.java:173)
+	at org.eclipse.persistence.transaction.JTASynchronizationListener.beforeCompletion(JTASynchronizationListener.java:70)
+	at com.sun.enterprise.transaction.JavaEETransactionImpl.commit(JavaEETransactionImpl.java:477)
+	... 88 more
+Caused by: Exception [EclipseLink-4002] (Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+Error Code: 0
+Call: INSERT INTO catalog_categories (id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+	bind => [0db224f1-1d8f-457a-8337-ce0437ec826e, 2026-03-10T11:41:18.602699433Z, Auto-générée pour les tests, Catégorie Sales, cat-sales-31080, null, null]
+Query: InsertObjectQuery(com.lemzo.ecommerce.domain.catalog.domain.Category@a4e62e00)
+	at org.eclipse.persistence.exceptions.DatabaseException.sqlException(DatabaseException.java:344)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.processExceptionForCommError(DatabaseAccessor.java:1805)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:918)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeNoSelect(DatabaseAccessor.java:982)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.basicExecuteCall(DatabaseAccessor.java:643)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeCall(DatabaseAccessor.java:570)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.basicExecuteCall(AbstractSession.java:2071)
+	at org.eclipse.persistence.sessions.server.ClientSession.executeCall(ClientSession.java:322)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:281)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:267)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.insertObject(DatasourceCallQueryMechanism.java:437)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:194)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:210)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.insertObjectForWrite(DatabaseQueryMechanism.java:514)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommit(InsertObjectQuery.java:86)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommitWithChangeSet(InsertObjectQuery.java:97)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.executeWriteWithChangeSet(DatabaseQueryMechanism.java:326)
+	at org.eclipse.persistence.queries.WriteObjectQuery.executeDatabaseQuery(WriteObjectQuery.java:63)
+	at org.eclipse.persistence.queries.DatabaseQuery.execute(DatabaseQuery.java:937)
+	at org.eclipse.persistence.queries.DatabaseQuery.executeInUnitOfWork(DatabaseQuery.java:836)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWorkObjectLevelModifyQuery(ObjectLevelModifyQuery.java:114)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWork(ObjectLevelModifyQuery.java:91)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.internalExecuteQuery(UnitOfWorkImpl.java:3018)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1866)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1848)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1798)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitNewObjectsForClassWithChangeSet(CommitManager.java:248)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitAllObjectsWithChangeSet(CommitManager.java:147)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.writeAllObjectsWithChangeSet(AbstractSession.java:4401)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabase(UnitOfWorkImpl.java:1518)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabaseWithChangeSet(UnitOfWorkImpl.java:1605)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.issueSQLbeforeCompletion(UnitOfWorkImpl.java:3315)
+	at org.eclipse.persistence.internal.sessions.RepeatableWriteUnitOfWork.issueSQLbeforeCompletion(RepeatableWriteUnitOfWork.java:367)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.beforeCompletion(AbstractSynchronizationListener.java:161)
+	... 90 more
+Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2846)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2531)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:196)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:157)
+	at Connector(__ds_jdbc_ra)//com.sun.gjc.spi.base.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:112)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:910)
+	... 121 more
 ]]
 
-[2026-03-10T06:22:22.105818Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
-	bind => [owner@ecommerce.local]]]
-
-[2026-03-10T06:22:22.107791Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
-  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
-	bind => [owner@ecommerce.local]]]
-
-[2026-03-10T06:22:22.108445Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.cdi.transaction.TransactionalInterceptorBase] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 1000] [[
-  Error during transaction processing
-com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_credentials
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.lambda$login$1(AuthenticationService.java:37)
-	at java.base/java.util.Optional.orElseThrow(Optional.java:403)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService.login(AuthenticationService.java:37)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.jersey.ext.cdi1x.transaction.internal.WebAppExceptionInterceptor.intercept(WebAppExceptionInterceptor.java:53)
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
-	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
-	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
-	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
-	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorBase.proceed(TransactionalInterceptorBase.java:129)
-	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:66)
+[2026-03-10T11:41:18.606654Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.jersey.server.ServerRuntime$Responder] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 1000] [[
+  An exception was not mapped due to exception mapper failure. The HTTP 500 response will be returned.
+jakarta.transaction.TransactionalException: Managed bean with Transactional annotation and TxType of REQUIRED encountered exception during commit/rollback: Transaction marked for rollback.
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.finishTransaction(TransactionalInterceptorRequired.java:109)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:69)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
@@ -849,10 +256,10 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.service.AuthenticationService$Proxy$_$$_WeldClientProxy.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource.login(AuthResource.java:71)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login$$super(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.service.CatalogService$Proxy$_$$_WeldSubclass.createCategory(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.service.CatalogService$Proxy$_$$_WeldClientProxy.createCategory(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource.create(CategoryResource.java:66)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldSubclass.create$$super(Unknown Source)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
@@ -861,13 +268,19 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
+	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
+	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
+	at WebappClassLoader//com.lemzo.ecommerce.security.infrastructure.pabc.SecurityInterceptor.checkPermission(SecurityInterceptor.java:72)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
 	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
 	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldSubclass.login(Unknown Source)
-	at WebappClassLoader//com.lemzo.ecommerce.iam.api.AuthResource$Proxy$_$$_WeldClientProxy.login(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldSubclass.create(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.catalog.api.CategoryResource$Proxy$_$$_WeldClientProxy.create(Unknown Source)
 	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
 	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
 	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
@@ -919,5 +332,169 @@ com.lemzo.ecommerce.core.api.exception.BusinessRuleException: error.iam.invalid_
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:540)
 	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:520)
 	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: jakarta.transaction.RollbackException: Transaction marked for rollback.
+	at com.sun.enterprise.transaction.JavaEETransactionImpl.commit(JavaEETransactionImpl.java:500)
+	at com.sun.enterprise.transaction.JavaEETransactionManagerSimplified.commit(JavaEETransactionManagerSimplified.java:865)
+	at com.sun.enterprise.transaction.TransactionManagerHelper.commit(TransactionManagerHelper.java:67)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.finishTransaction(TransactionalInterceptorRequired.java:105)
+	... 85 more
+Caused by: jakarta.persistence.PersistenceException: Exception [EclipseLink-4002] (Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+Error Code: 0
+Call: INSERT INTO catalog_categories (id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+	bind => [0db224f1-1d8f-457a-8337-ce0437ec826e, 2026-03-10T11:41:18.602699433Z, Auto-générée pour les tests, Catégorie Sales, cat-sales-31080, null, null]
+Query: InsertObjectQuery(com.lemzo.ecommerce.domain.catalog.domain.Category@a4e62e00)
+	at org.eclipse.persistence.internal.jpa.EntityManagerSetupImpl$1.handleException(EntityManagerSetupImpl.java:797)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.handleException(AbstractSynchronizationListener.java:278)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.beforeCompletion(AbstractSynchronizationListener.java:173)
+	at org.eclipse.persistence.transaction.JTASynchronizationListener.beforeCompletion(JTASynchronizationListener.java:70)
+	at com.sun.enterprise.transaction.JavaEETransactionImpl.commit(JavaEETransactionImpl.java:477)
+	... 88 more
+Caused by: Exception [EclipseLink-4002] (Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d): org.eclipse.persistence.exceptions.DatabaseException
+Internal Exception: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+Error Code: 0
+Call: INSERT INTO catalog_categories (id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id) VALUES (?, ?, ?, ?, ?, ?, ?)
+	bind => [0db224f1-1d8f-457a-8337-ce0437ec826e, 2026-03-10T11:41:18.602699433Z, Auto-générée pour les tests, Catégorie Sales, cat-sales-31080, null, null]
+Query: InsertObjectQuery(com.lemzo.ecommerce.domain.catalog.domain.Category@a4e62e00)
+	at org.eclipse.persistence.exceptions.DatabaseException.sqlException(DatabaseException.java:344)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.processExceptionForCommError(DatabaseAccessor.java:1805)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:918)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeNoSelect(DatabaseAccessor.java:982)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.basicExecuteCall(DatabaseAccessor.java:643)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeCall(DatabaseAccessor.java:570)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.basicExecuteCall(AbstractSession.java:2071)
+	at org.eclipse.persistence.sessions.server.ClientSession.executeCall(ClientSession.java:322)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:281)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.executeCall(DatasourceCallQueryMechanism.java:267)
+	at org.eclipse.persistence.internal.queries.DatasourceCallQueryMechanism.insertObject(DatasourceCallQueryMechanism.java:437)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:194)
+	at org.eclipse.persistence.internal.queries.StatementQueryMechanism.insertObject(StatementQueryMechanism.java:210)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.insertObjectForWrite(DatabaseQueryMechanism.java:514)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommit(InsertObjectQuery.java:86)
+	at org.eclipse.persistence.queries.InsertObjectQuery.executeCommitWithChangeSet(InsertObjectQuery.java:97)
+	at org.eclipse.persistence.internal.queries.DatabaseQueryMechanism.executeWriteWithChangeSet(DatabaseQueryMechanism.java:326)
+	at org.eclipse.persistence.queries.WriteObjectQuery.executeDatabaseQuery(WriteObjectQuery.java:63)
+	at org.eclipse.persistence.queries.DatabaseQuery.execute(DatabaseQuery.java:937)
+	at org.eclipse.persistence.queries.DatabaseQuery.executeInUnitOfWork(DatabaseQuery.java:836)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWorkObjectLevelModifyQuery(ObjectLevelModifyQuery.java:114)
+	at org.eclipse.persistence.queries.ObjectLevelModifyQuery.executeInUnitOfWork(ObjectLevelModifyQuery.java:91)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.internalExecuteQuery(UnitOfWorkImpl.java:3018)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1866)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1848)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.executeQuery(AbstractSession.java:1798)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitNewObjectsForClassWithChangeSet(CommitManager.java:248)
+	at org.eclipse.persistence.internal.sessions.CommitManager.commitAllObjectsWithChangeSet(CommitManager.java:147)
+	at org.eclipse.persistence.internal.sessions.AbstractSession.writeAllObjectsWithChangeSet(AbstractSession.java:4401)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabase(UnitOfWorkImpl.java:1518)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.commitToDatabaseWithChangeSet(UnitOfWorkImpl.java:1605)
+	at org.eclipse.persistence.internal.sessions.UnitOfWorkImpl.issueSQLbeforeCompletion(UnitOfWorkImpl.java:3315)
+	at org.eclipse.persistence.internal.sessions.RepeatableWriteUnitOfWork.issueSQLbeforeCompletion(RepeatableWriteUnitOfWork.java:367)
+	at org.eclipse.persistence.transaction.AbstractSynchronizationListener.beforeCompletion(AbstractSynchronizationListener.java:161)
+	... 90 more
+Caused by: org.postgresql.util.PSQLException: ERROR: duplicate key value violates unique constraint "catalog_categories_name_key"
+  Detail: Key (name)=(Catégorie Sales) already exists.
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.receiveErrorResponse(QueryExecutorImpl.java:2846)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.processResults(QueryExecutorImpl.java:2531)
+	at CommonLibs//org.postgresql.core.v3.QueryExecutorImpl.execute(QueryExecutorImpl.java:429)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.executeInternal(PgStatement.java:526)
+	at CommonLibs//org.postgresql.jdbc.PgStatement.execute(PgStatement.java:436)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeWithFlags(PgPreparedStatement.java:196)
+	at CommonLibs//org.postgresql.jdbc.PgPreparedStatement.executeUpdate(PgPreparedStatement.java:157)
+	at Connector(__ds_jdbc_ra)//com.sun.gjc.spi.base.PreparedStatementWrapper.executeUpdate(PreparedStatementWrapper.java:112)
+	at org.eclipse.persistence.internal.databaseaccess.DatabaseAccessor.executeDirectNoSelect(DatabaseAccessor.java:910)
+	... 121 more
+]]
+
+[2026-03-10T11:41:18.619213Z] [GF 8.0.0] [SEVERE] [] [com.lemzo.ecommerce.core.api.exception.GlobalExceptionMapper] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
+  Exception non gérée détectée
+jakarta.ws.rs.ProcessingException: Error deserializing object from entity stream.
+	at org.glassfish.jersey.jsonb.internal.JsonBindingProvider.readFrom(JsonBindingProvider.java:93)
+	at org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$TerminalReaderInterceptor.invokeReadFrom(ReaderInterceptorExecutor.java:236)
+	at org.glassfish.jersey.message.internal.ReaderInterceptorExecutor$TerminalReaderInterceptor.aroundReadFrom(ReaderInterceptorExecutor.java:215)
+	at org.glassfish.jersey.message.internal.ReaderInterceptorExecutor.proceed(ReaderInterceptorExecutor.java:135)
+	at org.glassfish.jersey.server.internal.MappableExceptionWrapperInterceptor.aroundReadFrom(MappableExceptionWrapperInterceptor.java:49)
+	at org.glassfish.jersey.message.internal.ReaderInterceptorExecutor.proceed(ReaderInterceptorExecutor.java:135)
+	at org.glassfish.jersey.message.internal.MessageBodyFactory.readFrom(MessageBodyFactory.java:1074)
+	at org.glassfish.jersey.message.internal.InboundMessageContext.readEntity(InboundMessageContext.java:676)
+	at org.glassfish.jersey.server.ContainerRequest.readEntity(ContainerRequest.java:290)
+	at org.glassfish.jersey.server.internal.inject.EntityParamValueParamProvider$EntityValueSupplier.apply(EntityParamValueParamProvider.java:73)
+	at org.glassfish.jersey.server.internal.inject.EntityParamValueParamProvider$EntityValueSupplier.apply(EntityParamValueParamProvider.java:56)
+	at org.glassfish.jersey.server.spi.internal.ParamValueFactoryWithSource.apply(ParamValueFactoryWithSource.java:50)
+	at org.glassfish.jersey.server.spi.internal.ParameterValueHelper.getParameterValues(ParameterValueHelper.java:68)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$AbstractMethodParamInvoker.getParamValues(JavaResourceMethodDispatcherProvider.java:109)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:93)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:470)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:394)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:274)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:266)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:253)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:703)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:422)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:374)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:355)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:309)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:202)
+	at org.apache.catalina.core.StandardWrapper.service(StandardWrapper.java:1316)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:563)
+	at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:504)
+	at com.sun.enterprise.web.WebPipeline.invoke(WebPipeline.java:71)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:121)
+	at org.apache.catalina.connector.CoyoteAdapter.doService(CoyoteAdapter.java:294)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:187)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper$HttpHandlerCallable.call(ContainerMapper.java:429)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper.service(ContainerMapper.java:143)
+	at org.glassfish.grizzly.http.server.HttpHandler.runService(HttpHandler.java:174)
+	at org.glassfish.grizzly.http.server.HttpHandler.doHandle(HttpHandler.java:153)
+	at org.glassfish.grizzly.http.server.HttpServerFilter.handleRead(HttpServerFilter.java:202)
+	at org.glassfish.grizzly.filterchain.ExecutorResolver$9.execute(ExecutorResolver.java:89)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.executeFilter(DefaultFilterChain.java:246)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.executeChainPart(DefaultFilterChain.java:178)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.execute(DefaultFilterChain.java:118)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.process(DefaultFilterChain.java:96)
+	at org.glassfish.grizzly.ProcessorExecutor.execute(ProcessorExecutor.java:51)
+	at org.glassfish.grizzly.nio.transport.TCPNIOTransport.fireIOEvent(TCPNIOTransport.java:511)
+	at org.glassfish.grizzly.strategies.AbstractIOStrategy.fireIOEvent(AbstractIOStrategy.java:82)
+	at org.glassfish.grizzly.strategies.WorkerThreadIOStrategy.run0(WorkerThreadIOStrategy.java:83)
+	at org.glassfish.grizzly.strategies.WorkerThreadIOStrategy$WorkerThreadRunnable.run(WorkerThreadIOStrategy.java:101)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:540)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:520)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+Caused by: jakarta.json.bind.JsonbException: Internal error: Invalid UUID string: 
+	at org.eclipse.yasson.internal.DeserializationContextImpl.deserializeItem(DeserializationContextImpl.java:142)
+	at org.eclipse.yasson.internal.DeserializationContextImpl.deserialize(DeserializationContextImpl.java:127)
+	at org.eclipse.yasson.internal.JsonBinding.deserialize(JsonBinding.java:55)
+	at org.eclipse.yasson.internal.JsonBinding.fromJson(JsonBinding.java:102)
+	at org.glassfish.jersey.jsonb.internal.JsonBindingProvider.readFrom(JsonBindingProvider.java:91)
+	... 59 more
+Caused by: java.lang.IllegalArgumentException: Invalid UUID string: 
+	at java.base/java.util.UUID.fromString1(UUID.java:280)
+	at java.base/java.util.UUID.fromString(UUID.java:258)
+	at org.eclipse.yasson.internal.deserializer.types.UuidDeserializer.deserializeStringValue(UuidDeserializer.java:31)
+	at org.eclipse.yasson.internal.deserializer.types.TypeDeserializer.deserialize(TypeDeserializer.java:37)
+	at org.eclipse.yasson.internal.deserializer.ValueExtractor.deserialize(ValueExtractor.java:47)
+	at org.eclipse.yasson.internal.deserializer.ValueExtractor.deserialize(ValueExtractor.java:24)
+	at org.eclipse.yasson.internal.deserializer.PositionChecker.deserialize(PositionChecker.java:85)
+	at org.eclipse.yasson.internal.deserializer.PositionChecker.deserialize(PositionChecker.java:34)
+	at org.eclipse.yasson.internal.deserializer.NullCheckDeserializer.deserialize(NullCheckDeserializer.java:46)
+	at org.eclipse.yasson.internal.deserializer.NullCheckDeserializer.deserialize(NullCheckDeserializer.java:26)
+	at org.eclipse.yasson.internal.deserializer.JsonbCreatorDeserializer.deserialize(JsonbCreatorDeserializer.java:86)
+	at org.eclipse.yasson.internal.deserializer.JsonbCreatorDeserializer.deserialize(JsonbCreatorDeserializer.java:38)
+	at org.eclipse.yasson.internal.deserializer.PositionChecker.deserialize(PositionChecker.java:85)
+	at org.eclipse.yasson.internal.deserializer.PositionChecker.deserialize(PositionChecker.java:34)
+	at org.eclipse.yasson.internal.deserializer.NullCheckDeserializer.deserialize(NullCheckDeserializer.java:46)
+	at org.eclipse.yasson.internal.deserializer.NullCheckDeserializer.deserialize(NullCheckDeserializer.java:26)
+	at org.eclipse.yasson.internal.DeserializationContextImpl.deserializeItem(DeserializationContextImpl.java:138)
+	... 63 more
 ]]
 

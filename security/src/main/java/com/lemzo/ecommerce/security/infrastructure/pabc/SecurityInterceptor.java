@@ -5,6 +5,7 @@ import com.lemzo.ecommerce.core.api.security.PbacAction;
 import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.security.api.pabc.AuthorizationService;
 import jakarta.annotation.Priority;
+import jakarta.enterprise.context.Dependent;
 import jakarta.inject.Inject;
 import jakarta.interceptor.AroundInvoke;
 import jakarta.interceptor.Interceptor;
@@ -14,6 +15,8 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.SecurityContext;
 import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.AccessLevel;
 import java.security.Principal;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,7 +30,9 @@ import java.util.stream.IntStream;
 @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ) 
 @Interceptor
 @Priority(Interceptor.Priority.PLATFORM_BEFORE)
+@Dependent
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class SecurityInterceptor {
 
     private static final Logger LOGGER = Logger.getLogger(SecurityInterceptor.class.getName());
@@ -39,8 +44,11 @@ public class SecurityInterceptor {
 
     @AroundInvoke
     public Object checkPermission(final InvocationContext context) throws Exception {
-        final var annotation = Optional.ofNullable(context.getMethod().getAnnotation(HasPermission.class))
-                .or(() -> Optional.ofNullable(context.getTarget().getClass().getAnnotation(HasPermission.class)));
+        final HasPermission methodAnnotation = context.getMethod().getAnnotation(HasPermission.class);
+        final HasPermission classAnnotation = context.getMethod().getDeclaringClass().getAnnotation(HasPermission.class);
+        
+        final var annotation = Optional.ofNullable(methodAnnotation)
+                .or(() -> Optional.ofNullable(classAnnotation));
 
         if (annotation.isEmpty()) {
             return context.proceed();

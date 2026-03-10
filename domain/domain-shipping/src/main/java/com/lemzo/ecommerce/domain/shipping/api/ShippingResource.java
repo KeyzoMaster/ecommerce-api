@@ -7,7 +7,7 @@ import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.shipping.api.dto.ShipmentResponse;
 import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
 import com.lemzo.ecommerce.domain.shipping.service.ShippingService;
-import com.lemzo.ecommerce.domain.shipping.repository.ShipmentRepository;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -33,8 +33,9 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Expéditions", description = "Suivi des colis et livraisons")
 @SecurityRequirement(name = "jwt")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class ShippingResource {
 
     private final ShippingService shippingService;
@@ -58,9 +59,9 @@ public class ShippingResource {
 
     @PATCH
     @Path("/{trackingNumber}/status")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.MANAGE)
     @Operation(summary = "Mettre à jour le statut", description = "Modifie l'état d'avancement du colis (Nécessite PLATFORM:MANAGE)")
     @APIResponse(responseCode = "200", description = "Statut mis à jour")
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.MANAGE)
     public Response updateStatus(@Parameter(description = "Numéro de suivi") @PathParam("trackingNumber") final String trackingNumber, 
                                  @Parameter(description = "Nouveau statut") @QueryParam("status") final Shipment.ShipmentStatus status) {
         final var shipment = shippingService.updateStatus(trackingNumber, status);

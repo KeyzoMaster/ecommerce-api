@@ -15,7 +15,7 @@ import java.util.Optional;
  * Implémentation du fournisseur de passerelles de paiement.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class PaymentGatewayProvider implements PaymentProviderPort {
 

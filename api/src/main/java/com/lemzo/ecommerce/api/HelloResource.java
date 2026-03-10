@@ -1,10 +1,12 @@
 package com.lemzo.ecommerce.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;
 
 @Path("/hello-world")
+@jakarta.enterprise.context.ApplicationScoped
 public class HelloResource {
     @GET
     @Produces("text/plain")

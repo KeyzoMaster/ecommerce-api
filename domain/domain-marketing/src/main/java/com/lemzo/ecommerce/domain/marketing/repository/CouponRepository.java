@@ -1,6 +1,7 @@
 package com.lemzo.ecommerce.domain.marketing.repository;
 
 import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
+import jakarta.data.repository.By; // <-- AJOUT DE L'IMPORT
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
@@ -24,10 +25,10 @@ public interface CouponRepository {
     Coupon update(Coupon coupon);
 
     @Find
-    Optional<Coupon> findById(UUID id);
+    Optional<Coupon> findById(@By("id") UUID id); // <-- AJOUT DE @By
 
     @Find
-    Optional<Coupon> findByCode(String code);
+    Optional<Coupon> findByCode(@By("code") String code); // <-- AJOUT DE @By
 
     @Find
     Page<Coupon> findAll(PageRequest pageRequest);

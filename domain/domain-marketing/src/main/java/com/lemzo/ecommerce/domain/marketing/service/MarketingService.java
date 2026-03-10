@@ -1,6 +1,10 @@
 package com.lemzo.ecommerce.domain.marketing.service;
 
+import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.core.api.exception.BusinessRuleException;
+import com.lemzo.ecommerce.core.api.security.HasPermission;
+import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.core.marketing.MarketingPort;
 import com.lemzo.ecommerce.domain.marketing.api.dto.CouponCreateRequest;
 import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
@@ -21,7 +25,7 @@ import java.util.UUID;
  * Service de gestion des coupons et promotions.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class MarketingService implements MarketingPort {
 
@@ -30,6 +34,7 @@ public class MarketingService implements MarketingPort {
 
     @Override
     @Transactional
+    @Audit(action = "COUPON_APPLY")
     public Optional<BigDecimal> applyCoupon(final String code, final BigDecimal orderAmount) {
         final Coupon coupon = couponRepository.findByCode(code)
                 .orElseThrow(() -> new BusinessRuleException("Coupon invalide"));
@@ -49,6 +54,7 @@ public class MarketingService implements MarketingPort {
     }
 
     @Transactional
+    @Audit(action = "COUPON_CREATE")
     public Coupon createCoupon(final CouponCreateRequest request) {
         if (couponRepository.findByCode(request.code()).isPresent()) {
             throw new BusinessRuleException("Le coupon " + request.code() + " existe déjà");

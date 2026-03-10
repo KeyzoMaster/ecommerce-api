@@ -4,6 +4,7 @@ import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.AuthenticatedUser;
 import com.lemzo.ecommerce.domain.sales.domain.Cart;
 import com.lemzo.ecommerce.domain.sales.service.CartService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -29,8 +30,9 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Ventes : Panier", description = "Gestion du panier d'achat")
 @SecurityRequirement(name = "jwt")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class CartResource {
 
     private final CartService cartService;

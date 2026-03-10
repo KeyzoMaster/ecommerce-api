@@ -25,7 +25,7 @@ public abstract class AbstractEntity implements Serializable {
     @Id
     @GeneratedValue
     @Column(name = "id", updatable = false, nullable = false)
-    private UUID entityId;
+    private UUID id;
 
     @Column(name = "created_at", nullable = false, updatable = false)
     private OffsetDateTime createdAt;
@@ -43,22 +43,18 @@ public abstract class AbstractEntity implements Serializable {
         updatedAt = OffsetDateTime.now();
     }
 
-    public UUID getId() {
-        return entityId;
-    }
-
     @Override
     public boolean equals(final Object other) {
         if (this == other) return true;
         boolean isEqual = false;
         if (other instanceof AbstractEntity that) {
-            isEqual = Objects.equals(entityId, that.entityId);
+            isEqual = Objects.equals(id, that.id);
         }
         return isEqual;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(entityId);
+        return Objects.hash(id);
     }
 }

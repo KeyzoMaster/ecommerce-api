@@ -1,5 +1,6 @@
 package com.lemzo.ecommerce.domain.catalog.service;
 
+import com.lemzo.ecommerce.core.entity.AbstractEntity;
 import com.lemzo.ecommerce.domain.catalog.domain.Category;
 import com.lemzo.ecommerce.domain.catalog.domain.Product;
 import com.lemzo.ecommerce.domain.catalog.repository.CategoryRepository;
@@ -38,9 +39,11 @@ class CatalogServiceTest {
     void shouldCreateProductSuccessfully() throws Exception {
         // Arrange
         final UUID categoryId = UUID.randomUUID();
+        final UUID storeId = UUID.randomUUID(); // Ajout du storeId pour le test
         final Category category = new Category("Cat", "cat", "desc");
-        
-        final var idField = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("entityId");
+
+        // Réflexion pour définir l'ID car il est généré par la DB normalement
+        final var idField = AbstractEntity.class.getDeclaredField("id");
         idField.setAccessible(true);
         idField.set(category, categoryId);
 
@@ -48,13 +51,15 @@ class CatalogServiceTest {
         when(productRepository.insert(any(Product.class))).thenAnswer(i -> i.getArgument(0));
 
         // Act
+        // Ajout du paramètre storeId dans l'appel à createProduct
         final Product result = catalogService.createProduct(
-                "iPhone", "iphone", "SKU1", new BigDecimal("100"), 
-                categoryId, Map.of(), null, BigDecimal.ZERO, Map.of());
+                "iPhone", "iphone", "SKU1", new BigDecimal("100"),
+                categoryId, storeId, Map.of(), null, BigDecimal.ZERO, Map.of());
 
         // Assert
         assertNotNull(result);
         assertEquals("iPhone", result.getName());
+        assertEquals(storeId, result.getStoreId()); // Vérification du storeId
         verify(productRepository).insert(any(Product.class));
     }
 
@@ -65,7 +70,7 @@ class CatalogServiceTest {
         final String slug = "iphone-15";
         final Category category = new Category("Cat", "cat", "desc");
         final Product product = new Product("iPhone", slug, "SKU", BigDecimal.ONE, category);
-        
+
         when(productRepository.findBySlug(slug)).thenReturn(Optional.of(product));
 
         // Act

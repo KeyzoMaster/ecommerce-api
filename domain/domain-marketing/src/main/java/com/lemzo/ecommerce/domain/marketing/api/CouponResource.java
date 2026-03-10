@@ -1,4 +1,6 @@
 package com.lemzo.ecommerce.domain.marketing.api;
+import com.lemzo.ecommerce.domain.marketing.domain.Coupon;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
@@ -7,6 +9,7 @@ import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.marketing.api.dto.CouponCreateRequest;
 import com.lemzo.ecommerce.domain.marketing.api.dto.CouponResponse;
 import com.lemzo.ecommerce.domain.marketing.service.MarketingService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -33,8 +36,9 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Marketing", description = "Gestion des coupons et promotions")
 @SecurityRequirement(name = "jwt")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class CouponResource {
 
     private final MarketingService marketingService;
@@ -44,10 +48,10 @@ public class CouponResource {
     private UriInfo uriInfo;
 
     @POST
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
     @Operation(summary = "Créer un nouveau coupon", description = "Ajoute un coupon de réduction (Nécessite PLATFORM:CREATE)")
     @APIResponse(responseCode = "201", description = "Coupon créé")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
+    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
     public Response create(@Valid final CouponCreateRequest request) {
         final var coupon = marketingService.createCoupon(request);
         final var res = CouponResponse.from(coupon);
@@ -62,8 +66,9 @@ public class CouponResource {
     @APIResponse(responseCode = "200", description = "Coupon valide")
     @APIResponse(responseCode = "404", description = "Coupon invalide ou expiré")
     public Response validate(@Parameter(description = "Code du coupon") @PathParam("code") final String code) {
-        return marketingService.applyCoupon(code, BigDecimal.ZERO) // Juste pour vérifier l'existence/validité de base
-                .map(discount -> Response.ok().build())
+        return marketingService.findCouponByCode(code)
+                .filter(Coupon::isValid)
+                .map(_ -> Response.ok().build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());
     }
 }

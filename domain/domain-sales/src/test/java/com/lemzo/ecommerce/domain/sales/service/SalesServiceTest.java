@@ -65,13 +65,13 @@ class SalesServiceTest {
         userId = UUID.randomUUID();
         
         final var category = new Category("Electronics", "electronics", "Desc");
-        final var catIdField = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("entityId");
+        final var catIdField = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("id");
         catIdField.setAccessible(true);
         catIdField.set(category, UUID.randomUUID());
 
         product = new Product("Smartphone", "smartphone", "SKU-123", new BigDecimal("50000"), category);
         
-        final var prodIdField = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("entityId");
+        final var prodIdField = com.lemzo.ecommerce.core.entity.AbstractEntity.class.getDeclaredField("id");
         prodIdField.setAccessible(true);
         prodIdField.set(product, UUID.randomUUID());
 

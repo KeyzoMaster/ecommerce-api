@@ -33,7 +33,7 @@ public class Category extends AbstractEntity {
     private String description;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
+    @JoinColumn(name = "parent_id", columnDefinition = "uuid")
     private Category parent;
 
     @OneToMany(mappedBy = "parent")

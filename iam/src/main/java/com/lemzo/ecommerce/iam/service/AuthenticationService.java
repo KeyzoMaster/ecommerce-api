@@ -37,10 +37,8 @@ public class AuthenticationService {
                 .orElseThrow(() -> new BusinessRuleException("error.iam.invalid_credentials"));
 
         LOGGER.info(() -> "Login attempt for user: " + user.getUsername());
-        LOGGER.info(() -> "Stored hash: " + user.getPassword());
         
         final boolean match = passwordService.verify(user.getPassword(), password.toCharArray());
-        LOGGER.info(() -> "Password match: " + match);
 
         if (!match) {
             throw new BusinessRuleException("error.iam.invalid_credentials");
@@ -59,6 +57,9 @@ public class AuthenticationService {
         )
         .map(Permission::getSlug)
         .collect(Collectors.toSet());
+
+        return new AuthResponse(accessToken, refreshToken, user.getEmail(), permissions);
+    }
 
     @Transactional
     public AuthResponse refreshToken(final String refreshToken) {

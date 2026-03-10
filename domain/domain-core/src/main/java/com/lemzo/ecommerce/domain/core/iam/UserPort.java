@@ -10,6 +10,9 @@ import java.util.Set;
  */
 public interface UserPort {
     Optional<? extends Object> findById(UUID userId);
+
+    Optional<UserDTO> findUserById(UUID id);
+
     Optional<? extends Object> findByIdentifier(String identifier);
     Optional<Address> findAddressById(UUID userId, String addressId);
     Set<String> getPermissions(UUID userId);

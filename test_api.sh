@@ -34,7 +34,8 @@ printf "\n--- 👤 Création des comptes de test ---\n"
 
 register_user() {
     printf "Inscription de $1...\n"
-    STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/auth/register" \
+    # Utilisation du chemin correct /iam/auth/register
+    STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/iam/auth/register" \
         -H "Content-Type: application/json" \
         -d "{\"username\": \"$1\", \"email\": \"$2\", \"password\": \"$3\"}")
     if [[ "$STATUS" == "201" ]]; then
@@ -62,7 +63,7 @@ promote_user "owner" "STORE_OWNER"
 
 # 1. LOGIN CLIENT
 printf "\n--- 🔐 Authentification Client ---\n"
-LOGIN_RESPONSE=$(curl -s -X POST "$BASE_URL/auth/login" \
+LOGIN_RESPONSE=$(curl -s -X POST "$BASE_URL/iam/auth/login" \
     -H "Content-Type: application/json" \
     -d '{"identifier": "client@ecommerce.local", "password": "client123"}')
 
@@ -78,11 +79,13 @@ fi
 
 # 2. LOGIN ADMIN
 printf "\n--- 🔐 Authentification Admin ---\n"
-ADMIN_LOGIN=$(curl -s -X POST "$BASE_URL/auth/login" \
+# Correction de l'URL : /auth/login -> /iam/auth/login
+ADMIN_LOGIN=$(curl -s -X POST "$BASE_URL/iam/auth/login" \
     -H "Content-Type: application/json" \
     -d '{"identifier": "admin@ecommerce.local", "password": "admin123"}')
 ADMIN_TOKEN=$(echo "$ADMIN_LOGIN" | jq -r '.accessToken // empty')
-if [[ "$ADMIN_TOKEN" != "" ]]; then 
+
+if [[ "$ADMIN_TOKEN" != "" ]]; then
     printf "${GREEN}[OK]${NC} Login admin réussi\n"
 else
     printf "${RED}[FAIL]${NC} Login admin échoué\n"
@@ -95,22 +98,21 @@ printf "\n--- 📦 Test Catalogue & Recherche (PostgreSQL 18) ---\n"
 STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/catalog/products")
 check_status "$STATUS" "Liste des produits (Public)"
 
-# Test Full-Text Search (LIKE fallback)
+# Test Full-Text Search
 printf "Test de la recherche...\n"
 STATUS=$(curl -s -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/catalog/products?q=MacBook")
 check_status "$STATUS" "Recherche MacBook"
 
 PRODUCT_ID=$(cat /tmp/api_res.json | jq -r '.data.content[0].id')
-PRODUCT_SLUG=$(cat /tmp/api_res.json | jq -r '.data.content[0].slug')
 
 # 4. TEST MARKETING
 printf "\n--- 🔍 Test Marketing & Coupons ---\n"
+# MARS2026 doit exister dans V4__Initial_Data.sql
 STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$BASE_URL/marketing/coupons/MARS2026")
 check_status "$STATUS" "Validation Coupon MARS2026"
 
 # 5. TEST PROFIL & ADRESSES
 printf "\n--- 👤 Test Profil & Adresses ---\n"
-# Ajout d'une adresse pour le client
 printf "Ajout d'une adresse pour le client...\n"
 STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/iam/users/me/addresses" \
     -H "Authorization: Bearer $CLIENT_TOKEN" \
@@ -118,8 +120,7 @@ STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/iam/u
     -d '{"label": "Bureau", "street": "Place de l Indépendance", "city": "Dakar", "country": "Sénégal"}')
 check_status "$STATUS" "Ajout adresse client"
 
-# Récupérer l'ID de l'adresse
-ADDR_ID=$(curl -s -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/iam/users/me" | jq -r '.data.addresses[0].technicalId')
+ADDR_ID=$(curl -s -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/iam/users/me" | jq -r '.data.addresses[0].id')
 
 # 6. TUNNEL D'ACHAT (PANIER & COMMANDE)
 printf "\n--- 🛒 Test Panier & Commande ---\n"
@@ -141,7 +142,7 @@ ORDER_RES=$(curl -s -X POST "$BASE_URL/sales/orders" \
         \"shippingAddressId\": \"$ADDR_ID\",
         \"couponCode\": \"MARS2026\"
     }")
-    
+
 ORDER_NUM=$(echo $ORDER_RES | jq -r '.data.orderNumber')
 if [[ "$ORDER_NUM" != "null" && "$ORDER_NUM" != "" ]]; then
     printf "${GREEN}[OK]${NC} Commande passée (N°: $ORDER_NUM)\n"
@@ -153,12 +154,14 @@ fi
 
 # 7. TEST ANALYTICS (ROLE ADMIN)
 printf "\n--- 🏪 Test Analytics ---\n"
+# Ce test vérifiera si l'intercepteur PBAC fonctionne (Admin autorisé)
 STATUS=$(curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $ADMIN_TOKEN" "$BASE_URL/analytics/dashboard")
 check_status "$STATUS" "Accès Dashboard Analytics (Admin)"
 
 # 8. TEST RÉVOCATION (LOGOUT)
 printf "\n--- 🚪 Test Logout ---\n"
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/auth/logout" \
+# Correction de l'URL : /auth/logout -> /iam/auth/logout
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/iam/auth/logout" \
     -H "Authorization: Bearer $CLIENT_TOKEN")
 check_status "$STATUS" "Logout réussi"
 

@@ -27,7 +27,7 @@ public interface ProductRepository {
     @Update
     Product update(Product product);
 
-    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.entityId = :id")
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.id = :id")
     Optional<Product> findById(@Param("id") UUID id);
 
     @Find

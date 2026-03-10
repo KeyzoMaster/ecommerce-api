@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.domain.inventory.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
@@ -7,6 +8,7 @@ import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.inventory.api.dto.StockResponse;
 import com.lemzo.ecommerce.domain.inventory.api.dto.StockUpdateRequest;
 import com.lemzo.ecommerce.domain.inventory.service.InventoryService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -34,8 +36,9 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Inventaire", description = "Gestion des stocks produits")
 @SecurityRequirement(name = "jwt")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class InventoryResource {
 
     private final InventoryService inventoryService;
@@ -49,6 +52,7 @@ public class InventoryResource {
     @Operation(summary = "Consulter le stock d'un produit")
     @APIResponse(responseCode = "200", description = "Données de stock récupérées")
     @APIResponse(responseCode = "404", description = "Produit non géré dans l'inventaire")
+    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.READ, checkOwnership = true)
     public Response getStock(@Parameter(description = "UUID du produit") @PathParam("productId") final UUID productId) {
         return inventoryService.getStockByProduct(productId)
                 .map(StockResponse::from)
@@ -59,9 +63,9 @@ public class InventoryResource {
 
     @GET
     @Path("/low-stock")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
     @Operation(summary = "Lister les produits en rupture ou stock faible", description = "Retourne les produits sous le seuil d'alerte (Nécessite PLATFORM:READ)")
     @APIResponse(responseCode = "200", description = "Liste récupérée")
+    @HasPermission(resource = ResourceType.INVENTORY, action = PbacAction.READ, checkOwnership = true)
     public Response getLowStocks() {
         final var lowStocks = inventoryService.getLowStocks().stream()
                 .map(StockResponse::from)
@@ -71,9 +75,9 @@ public class InventoryResource {
 
     @PUT
     @Path("/{productId}")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE)
     @Operation(summary = "Mettre à jour manuellement le stock", description = "Force la quantité en stock pour un produit (Nécessite PLATFORM:UPDATE)")
     @APIResponse(responseCode = "200", description = "Stock mis à jour")
+    @HasPermission(resource = ResourceType.INVENTORY, action = PbacAction.UPDATE, checkOwnership = true)
     public Response updateStock(@Parameter(description = "UUID du produit") @PathParam("productId") final UUID productId, @Valid final StockUpdateRequest request) {
         final var stock = inventoryService.setStock(productId, request.quantity(), request.lowStockThreshold());
         return Response.ok(hateoasMapper.toResource(StockResponse.from(stock), uriInfo)).build();

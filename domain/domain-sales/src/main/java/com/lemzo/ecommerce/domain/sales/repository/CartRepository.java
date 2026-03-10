@@ -16,7 +16,7 @@ import java.util.UUID;
  * Repository pour la gestion des paniers dans Redis.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CartRepository {
 

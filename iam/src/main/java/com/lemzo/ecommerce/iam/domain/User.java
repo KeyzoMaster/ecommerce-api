@@ -5,11 +5,8 @@ import com.lemzo.ecommerce.core.entity.converter.JsonbConverter;
 import jakarta.persistence.*;
 import com.lemzo.ecommerce.core.domain.Address;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
+
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -81,5 +78,13 @@ public class User extends AbstractEntity {
         this.username = username;
         this.email = email;
         this.password = password;
+    }
+
+    public void addPaymentMethod(final String type, final Map<String, Object> details) {
+        this.paymentMethods = Optional.ofNullable(this.paymentMethods)
+                .orElseGet(ArrayList::new);
+        final Map<String, Object> method = new HashMap<>(details);
+        method.put("type", type);
+        this.paymentMethods.add(method);
     }
 }

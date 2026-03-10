@@ -1,5 +1,8 @@
 package com.lemzo.ecommerce.domain.analytics.service;
 
+import com.lemzo.ecommerce.core.api.security.HasPermission;
+import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.core.contract.util.CsvExportPort;
 import com.lemzo.ecommerce.domain.analytics.api.dto.DailySalesStats;
 import com.lemzo.ecommerce.domain.analytics.api.dto.AnalyticsDashboardResponse;
@@ -24,7 +27,7 @@ import java.util.Map;
  * Service pour les statistiques et analyses.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AnalyticsService {
 

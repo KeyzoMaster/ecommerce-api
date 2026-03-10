@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * Seeder pour générer des logs d'audit initiaux dans MongoDB.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AuditSeeder implements DataSeeder {
 

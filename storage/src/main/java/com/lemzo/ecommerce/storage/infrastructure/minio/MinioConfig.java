@@ -6,29 +6,38 @@ import io.minio.MinioClient;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.enterprise.inject.Produces;
+import jakarta.inject.Inject;
 import jakarta.inject.Singleton;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import java.util.logging.Logger;
 import java.util.Optional;
 
 @ApplicationScoped
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true) // Requis par CDI pour générer le proxy
 public class MinioConfig {
 
     private static final Logger LOGGER = Logger.getLogger(MinioConfig.class.getName());
 
-    @ConfigProperty(name = "MINIO_URL", defaultValue = "http://localhost:9000")
-    private String url;
-
-    @ConfigProperty(name = "MINIO_ACCESS_KEY", defaultValue = "minio_user")
-    private String accessKey;
-
-    @ConfigProperty(name = "MINIO_SECRET_KEY", defaultValue = "minio_password")
-    private String secretKey;
-
-    @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce")
-    private String bucketName;
+    private final String url;
+    private final String accessKey;
+    private final String secretKey;
+    private final String bucketName;
 
     private MinioClient client;
+
+    @Inject
+    public MinioConfig(
+            @ConfigProperty(name = "MINIO_URL", defaultValue = "http://localhost:9000") final String url,
+            @ConfigProperty(name = "MINIO_ACCESS_KEY", defaultValue = "minio_user") final String accessKey,
+            @ConfigProperty(name = "MINIO_SECRET_KEY", defaultValue = "minio_password") final String secretKey,
+            @ConfigProperty(name = "MINIO_BUCKET_NAME", defaultValue = "ecommerce") final String bucketName) {
+        this.url = url;
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.bucketName = bucketName;
+    }
 
     @PostConstruct
     public void init() {

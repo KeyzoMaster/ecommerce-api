@@ -9,6 +9,7 @@
         <property name="databaseName" value="ecommerce_db"/>
         <property name="user" value="e_user"/>
         <property name="password" value="e_password"/>
+        <property name="stringtype" value="unspecified"/>
     </jdbc-connection-pool>
     <jdbc-resource pool-name="PostgresPool" jndi-name="java:app/jdbc/ecommerceDS"/>
 </resources>

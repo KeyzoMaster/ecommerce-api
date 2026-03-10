@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.domain.catalog.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.dto.PagedRestResponse;
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
@@ -15,6 +16,7 @@ import com.lemzo.ecommerce.domain.catalog.domain.Product;
 import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -39,6 +41,7 @@ import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 
+
 /**
  * Ressource pour la gestion du catalogue produits.
  */
@@ -46,8 +49,9 @@ import org.eclipse.microprofile.openapi.annotations.media.Schema;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Catalogue : Produits", description = "Consultation et gestion des produits")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class ProductResource {
 
     private final CatalogService catalogService;
@@ -87,14 +91,14 @@ public class ProductResource {
     }
 
     @POST
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
     @Operation(summary = "Créer un produit", description = "Ajoute un nouveau produit au catalogue (Nécessite CATALOG:CREATE)")
     @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Produit créé avec succès")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
+    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.CREATE)
     public Response create(@Valid final ProductCreateRequest request) {
         final Product product = catalogService.createProduct(
-                request.name(), request.slug(), request.sku(), request.price(), request.categoryId(),
+                request.name(), request.slug(), request.sku(), request.price(), request.categoryId(), request.storeId(),
                 request.attributes(), request.imageUrl(), request.weight(), request.shippingConfig()
         );
 
@@ -121,9 +125,9 @@ public class ProductResource {
 
     @PUT
     @Path("/{productId}")
-    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.UPDATE, checkOwnership = true)
     @Operation(summary = "Mettre à jour un produit")
     @SecurityRequirement(name = "jwt")
+    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.UPDATE, checkOwnership = true)
     public Response update(@PathParam("productId") final UUID productId, @Valid final ProductUpdateRequest request) {
         final Product product = catalogService.updateProduct(
                 productId, request.name(), request.slug(), request.sku(), request.description(),
@@ -137,10 +141,10 @@ public class ProductResource {
     @POST
     @Path("/{productId}/image")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.UPDATE, checkOwnership = true)
     @Operation(summary = "Uploader une image produit")
     @SecurityRequirement(name = "jwt")
-    public Response uploadImage(@PathParam("productId") final UUID productId, @Context final EntityPart filePart) {
+    @HasPermission(resource = ResourceType.PRODUCT, action = PbacAction.UPDATE, checkOwnership = true)
+    public Response uploadImage(@PathParam("productId") final UUID productId, @FormParam("file") final EntityPart filePart) {
         final AuthenticatedUser principal = (AuthenticatedUser) securityContext.getUserPrincipal();
 
         try (InputStream input = filePart.getContent()) {

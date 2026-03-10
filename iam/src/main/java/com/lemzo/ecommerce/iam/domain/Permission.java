@@ -10,12 +10,10 @@ import lombok.Setter;
 import lombok.AccessLevel;
 
 /**
- * Entité représentant une permission spécifique sur une ressource.
+ * Entité représentant une permission.
  */
 @Entity
-@Table(name = "iam_permissions", uniqueConstraints = {
-    @UniqueConstraint(columnNames = {"resource_type", "action"})
-})
+@Table(name = "iam_permissions")
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +24,7 @@ public class Permission extends AbstractEntity {
     private ResourceType resourceType;
 
     @Enumerated(EnumType.STRING)
-    @Column(nullable = false)
+    @Column(name = "action", nullable = false)
     private PbacAction action;
 
     public Permission(final ResourceType resourceType, final PbacAction action) {

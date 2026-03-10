@@ -7,27 +7,29 @@ import com.lemzo.ecommerce.iam.repository.StoreRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import lombok.RequiredArgsConstructor;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 /**
- * Fournit l'appartenance pour les boutiques.
+ * Fournisseur de propriété pour les boutiques.
  */
 @ApplicationScoped
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
+@NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class StoreOwnershipProvider implements OwnershipProvider {
 
     private final StoreRepository storeRepository;
 
     @Override
     public ResourceType getResourceType() {
-        return ResourceType.STORE;
+        return ResourceType.PLATFORM; // Les boutiques appartiennent à la plateforme
     }
 
     @Override
-    public UUID getOwnerId(final UUID resourceId) {
-        return storeRepository.findById(resourceId)
-                .map(Store::getOwner)
-                .map(com.lemzo.ecommerce.iam.domain.User::getId)
+    public UUID getOwnerId(final UUID targetId) {
+        return storeRepository.findById(targetId)
+                .map(Store::getOwnerId)
                 .orElse(null);
     }
 }

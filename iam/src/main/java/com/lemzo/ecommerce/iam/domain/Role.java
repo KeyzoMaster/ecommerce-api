@@ -22,12 +22,13 @@ public class Role extends AbstractEntity {
     @Column(nullable = false, unique = true)
     private String name;
 
+    @Column
     private String description;
 
     @Column(name = "is_system_role", nullable = false)
     private boolean systemRole = false;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(
         name = "iam_role_permissions",
         joinColumns = @JoinColumn(name = "role_id"),

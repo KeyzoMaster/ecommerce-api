@@ -1,4 +1,5 @@
 package com.lemzo.ecommerce.domain.catalog.api;
+import jakarta.enterprise.context.ApplicationScoped;
 
 import com.lemzo.ecommerce.core.api.hateoas.HateoasMapper;
 import com.lemzo.ecommerce.core.api.security.HasPermission;
@@ -7,6 +8,7 @@ import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.catalog.api.dto.CategoryCreateRequest;
 import com.lemzo.ecommerce.domain.catalog.api.dto.CategoryResponse;
 import com.lemzo.ecommerce.domain.catalog.service.CatalogService;
+import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
@@ -33,8 +35,9 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Catalogue : Catégories", description = "Gestion des catégories du catalogue")
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
+@RequestScoped
 public class CategoryResource {
 
     private final CatalogService catalogService;
@@ -54,11 +57,11 @@ public class CategoryResource {
     }
 
     @POST
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
     @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie (Nécessite CATALOG:CREATE)")
     @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Catégorie créée")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
+    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
     public Response create(@Valid final CategoryCreateRequest request) {
         final var category = catalogService.createCategory(
                 request.name(), request.slug(), request.description(), request.parentId());

@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * Service d'audit utilisant MongoDB et les Virtual Threads.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AuditService {
 

@@ -27,8 +27,12 @@ PRESIGNED_URL=$(echo "$PROD_DETAILS" | jq -r '.data.imageUrl')
 
 if [[ "$PRESIGNED_URL" == http* ]]; then
     printf "${GREEN}[OK]${NC} URL présignée générée : ${PRESIGNED_URL:0:50}...\n"
+
+    # ADAPTATION POUR LE TEST LOCAL : Remplacement de l'hôte Docker par localhost
+    LOCAL_TEST_URL="${PRESIGNED_URL/minio:9000/localhost:9000}"
+
     # Vérifier que l'URL répond (MinIO)
-    IMG_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$PRESIGNED_URL")
+    IMG_STATUS=$(curl -s -o /dev/null -w "%{http_code}" "$LOCAL_TEST_URL")
     check_status "$IMG_STATUS" "200" "Accès à l'image stockée"
 else
     printf "${RED}[FAIL]${NC} URL présignée invalide ou absente\n"

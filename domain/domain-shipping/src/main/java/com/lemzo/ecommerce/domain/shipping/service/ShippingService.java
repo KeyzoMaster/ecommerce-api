@@ -1,9 +1,12 @@
 package com.lemzo.ecommerce.domain.shipping.service;
 
+import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.core.api.exception.ResourceNotFoundException;
+import com.lemzo.ecommerce.core.api.security.HasPermission;
+import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import com.lemzo.ecommerce.domain.shipping.domain.Shipment;
 import com.lemzo.ecommerce.domain.shipping.repository.ShipmentRepository;
-import com.lemzo.ecommerce.core.annotation.Audit;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -11,13 +14,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import java.time.OffsetDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
  * Service de gestion des expéditions.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ShippingService {
 

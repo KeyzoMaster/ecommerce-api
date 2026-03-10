@@ -1,5 +1,6 @@
 package com.lemzo.ecommerce.domain.sales.service;
 
+import com.lemzo.ecommerce.core.annotation.Audit;
 import com.lemzo.ecommerce.domain.core.catalog.CatalogPort;
 import com.lemzo.ecommerce.domain.sales.domain.Cart;
 import com.lemzo.ecommerce.domain.sales.domain.CartItem;
@@ -18,7 +19,7 @@ import java.util.stream.Collectors;
  * Service pour la gestion du panier (Redis).
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CartService {
 
@@ -29,6 +30,7 @@ public class CartService {
         return cartRepository.findByUserId(userId);
     }
 
+    @Audit(action = "CART_ADD_ITEM")
     public Cart addToCart(final UUID userId, final UUID productId, final int quantity) {
         final var currentCart = getCart(userId).orElse(new Cart(userId, new ArrayList<>()));
         
@@ -54,6 +56,7 @@ public class CartService {
         return updatedCart;
     }
 
+    @Audit(action = "CART_REMOVE_ITEM")
     public Cart removeFromCart(final UUID userId, final UUID productId) {
         final var currentCart = getCart(userId).orElse(new Cart(userId, new ArrayList<>()));
         final var newItems = currentCart.items().stream()
@@ -65,6 +68,7 @@ public class CartService {
         return updatedCart;
     }
 
+    @Audit(action = "CART_CLEAR")
     public void clearCart(final UUID userId) {
         cartRepository.deleteByUserId(userId);
     }

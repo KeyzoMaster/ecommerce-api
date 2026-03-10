@@ -4,17 +4,17 @@ import com.lemzo.ecommerce.iam.domain.User;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Param;
 import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Update;
-import jakarta.data.repository.Param;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Repository pour les utilisateurs utilisant Jakarta Data 1.0.
+ * Repository pour les utilisateurs.
  */
 @Repository
 public interface UserRepository {
@@ -25,7 +25,7 @@ public interface UserRepository {
     @Update
     User update(User user);
 
-    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles LEFT JOIN FETCH u.addresses WHERE u.entityId = :id")
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles LEFT JOIN FETCH u.addresses WHERE u.id = :id")
     Optional<User> findById(@Param("id") UUID id);
 
     @Query("SELECT u FROM User u WHERE u.username = :username")
@@ -34,9 +34,6 @@ public interface UserRepository {
     @Query("SELECT u FROM User u WHERE u.email = :email")
     Optional<User> findByEmail(@Param("email") String email);
 
-    @Find
-    Page<User> findAll(PageRequest pageRequest);
-
-    @Delete
-    void delete(User user);
+    @Query("SELECT COUNT(u) FROM User u")
+    long count();
 }

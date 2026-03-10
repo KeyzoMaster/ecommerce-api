@@ -36,6 +36,10 @@ public record ProductCreateRequest(
     @Schema(description = "ID de la catégorie parente", required = true)
     @NotNull(message = "La catégorie est requise")
     UUID categoryId,
+
+    @Schema(description = "ID de la boutique", required = true)
+    @NotNull(message = "La boutique est requise")
+    UUID storeId,
     
     @Schema(description = "Attributs dynamiques (taille, couleur, etc.)")
     Map<String, Object> attributes,

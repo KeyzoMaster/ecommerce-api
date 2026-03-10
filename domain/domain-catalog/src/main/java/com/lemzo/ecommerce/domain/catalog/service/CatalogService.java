@@ -8,6 +8,9 @@ import com.lemzo.ecommerce.domain.catalog.domain.CatalogFactory;
 import com.lemzo.ecommerce.domain.catalog.repository.CategoryRepository;
 import com.lemzo.ecommerce.domain.catalog.repository.ProductRepository;
 import com.lemzo.ecommerce.core.annotation.Audit;
+import com.lemzo.ecommerce.core.api.security.HasPermission;
+import com.lemzo.ecommerce.core.api.security.PbacAction;
+import com.lemzo.ecommerce.core.api.security.ResourceType;
 import jakarta.data.page.Page;
 import jakarta.data.page.PageRequest;
 import jakarta.enterprise.context.ApplicationScoped;
@@ -23,10 +26,10 @@ import java.util.Optional;
 import java.util.UUID;
 
 /**
- * Service pour la gestion du catalogue produits.
+ * Service pour les opérations catalogue.
  */
 @ApplicationScoped
-@RequiredArgsConstructor(onConstructor_ = {@Inject})
+@RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CatalogService implements CatalogPort {
 
@@ -40,8 +43,9 @@ public class CatalogService implements CatalogPort {
 
     @Transactional
     @Audit(action = "PRODUCT_CREATE")
+    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
     public Product createProduct(final String name, final String slug, final String sku, 
-                                 final BigDecimal price, final UUID categoryId, 
+                                 final BigDecimal price, final UUID categoryId, final UUID storeId,
                                  final Map<String, Object> attributes, final String imageUrl,
                                  final BigDecimal weight, final Map<String, Object> shippingConfig) {
         
@@ -49,6 +53,7 @@ public class CatalogService implements CatalogPort {
                 .orElseThrow(() -> new ResourceNotFoundException("Catégorie non trouvée"));
 
         final Product product = CatalogFactory.createProduct(name, slug, sku, price, category);
+        product.setStoreId(storeId);
         product.setAttributes(Optional.ofNullable(attributes).orElse(Map.of()));
         product.setImageUrl(imageUrl);
         product.setWeight(Optional.ofNullable(weight).orElse(BigDecimal.ZERO));
