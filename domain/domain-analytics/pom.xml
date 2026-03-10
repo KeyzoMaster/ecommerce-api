@@ -34,6 +34,14 @@
             <groupId>com.lemzo</groupId>
             <artifactId>domain-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.lemzo</groupId>
+            <artifactId>domain-sales</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.lemzo</groupId>
+            <artifactId>domain-catalog</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

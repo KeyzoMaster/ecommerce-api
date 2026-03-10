@@ -25,8 +25,8 @@ public interface UserRepository {
     @Update
     User update(User user);
 
-    @Find
-    Optional<User> findById(UUID id);
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.roles LEFT JOIN FETCH u.addresses WHERE u.entityId = :id")
+    Optional<User> findById(@Param("id") UUID id);
 
     @Query("SELECT u FROM User u WHERE u.username = :username")
     Optional<User> findByUsername(@Param("username") String username);

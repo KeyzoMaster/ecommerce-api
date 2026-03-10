@@ -18,11 +18,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql STABLE;
 
--- Wrapper pour l'extraction JSONB (Optimisé pour colonnes JSONB natives)
-CREATE OR REPLACE FUNCTION jsonb_attr(data_json jsonb, key_name text) 
+-- Wrapper pour l'extraction JSONB (Adapté pour colonnes TEXT)
+CREATE OR REPLACE FUNCTION jsonb_attr(data_text text, key_name text) 
 RETURNS text AS $$
 BEGIN
-    RETURN data_json ->> key_name;
+    RETURN (data_text::jsonb) ->> key_name;
 END;
 $$ LANGUAGE plpgsql STABLE;
 

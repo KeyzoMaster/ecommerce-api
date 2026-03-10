@@ -66,13 +66,13 @@ LOGIN_RESPONSE=$(curl -s -X POST "$BASE_URL/auth/login" \
     -H "Content-Type: application/json" \
     -d '{"identifier": "client@ecommerce.local", "password": "client123"}')
 
-CLIENT_TOKEN=$(echo $LOGIN_RESPONSE | jq -r '.accessToken')
+CLIENT_TOKEN=$(echo "$LOGIN_RESPONSE" | jq -r '.accessToken // empty')
 
-if [[ "$CLIENT_TOKEN" != "null" && "$CLIENT_TOKEN" != "" ]]; then
+if [[ "$CLIENT_TOKEN" != "" ]]; then
     printf "${GREEN}[OK]${NC} Login client réussi\n"
 else
-    printf "${RED}[FAIL]${NC} Login client échoué\n"
-    echo $LOGIN_RESPONSE
+    printf "${RED}[FAIL]${NC} Login client échoué (Pas de token)\n"
+    echo "$LOGIN_RESPONSE"
     exit 1
 fi
 
@@ -81,8 +81,14 @@ printf "\n--- 🔐 Authentification Admin ---\n"
 ADMIN_LOGIN=$(curl -s -X POST "$BASE_URL/auth/login" \
     -H "Content-Type: application/json" \
     -d '{"identifier": "admin@ecommerce.local", "password": "admin123"}')
-ADMIN_TOKEN=$(echo $ADMIN_LOGIN | jq -r '.accessToken')
-if [[ "$ADMIN_TOKEN" != "null" ]]; then printf "${GREEN}[OK]${NC} Login admin réussi\n"; fi
+ADMIN_TOKEN=$(echo "$ADMIN_LOGIN" | jq -r '.accessToken // empty')
+if [[ "$ADMIN_TOKEN" != "" ]]; then 
+    printf "${GREEN}[OK]${NC} Login admin réussi\n"
+else
+    printf "${RED}[FAIL]${NC} Login admin échoué\n"
+    echo "$ADMIN_LOGIN"
+    exit 1
+fi
 
 # 3. TEST CATALOGUE PUBLIC & RECHERCHE
 printf "\n--- 📦 Test Catalogue & Recherche (PostgreSQL 18) ---\n"
@@ -106,22 +112,22 @@ check_status "$STATUS" "Validation Coupon MARS2026"
 printf "\n--- 👤 Test Profil & Adresses ---\n"
 # Ajout d'une adresse pour le client
 printf "Ajout d'une adresse pour le client...\n"
-STATUS=$(curl -s -X POST -o /dev/null -w "%{http_code}" -H "Authorization: Bearer $CLIENT_TOKEN" \
+STATUS=$(curl -s -X POST -o /tmp/api_res.json -w "%{http_code}" "$BASE_URL/iam/users/me/addresses" \
+    -H "Authorization: Bearer $CLIENT_TOKEN" \
     -H "Content-Type: application/json" \
     -d '{"label": "Bureau", "street": "Place de l Indépendance", "city": "Dakar", "country": "Sénégal"}')
 check_status "$STATUS" "Ajout adresse client"
 
 # Récupérer l'ID de l'adresse
-ADDR_ID=$(curl -s -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/users/me" | jq -r '.data.addresses[0].technicalId')
+ADDR_ID=$(curl -s -H "Authorization: Bearer $CLIENT_TOKEN" "$BASE_URL/iam/users/me" | jq -r '.data.addresses[0].technicalId')
 
 # 6. TUNNEL D'ACHAT (PANIER & COMMANDE)
 printf "\n--- 🛒 Test Panier & Commande ---\n"
 
 # Ajouter au panier
-STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/sales/cart/items" \
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" -X POST "$BASE_URL/sales/cart/items?productId=$PRODUCT_ID&quantity=1" \
     -H "Authorization: Bearer $CLIENT_TOKEN" \
-    -H "Content-Type: application/json" \
-    -d "{\"productId\": \"$PRODUCT_ID\", \"quantity\": 1}")
+    -H "Content-Type: application/json")
 check_status "$STATUS" "Ajout au panier"
 
 # Passer commande

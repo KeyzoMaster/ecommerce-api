@@ -41,7 +41,7 @@ public class OrderItem extends AbstractEntity {
     private BigDecimal weight;
 
     @Convert(converter = JsonbConverter.class)
-    @Column(name = "shipping_config", columnDefinition = "jsonb")
+    @Column(name = "shipping_config", columnDefinition = "text")
     private Map<String, Object> shippingConfig;
 
     /**

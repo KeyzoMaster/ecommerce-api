@@ -4,6 +4,7 @@ import com.lemzo.ecommerce.domain.catalog.domain.Product;
 import jakarta.data.repository.Delete;
 import jakarta.data.repository.Find;
 import jakarta.data.repository.Insert;
+import jakarta.data.repository.Query;
 import jakarta.data.repository.Repository;
 import jakarta.data.repository.Update;
 import jakarta.data.repository.Param;
@@ -26,8 +27,8 @@ public interface ProductRepository {
     @Update
     Product update(Product product);
 
-    @Find
-    Optional<Product> findById(UUID id);
+    @Query("SELECT p FROM Product p LEFT JOIN FETCH p.category WHERE p.entityId = :id")
+    Optional<Product> findById(@Param("id") UUID id);
 
     @Find
     Optional<Product> findBySlug(String slug);

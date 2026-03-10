@@ -11,9 +11,10 @@ GENERATED ALWAYS AS (
 
 CREATE INDEX idx_products_search ON catalog_products USING GIN (search_vector);
 
--- PostgreSQL 18 JSONB Native Optimization (GIN indexing)
-CREATE INDEX idx_products_attributes_jsonb ON catalog_products USING GIN (attributes);
-CREATE INDEX idx_products_shipping_config_jsonb ON catalog_products USING GIN (shipping_config);
+-- PostgreSQL 18 JSONB Optimization (Fallback sur TEXT pour compatibilité EclipseLink)
+-- Utilisation de gin_trgm_ops car les colonnes sont passées en TEXT
+CREATE INDEX idx_products_attributes_jsonb ON catalog_products USING GIN (attributes gin_trgm_ops);
+CREATE INDEX idx_products_shipping_config_jsonb ON catalog_products USING GIN (shipping_config gin_trgm_ops);
 
 -- Vue Analytics consolidée
 CREATE OR REPLACE VIEW analytics_product_performance AS

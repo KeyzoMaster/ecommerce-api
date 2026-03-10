@@ -1,13 +1,13 @@
 package com.lemzo.ecommerce.domain.analytics.api.dto;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 
 /**
  * Statistiques de ventes quotidiennes.
  */
 public record DailySalesStats(
-    LocalDate date,
+    OffsetDateTime date,
     long count,
     BigDecimal revenue
 ) {}

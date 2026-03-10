@@ -11,7 +11,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import java.math.BigDecimal;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.sql.Timestamp;
 import java.util.List;
+import java.util.UUID;
+import java.util.Optional;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Service pour les statistiques et analyses.
@@ -25,23 +32,69 @@ public class AnalyticsService {
     private final CsvExportPort csvExportPort;
 
     public AnalyticsDashboardResponse getDashboard() {
-        final List<DailySalesStats> dailyTrends = analyticsRepository.getDailySales();
-        final List<TopProductStats> topProducts = analyticsRepository.getTopProducts();
+        final var dailyTrends = getDailySales();
+        final var topProducts = getTopProducts();
 
-        final BigDecimal totalRevenue = dailyTrends.stream()
+        final var totalRevenue = dailyTrends.stream()
                 .map(DailySalesStats::revenue)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
 
-        final long totalOrders = dailyTrends.stream()
+        final var totalOrders = dailyTrends.stream()
                 .mapToLong(DailySalesStats::count)
                 .sum();
 
         return new AnalyticsDashboardResponse(totalRevenue, totalOrders, dailyTrends, topProducts);
     }
 
+    private List<DailySalesStats> getDailySales() {
+        return Optional.ofNullable(analyticsRepository.getDailySalesRaw())
+                .map(rows -> rows.stream()
+                        .map(this::mapToDailySalesStats)
+                        .toList())
+                .orElseGet(List::of);
+    }
+
+    private DailySalesStats mapToDailySalesStats(final Object[] row) {
+        final OffsetDateTime date = switch (row[0]) {
+            case OffsetDateTime odt -> odt;
+            case Timestamp ts -> ts.toInstant().atOffset(ZoneOffset.UTC);
+            default -> throw new IllegalArgumentException("Type de date non supporté : " + row[0].getClass());
+        };
+        return new DailySalesStats(
+            date,
+            ((Number) row[1]).longValue(),
+            (BigDecimal) row[2]
+        );
+    }
+
+    private List<TopProductStats> getTopProducts() {
+        final var raw = Optional.ofNullable(analyticsRepository.getTopProductsRaw()).orElseGet(List::of);
+        final Map<UUID, TopProductStats> aggregator = new HashMap<>();
+        
+        raw.forEach(row -> {
+            final var qty = ((Number) row[0]).longValue();
+            final var price = (BigDecimal) row[1];
+            final var id = (UUID) row[2];
+            final var name = (String) row[3];
+            final var revenue = price.multiply(BigDecimal.valueOf(qty));
+            
+            aggregator.merge(id, 
+                new TopProductStats(id, name, qty, revenue),
+                (old, newVal) -> new TopProductStats(id, name, 
+                    old.totalSold() + newVal.totalSold(), 
+                    old.totalRevenue().add(newVal.totalRevenue()))
+            );
+        });
+
+        return aggregator.values().stream()
+                .sorted((a, b) -> b.totalRevenue().compareTo(a.totalRevenue()))
+                .limit(10)
+                .toList();
+    }
+
     public String exportDailyTrendsCsv() {
-        final List<DailySalesStats> data = analyticsRepository.getDailySales();
-        final List<String> headers = List.of("Date", "Commandes", "Revenu");
+        final var data = getDailySales();
+        final var headers = List.of("Date", "Commandes", "Revenu");
 
         return csvExportPort.generateCsv(headers, data, stats -> List.of(
                 stats.date().toString(),
@@ -51,8 +104,8 @@ public class AnalyticsService {
     }
 
     public String exportTopProductsCsv() {
-        final List<TopProductStats> data = analyticsRepository.getTopProducts();
-        final List<String> headers = List.of("Produit ID", "Nom", "Ventes", "Revenu");
+        final var data = getTopProducts();
+        final var headers = List.of("Produit ID", "Nom", "Ventes", "Revenu");
 
         return csvExportPort.generateCsv(headers, data, stats -> List.of(
                 stats.productId().toString(),

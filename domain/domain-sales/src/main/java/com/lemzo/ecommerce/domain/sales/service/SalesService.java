@@ -68,7 +68,9 @@ public class SalesService {
                     product.getPrice()
             );
             order.addItem(item);
-            subtotal = subtotal.add(item.getSubtotal());
+            
+            final BigDecimal itemSubtotal = item.getUnitPrice().multiply(BigDecimal.valueOf(item.getQuantity()));
+            subtotal = subtotal.add(itemSubtotal);
         }
 
         // Appliquer Coupon si présent

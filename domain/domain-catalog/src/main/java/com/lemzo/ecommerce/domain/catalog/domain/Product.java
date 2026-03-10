@@ -69,7 +69,7 @@ public class Product extends AbstractEntity {
      * Exemple : {"allowed_methods": ["EXPRESS"], "free_over": 50000}
      */
     @Convert(converter = com.lemzo.ecommerce.core.entity.converter.JsonbConverter.class)
-    @Column(name = "shipping_config", columnDefinition = "jsonb")
+    @Column(name = "shipping_config", columnDefinition = "text")
     private Map<String, Object> shippingConfig = new HashMap<>();
 
     /**
@@ -83,7 +83,7 @@ public class Product extends AbstractEntity {
      * Stocké en JSONB dans PostgreSQL via un convertisseur Jakarta Persistence.
      */
     @Convert(converter = JsonbConverter.class)
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "text")
     private Map<String, Object> attributes;
 
     public Product(String name, String slug, String sku, BigDecimal price, Category category) {

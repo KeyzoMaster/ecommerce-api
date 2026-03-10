@@ -1,6 +1,6 @@
 package com.lemzo.ecommerce.iam.domain;
 
-import java.util.Collections;
+import java.util.ArrayList;
 import java.util.HashSet;
 
 /**
@@ -21,7 +21,7 @@ public final class UserFactory {
         user.setEnabled(true);
         user.setRoles(new HashSet<>());
         user.setAdhocPermissions(new HashSet<>());
-        user.setAddresses(Collections.emptyList());
+        user.setAddresses(new ArrayList<>());
         return user;
     }
 }

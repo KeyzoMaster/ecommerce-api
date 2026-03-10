@@ -2,6 +2,7 @@ package com.lemzo.ecommerce.core.domain;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;
+import java.time.OffsetDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -42,4 +43,11 @@ public class Address {
 
     @Column(name = "country")
     private String country;
+
+    @Builder.Default
+    @Column(name = "created_at")
+    private OffsetDateTime createdAt = OffsetDateTime.now();
+
+    @Column(name = "updated_at")
+    private OffsetDateTime updatedAt;
 }

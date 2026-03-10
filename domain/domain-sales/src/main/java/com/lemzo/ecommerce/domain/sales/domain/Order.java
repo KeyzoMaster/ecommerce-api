@@ -25,7 +25,7 @@ public class Order extends AbstractEntity {
     @Column(name = "user_id", nullable = false)
     private UUID userId;
 
-    @Column(nullable = false, unique = true)
+    @Column(name = "order_number", nullable = false, unique = true)
     private String orderNumber;
 
     @Enumerated(EnumType.STRING)
@@ -58,7 +58,11 @@ public class Order extends AbstractEntity {
         @AttributeOverride(name = "street", column = @Column(name = "shipping_street")),
         @AttributeOverride(name = "city", column = @Column(name = "shipping_city")),
         @AttributeOverride(name = "zipCode", column = @Column(name = "shipping_zip_code")),
-        @AttributeOverride(name = "country", column = @Column(name = "shipping_country"))
+        @AttributeOverride(name = "country", column = @Column(name = "shipping_country")),
+        @AttributeOverride(name = "technicalId", column = @Column(name = "shipping_address_technical_id")),
+        @AttributeOverride(name = "label", column = @Column(name = "shipping_address_label")),
+        @AttributeOverride(name = "createdAt", column = @Column(name = "shipping_address_created_at")),
+        @AttributeOverride(name = "updatedAt", column = @Column(name = "shipping_address_updated_at"))
     })
     private Address shippingAddress;
 

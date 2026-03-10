@@ -12,7 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -40,14 +40,16 @@ class AnalyticsServiceTest {
     @DisplayName("Should correctly calculate dashboard totals")
     void shouldCalculateDashboardTotals() {
         // Arrange
-        final var dailyStats = List.of(
-                new DailySalesStats(LocalDate.now(), 2, new BigDecimal("1000")),
-                new DailySalesStats(LocalDate.now().minusDays(1), 3, new BigDecimal("1500"))
-        );
-        final var topStats = List.of(new TopProductStats(UUID.randomUUID(), "Prod", 10, new BigDecimal("500")));
+        final var now = OffsetDateTime.now();
+        final List<Object[]> dailyRows = new java.util.ArrayList<>();
+        dailyRows.add(new Object[]{ java.sql.Timestamp.from(now.toInstant()), 2L, new BigDecimal("1000") });
+        dailyRows.add(new Object[]{ java.sql.Timestamp.from(now.minusDays(1).toInstant()), 3L, new BigDecimal("1500") });
 
-        when(repository.getDailySales()).thenReturn(dailyStats);
-        when(repository.getTopProducts()).thenReturn(topStats);
+        final List<Object[]> topRows = new java.util.ArrayList<>();
+        topRows.add(new Object[]{ UUID.randomUUID(), "Prod", 10L, new BigDecimal("500") });
+
+        when(repository.getDailySalesRaw()).thenReturn(dailyRows);
+        when(repository.getTopProductsRaw()).thenReturn(topRows);
 
         // Act
         final var dashboard = analyticsService.getDashboard();
@@ -62,7 +64,7 @@ class AnalyticsServiceTest {
     @DisplayName("Should trigger CSV generation for daily trends")
     void shouldExportDailyTrends() {
         // Arrange
-        when(repository.getDailySales()).thenReturn(List.of());
+        when(repository.getDailySalesRaw()).thenReturn(List.of());
         when(csvExportPort.generateCsv(any(), any(), any())).thenReturn("csv-content");
 
         // Act

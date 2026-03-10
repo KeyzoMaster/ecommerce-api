@@ -15,7 +15,7 @@ CREATE TABLE iam_users (
     last_name varchar(100),
     enabled boolean NOT NULL DEFAULT true,
     email_verified_at timestamp with time zone,
-    payment_methods jsonb DEFAULT '[]',
+    payment_methods text DEFAULT '[]',
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
 );
@@ -105,9 +105,9 @@ CREATE TABLE catalog_products (
     weight numeric(10,3) DEFAULT 0,
     is_active boolean NOT NULL DEFAULT true,
     category_id uuid REFERENCES catalog_categories(id),
-    attributes jsonb DEFAULT '{}',
+    attributes text DEFAULT '{}',
     image_url varchar(255),
-    shipping_config jsonb DEFAULT '{}',
+    shipping_config text DEFAULT '{}',
     view_count bigint DEFAULT 0,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
@@ -132,6 +132,10 @@ CREATE TABLE sales_orders (
     shipping_city varchar(100),
     shipping_zip_code varchar(20),
     shipping_country varchar(100),
+    shipping_address_technical_id varchar(100),
+    shipping_address_label varchar(50),
+    shipping_address_created_at timestamp with time zone,
+    shipping_address_updated_at timestamp with time zone,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
 );
@@ -144,7 +148,7 @@ CREATE TABLE sales_order_items (
     quantity int NOT NULL,
     unit_price numeric(19,4) NOT NULL,
     weight numeric(10,3),
-    shipping_config jsonb DEFAULT '{}',
+    shipping_config text DEFAULT '{}',
     subtotal numeric(19,4) GENERATED ALWAYS AS (quantity * unit_price) STORED,
     created_at timestamp with time zone NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at timestamp with time zone
