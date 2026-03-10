@@ -125,7 +125,7 @@ public class UserResource {
     @Path("/{id}/avatar")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Operation(summary = "Uploader un avatar", description = "Enregistre l'image de profil")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE, checkOwnership = true)
+    @HasPermission(resource = ResourceType.USER, action = PbacAction.UPDATE, checkOwnership = true)
     public Response uploadAvatar(@PathParam("id") final UUID id, @FormParam("file") final EntityPart filePart) {
         userService.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Utilisateur non trouvé"));
@@ -138,7 +138,7 @@ public class UserResource {
                     "avatar.png",
                     filePart.getMediaType().toString(),
                     principal.getUserId(),
-                    ResourceType.PLATFORM,
+                    ResourceType.USER,
                     id
             );
             

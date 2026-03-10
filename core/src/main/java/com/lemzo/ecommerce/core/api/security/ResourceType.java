@@ -9,6 +9,7 @@ import java.util.Set;
 public enum ResourceType {
 
     PLATFORM(null, Set.of(MANAGE)),
+    USER(PLATFORM, Set.of(READ, UPDATE, DELETE)),
     STORE(PLATFORM, Set.of(READ, CREATE, UPDATE, DELETE, MANAGE)),
     CATALOG(STORE, Set.of(READ, CREATE, UPDATE, DELETE, MANAGE)),
     CATEGORY(CATALOG, Set.of(READ, CREATE, UPDATE, DELETE)),
