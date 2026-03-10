@@ -1,0 +1,500 @@
+  The column name for element [attributes] is being defaulted to: ATTRIBUTES.]]
+
+[2026-03-10T13:26:15.512796Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The column name for element [sku] is being defaulted to: SKU.]]
+
+[2026-03-10T13:26:15.512946Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The column name for element [slug] is being defaulted to: SLUG.]]
+
+[2026-03-10T13:26:15.514007Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The sequence name for the sequence generator named [SEQ_GEN_SEQUENCE] defined on [null] from [null] is being defaulted to: SEQ_GEN_SEQUENCE.]]
+
+[2026-03-10T13:26:15.514150Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The sequence name for the sequence generator named [SEQ_GEN_IDENTITY] defined on [null] from [null] is being defaulted to: SEQ_GEN_IDENTITY.]]
+
+[2026-03-10T13:26:15.520126Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The primary key column name for the mapping element [field owner] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.527908Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The source primary key column name for the many to many mapping [field permissions] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.528094Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The target primary key column name for the many to many mapping [field permissions] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.528312Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The primary key column name for the mapping element [field order] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.528585Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The source primary key column name for the many to many mapping [field roles] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.528727Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The target primary key column name for the many to many mapping [field roles] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.528973Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The source primary key column name for the many to many mapping [field adhocPermissions] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.529096Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The target primary key column name for the many to many mapping [field adhocPermissions] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.529284Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The primary key column name for the mapping element [field parent] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.529465Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The primary key column name for the mapping element [field category] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.533599Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.metadata] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  The primary key column name for the mapping element [field addresses] is being defaulted to: id.]]
+
+[2026-03-10T13:26:15.538164Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.weaver] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  Class com.lemzo.ecommerce.iam.domain.User could not be weaved for change tracking as it is not supported by its mappings.]]
+
+[2026-03-10T13:26:15.558943Z] [GF 8.0.0] [INFO] [] [org.glassfish.web.loader.WebappClassLoader] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  close(), this:
+org.glassfish.web.loader.WebappClassLoader@612147a1[name=api], urls=[
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-jaxrs2-jakarta-2.2.28.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/classgraph-4.8.179.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/javassist-3.30.2-GA.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-models-jakarta-2.2.28.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-annotations-2.18.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-annotations-jakarta-2.2.28.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-integration-jakarta-2.2.28.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/swagger-core-jakarta-2.2.28.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-lang3-3.17.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jakarta.xml.bind-api-3.0.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jakarta.activation-2.0.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-dataformat-yaml-2.18.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/snakeyaml-2.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-databind-2.18.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-core-2.18.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-jakarta-rs-json-provider-2.18.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-jakarta-rs-base-2.18.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-module-jakarta-xmlbind-annotations-2.18.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/core-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-datatype-jsr310-2.18.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/util-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/storage-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jedis-5.2.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/slf4j-api-1.7.36.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-pool2-2.12.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/json-20240303.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/gson-2.11.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/error_prone_annotations-2.27.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/minio-8.5.17.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/simple-xml-safe-2.7.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/guava-33.3.1-jre.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/failureaccess-1.0.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jsr305-3.0.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/checker-qual-3.43.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/j2objc-annotations-3.0.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okhttp-4.12.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okio-3.6.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/okio-jvm-3.6.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-common-1.9.10.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-jdk8-1.8.21.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-1.8.21.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/annotations-13.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/kotlin-stdlib-jdk7-1.8.21.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bcprov-jdk18on-1.78.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-compress-1.27.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-io-2.16.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/commons-codec-1.17.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/snappy-java-1.1.10.7.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/audit-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/mongodb-driver-sync-5.3.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bson-5.3.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/mongodb-driver-core-5.3.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/bson-record-codec-5.3.1.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/security-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-api-0.12.6.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-impl-0.12.6.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jjwt-jackson-0.12.6.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jBCrypt-0.4.3.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/iam-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/payment-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-core-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-catalog-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-sales-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-inventory-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-marketing-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-analytics-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/domain-shipping-1.0-SNAPSHOT.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/flyway-core-12.1.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-databind-3.1.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/jackson-core-3.1.0.jar
+file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/lib/flyway-database-postgresql-11.3.2.jar
+file:/opt/glassfish8/glassfish/domains/domain1/generated/ejb/api/
+][delegate=true, context=api, status=RUNNING, antiJARLocking=false, repositories=RepositoryManager[WEB-INF/classes/], notFound.size=39, pathTimestamps.size=73, resourceEntryCache.size=68]]]
+
+[2026-03-10T13:26:15.852877Z] [GF 8.0.0] [INFO] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  EclipseLink, version: Eclipse Persistence Services - 5.0.0-B13.v202512111447-a92ecc697995fa55709edc3c28d855c9c3ac2a1d]]
+
+[2026-03-10T13:26:15.857349Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
+  connecting(DatabaseLogin(
+	platform=>PostgreSQLPlatform
+	user name=> ""
+	connector=>JNDIConnector datasource name=>null
+))]]
+
+[2026-03-10T13:26:16.316610Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  Connected: jdbc:postgresql://postgres:5432/ecommerce_db?stringtype=unspecified
+	User: e_user
+	Database: PostgreSQL  Version: 18.3 (Debian 18.3-1.pgdg13+1)
+	Driver: PostgreSQL JDBC Driver  Version: 42.7.9]]
+
+[2026-03-10T13:26:16.317439Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
+  connecting(DatabaseLogin(
+	platform=>PostgreSQLPlatform
+	user name=> ""
+	connector=>JNDIConnector datasource name=>null
+))]]
+
+[2026-03-10T13:26:16.317801Z] [GF 8.0.0] [CONFIG] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 700] [[
+  Connected: jdbc:postgresql://postgres:5432/ecommerce_db?stringtype=unspecified
+	User: e_user
+	Database: PostgreSQL  Version: 18.3 (Debian 18.3-1.pgdg13+1)
+	Driver: PostgreSQL JDBC Driver  Version: 42.7.9]]
+
+[2026-03-10T13:26:16.375808Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.connection] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 500] [[
+  /file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU login successful]]
+
+[2026-03-10T13:26:16.432383Z] [GF 8.0.0] [INFO] [] [org.jboss.weld.Version] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  WELD-000900: 6.0.4 (Final)]]
+
+[2026-03-10T13:26:19.198697Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.inject.spi] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Enabling Weld for ApplicationInfo[name=api]]]
+
+[2026-03-10T13:26:19.684870Z] [GF 8.0.0] [INFO] [] [org.jboss.weld.Event] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  WELD-000411: Observer method [BackedAnnotatedMethod] public org.glassfish.jersey.ext.cdi1x.internal.ProcessAllAnnotatedTypes.processAnnotatedType(@Observes ProcessAnnotatedType<?>, BeanManager) receives events for all annotated types. Consider restricting events using @WithAnnotations or a generic type with bounds.]]
+
+[2026-03-10T13:26:22.562714Z] [GF 8.0.0] [INFO] [] [org.eclipse.jnosql.jakartapersistence.mapping.spi.JakartaPersistenceExtension] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Processing Jakarta Persistence extension. Found 0 standard repositories, 11 custom repositories.]]
+
+[2026-03-10T13:26:23.440234Z] [GF 8.0.0] [INFO] [] [org.eclipse.krazo.servlet.KrazoContainerInitializer] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Eclipse Krazo version 4.0.1 started]]
+
+[2026-03-10T13:26:23.500113Z] [GF 8.0.0] [INFO] [] [org.glassfish.soteria.servlet.SamRegistrationInstaller] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Initializing Soteria 4.0.2 for context '/api']]
+
+[2026-03-10T13:26:23.543075Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Démarrage des migrations Flyway sur : jdbc:postgresql://postgres:5432/ecommerce_db (User: e_user)]]
+
+[2026-03-10T13:26:24.405048Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Exécution de Flyway Repair...]]
+
+[2026-03-10T13:26:24.477708Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.FlywayExecutor] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Database: jdbc:postgresql://postgres:5432/ecommerce_db (PostgreSQL 18.3)]]
+
+[2026-03-10T13:26:27.853987Z] [GF 8.0.0] [WARNING] [] [org.flywaydb.core.internal.database.base.Database] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 900] [[
+  Using PostgreSQL 18.3 which is newer than the version Flyway has been verified with. The latest verified version of PostgreSQL is 17.]]
+
+[2026-03-10T13:26:27.883269Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Repair of failed migration in Schema History table "public"."flyway_schema_history" not necessary as table doesn't exist.]]
+
+[2026-03-10T13:26:27.902942Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Schema history table "public"."flyway_schema_history" does not exist yet]]
+
+[2026-03-10T13:26:27.907867Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbRepair] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Successfully repaired schema history table "public"."flyway_schema_history" (execution time 00:00.029s).]]
+
+[2026-03-10T13:26:27.923189Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Exécution de Flyway Migrate...]]
+
+[2026-03-10T13:26:27.934310Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.FlywayExecutor] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Database: jdbc:postgresql://postgres:5432/ecommerce_db (PostgreSQL 18.3)]]
+
+[2026-03-10T13:26:27.939735Z] [GF 8.0.0] [WARNING] [] [org.flywaydb.core.internal.database.base.Database] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 900] [[
+  Using PostgreSQL 18.3 which is newer than the version Flyway has been verified with. The latest verified version of PostgreSQL is 17.]]
+
+[2026-03-10T13:26:27.950500Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Schema history table "public"."flyway_schema_history" does not exist yet]]
+
+[2026-03-10T13:26:27.951743Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbValidate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Successfully validated 4 migrations (execution time 00:00.005s)]]
+
+[2026-03-10T13:26:27.972122Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.Flyway] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  All configured schemas are empty; baseline operation skipped. A baseline or migration script with a lower version than the baseline version may execute if available. Check the Schemas parameter if this is not intended.]]
+
+[2026-03-10T13:26:27.976783Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.schemahistory.JdbcTableSchemaHistory] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Creating Schema History table "public"."flyway_schema_history" ...]]
+
+[2026-03-10T13:26:28.056151Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Current version of schema "public": << Empty Schema >>]]
+
+[2026-03-10T13:26:28.076562Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Migrating schema "public" to version "1 - Initial Schema"]]
+
+[2026-03-10T13:26:28.234925Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Migrating schema "public" to version "2 - Analytics and Search"]]
+
+[2026-03-10T13:26:28.278022Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Migrating schema "public" to version "3 - Custom Database Functions"]]
+
+[2026-03-10T13:26:28.300210Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Migrating schema "public" to version "4 - Initial Data"]]
+
+[2026-03-10T13:26:28.324123Z] [GF 8.0.0] [INFO] [] [org.flywaydb.core.internal.command.DbMigrate] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Successfully applied 4 migrations to schema "public", now at version v4 (execution time 00:00.156s)]]
+
+[2026-03-10T13:26:28.326360Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.api.infrastructure.migration.FlywayMigrationService] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Migrations Flyway terminées avec succès.]]
+
+[2026-03-10T13:26:29.199300Z] [GF 8.0.0] [INFO] [AS-WEB-GLUE-00172] [jakarta.enterprise.web] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  Loading application [api] at [/api]]]
+
+[2026-03-10T13:26:29.305102Z] [GF 8.0.0] [INFO] [] [jakarta.enterprise.system.core] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  api was successfully deployed in 21,525 milliseconds.]]
+
+[2026-03-10T13:26:29.309577Z] [GF 8.0.0] [INFO] [NCLS-DEPLOYMENT-02035] [jakarta.enterprise.system.tools.deployment.autodeploy] [tid: _ThreadID=96 _ThreadName=AutoDeployer] [levelValue: 800] [[
+  [AutoDeploy] Successfully autodeployed : /opt/glassfish8/glassfish/domains/domain1/autodeploy/api.war.]]
+
+[2026-03-10T13:28:08.196693Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 1000] [[
+  SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".]]
+
+[2026-03-10T13:28:08.196765Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 1000] [[
+  SLF4J: Defaulting to no-operation (NOP) logger implementation]]
+
+[2026-03-10T13:28:08.196781Z] [GF 8.0.0] [SEVERE] [] [jakarta.enterprise.logging.stderr] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 1000] [[
+  SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.]]
+
+[2026-03-10T13:28:08.491927Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id AS a1, is_active AS a2, ATTRIBUTES AS a3, created_at AS a4, CURRENCY AS a5, DESCRIPTION AS a6, image_url AS a7, NAME AS a8, PRICE AS a9, search_vector AS a10, shipping_config AS a11, SKU AS a12, SLUG AS a13, store_id AS a14, updated_at AS a15, view_count AS a16, weight AS a17, category_id AS a18 FROM catalog_products LIMIT ? OFFSET ?
+	bind => [20, 0]]]
+
+[2026-03-10T13:28:08.543600Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id, created_at, DESCRIPTION, NAME, SLUG, updated_at, parent_id FROM catalog_categories WHERE (id = ?)
+	bind => [018e2345-6789-7000-b000-000000000001]]]
+
+[2026-03-10T13:28:08.550907Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT COUNT(id) FROM catalog_products]]
+
+[2026-03-10T13:28:08.802405Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
+	bind => [admin]]]
+
+[2026-03-10T13:28:08.806531Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
+	bind => [admin@ecommerce.local]]]
+
+[2026-03-10T13:28:09.088437Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  INSERT INTO iam_users (id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [b0f0e18d-8d67-4601-8ec5-f082ed6ce67b, 2026-03-10T13:28:09.064408857Z, admin@ecommerce.local, null, true, null, null, $2a$12$XsBLb0SRWBChYCRZju82PO7kfABcFASe9B9sA04Z41oGBue0NdJyq, [], null, admin]]]
+
+[2026-03-10T13:28:09.121937Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
+	bind => [client]]]
+
+[2026-03-10T13:28:09.124054Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
+	bind => [client@ecommerce.local]]]
+
+[2026-03-10T13:28:09.367857Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  INSERT INTO iam_users (id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff, 2026-03-10T13:28:09.367211708Z, client@ecommerce.local, null, true, null, null, $2a$12$UXz/8jNPCLL.WJmmgXgQzuL1N4Hj2ZHm.9NmBn2fuP6eEvdt19jZq, [], null, client]]]
+
+[2026-03-10T13:28:09.389120Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
+	bind => [owner]]]
+
+[2026-03-10T13:28:09.391863Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
+	bind => [owner@ecommerce.local]]]
+
+[2026-03-10T13:28:09.636406Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
+  INSERT INTO iam_users (id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [0204a55e-0b92-4337-802c-5e9893553beb, 2026-03-10T13:28:09.635788436Z, owner@ecommerce.local, null, true, null, null, $2a$12$kL80WHGbpbb3cWoJVt0hMOz781JN4xAsMtiQaAkX0uJj..iozvroa, [], null, owner]]]
+
+[2026-03-10T13:28:09.923052Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
+	bind => [client@ecommerce.local]]]
+
+[2026-03-10T13:28:09.925799Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
+	bind => [client@ecommerce.local]]]
+
+[2026-03-10T13:28:09.928092Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (id = ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:09.931100Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.iam.service.AuthenticationService] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 800] [[
+  Login attempt for user: client]]
+
+[2026-03-10T13:28:10.316026Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (USERNAME = ?)
+	bind => [admin@ecommerce.local]]]
+
+[2026-03-10T13:28:10.321250Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (EMAIL = ?)
+	bind => [admin@ecommerce.local]]]
+
+[2026-03-10T13:28:10.323029Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (id = ?)
+	bind => [b0f0e18d-8d67-4601-8ec5-f082ed6ce67b]]]
+
+[2026-03-10T13:28:10.324553Z] [GF 8.0.0] [INFO] [] [com.lemzo.ecommerce.iam.service.AuthenticationService] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 800] [[
+  Login attempt for user: admin]]
+
+[2026-03-10T13:28:10.583987Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  SELECT id AS a1, is_active AS a2, ATTRIBUTES AS a3, created_at AS a4, CURRENCY AS a5, DESCRIPTION AS a6, image_url AS a7, NAME AS a8, PRICE AS a9, search_vector AS a10, shipping_config AS a11, SKU AS a12, SLUG AS a13, store_id AS a14, updated_at AS a15, view_count AS a16, weight AS a17, category_id AS a18 FROM catalog_products LIMIT ? OFFSET ?
+	bind => [20, 0]]]
+
+[2026-03-10T13:28:10.587273Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  SELECT COUNT(id) FROM catalog_products]]
+
+[2026-03-10T13:28:10.605441Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT id AS a1, is_active AS a2, ATTRIBUTES AS a3, created_at AS a4, CURRENCY AS a5, DESCRIPTION AS a6, image_url AS a7, NAME AS a8, PRICE AS a9, search_vector AS a10, shipping_config AS a11, SKU AS a12, SLUG AS a13, store_id AS a14, updated_at AS a15, view_count AS a16, weight AS a17, category_id AS a18 FROM catalog_products LIMIT ? OFFSET ?
+	bind => [20, 0]]]
+
+[2026-03-10T13:28:10.608179Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT COUNT(id) FROM catalog_products]]
+
+[2026-03-10T13:28:10.654869Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
+  SELECT id, CODE, created_at, end_date, max_usages, min_order_amount, start_date, TYPE, updated_at, usage_count, VALUE FROM marketing_coupons WHERE (CODE = ?)
+	bind => [MARS2026]]]
+
+[2026-03-10T13:28:10.658080Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=65 _ThreadName=http-listener-1(2)] [levelValue: 500] [[
+  SELECT id, CODE, created_at, end_date, max_usages, min_order_amount, start_date, TYPE, updated_at, usage_count, VALUE FROM marketing_coupons WHERE (id = ?)
+	bind => [019cd7ed-70d3-75a3-833c-cf470605f2a0]]]
+
+[2026-03-10T13:28:10.801146Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (id = ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.802874Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT city, country, created_at, label, street, technical_id, updated_at, zip_code, user_id FROM iam_user_addresses WHERE (user_id = ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.807015Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  UPDATE iam_users SET updated_at = ? WHERE (id = ?)
+	bind => [2026-03-10T13:28:10.806329230Z, 6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.808669Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  INSERT INTO iam_user_addresses (user_id, city, country, created_at, label, street, technical_id, updated_at, zip_code) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff, Dakar, Sénégal, 2026-03-10T13:28:10.791531642Z, Bureau, Place de l Indépendance, 39dc2d9b-04ff-4261-a88e-a3de96310bf8, null, null]]]
+
+[2026-03-10T13:28:10.815745Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=67 _ThreadName=http-listener-1(4)] [levelValue: 500] [[
+  SELECT t1.id, t1.created_at, t1.DESCRIPTION, t1.NAME, t1.is_system_role, t1.updated_at FROM iam_user_roles t0, iam_roles t1 WHERE ((t0.user_id = ?) AND (t1.id = t0.role_id))
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.832958Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT id, created_at, EMAIL, email_verified_at, enabled, first_name, last_name, PASSWORD, payment_methods, updated_at, USERNAME FROM iam_users WHERE (id = ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.835372Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT t1.id, t1.created_at, t1.DESCRIPTION, t1.NAME, t1.is_system_role, t1.updated_at FROM iam_user_roles t0, iam_roles t1 WHERE ((t0.user_id = ?) AND (t1.id = t0.role_id))
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.836845Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=66 _ThreadName=http-listener-1(3)] [levelValue: 500] [[
+  SELECT city, country, created_at, label, street, technical_id, updated_at, zip_code, user_id FROM iam_user_addresses WHERE (user_id = ?)
+	bind => [6076a09f-e12a-4b1f-92cd-7d2e6a5926ff]]]
+
+[2026-03-10T13:28:10.892640Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=64 _ThreadName=http-listener-1(1)] [levelValue: 500] [[
+  SELECT id, is_active, ATTRIBUTES, created_at, CURRENCY, DESCRIPTION, image_url, NAME, PRICE, search_vector, shipping_config, SKU, SLUG, store_id, updated_at, view_count, weight, category_id FROM catalog_products WHERE (id = ?)
+	bind => [018e2345-6789-7000-c000-000000000001]]]
+
+[2026-03-10T13:28:11.023127Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT id, is_active, ATTRIBUTES, created_at, CURRENCY, DESCRIPTION, image_url, NAME, PRICE, search_vector, shipping_config, SKU, SLUG, store_id, updated_at, view_count, weight, category_id FROM catalog_products WHERE (id = ?)
+	bind => [018e2345-6789-7000-c000-000000000001]]]
+
+[2026-03-10T13:28:11.045072Z] [GF 8.0.0] [FINE] [] [org.eclipse.persistence.session./file:/opt/glassfish8/glassfish/domains/domain1/applications/api/WEB-INF/classes/_ecommercePU.sql] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 500] [[
+  SELECT id, created_at, low_stock_threshold, product_id, QUANTITY, updated_at FROM inventory_stocks WHERE (product_id = ?)
+	bind => [018e2345-6789-7000-c000-000000000001]]]
+
+[2026-03-10T13:28:11.047887Z] [GF 8.0.0] [SEVERE] [] [org.glassfish.cdi.transaction.TransactionalInterceptorBase] [tid: _ThreadID=68 _ThreadName=http-listener-1(5)] [levelValue: 1000] [[
+  Error during transaction processing
+com.lemzo.ecommerce.core.api.exception.BusinessRuleException: Stock insuffisant pour le produit : MacBook Pro M3
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.service.SalesService.placeOrder(SalesService.java:82)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.service.SalesService$Proxy$_$$_WeldSubclass.placeOrder$$super(Unknown Source)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
+	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
+	at org.glassfish.jersey.ext.cdi1x.transaction.internal.WebAppExceptionInterceptor.intercept(WebAppExceptionInterceptor.java:53)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
+	at org.jboss.weld.interceptor.proxy.NonTerminalAroundInvokeInvocationContext.proceedInternal(NonTerminalAroundInvokeInvocationContext.java:72)
+	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorBase.proceed(TransactionalInterceptorBase.java:129)
+	at org.glassfish.cdi.transaction.TransactionalInterceptorRequired.transactional(TransactionalInterceptorRequired.java:66)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
+	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
+	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.service.SalesService$Proxy$_$$_WeldSubclass.placeOrder(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.service.SalesService$Proxy$_$$_WeldClientProxy.placeOrder(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.api.OrderResource.checkout(OrderResource.java:78)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.api.OrderResource$Proxy$_$$_WeldSubclass.checkout$$super(Unknown Source)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.proxy.TerminalAroundInvokeInvocationContext.proceedInternal(TerminalAroundInvokeInvocationContext.java:55)
+	at org.jboss.weld.interceptor.proxy.AroundInvokeInvocationContext.proceed(AroundInvokeInvocationContext.java:86)
+	at org.hibernate.validator.cdi.interceptor.spi.ValidationInterceptor.validateMethodInvocation(ValidationInterceptor.java:81)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.jboss.weld.interceptor.reader.SimpleInterceptorInvocation$SimpleMethodInvocation.invoke(SimpleInterceptorInvocation.java:75)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeAroundInvoke(InterceptorMethodHandler.java:90)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.executeInterception(InterceptorMethodHandler.java:73)
+	at org.jboss.weld.interceptor.proxy.InterceptorMethodHandler.invoke(InterceptorMethodHandler.java:56)
+	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:80)
+	at org.jboss.weld.bean.proxy.CombinedInterceptorAndDecoratorStackMethodHandler.invoke(CombinedInterceptorAndDecoratorStackMethodHandler.java:68)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.api.OrderResource$Proxy$_$$_WeldSubclass.checkout(Unknown Source)
+	at WebappClassLoader//com.lemzo.ecommerce.domain.sales.api.OrderResource$Proxy$_$$_WeldClientProxy.checkout(Unknown Source)
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:104)
+	at java.base/java.lang.reflect.Method.invoke(Method.java:565)
+	at org.glassfish.jersey.server.model.internal.ResourceMethodInvocationHandlerFactory.lambda$static$0(ResourceMethodInvocationHandlerFactory.java:52)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher$1.run(AbstractJavaResourceMethodDispatcher.java:146)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.invoke(AbstractJavaResourceMethodDispatcher.java:189)
+	at org.glassfish.jersey.server.model.internal.JavaResourceMethodDispatcherProvider$ResponseOutInvoker.doDispatch(JavaResourceMethodDispatcherProvider.java:176)
+	at org.glassfish.jersey.server.model.internal.AbstractJavaResourceMethodDispatcher.dispatch(AbstractJavaResourceMethodDispatcher.java:93)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.invoke(ResourceMethodInvoker.java:470)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:394)
+	at org.glassfish.jersey.server.model.ResourceMethodInvoker.apply(ResourceMethodInvoker.java:80)
+	at org.glassfish.jersey.server.ServerRuntime$1.run(ServerRuntime.java:274)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:248)
+	at org.glassfish.jersey.internal.Errors$1.call(Errors.java:244)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:292)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:274)
+	at org.glassfish.jersey.internal.Errors.process(Errors.java:244)
+	at org.glassfish.jersey.process.internal.RequestScope.runInScope(RequestScope.java:266)
+	at org.glassfish.jersey.server.ServerRuntime.process(ServerRuntime.java:253)
+	at org.glassfish.jersey.server.ApplicationHandler.handle(ApplicationHandler.java:703)
+	at org.glassfish.jersey.servlet.WebComponent.serviceImpl(WebComponent.java:422)
+	at org.glassfish.jersey.servlet.WebComponent.service(WebComponent.java:374)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:355)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:309)
+	at org.glassfish.jersey.servlet.ServletContainer.service(ServletContainer.java:202)
+	at org.apache.catalina.core.StandardWrapper.service(StandardWrapper.java:1316)
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:200)
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:123)
+	at org.apache.catalina.core.StandardPipeline.doInvoke(StandardPipeline.java:563)
+	at org.apache.catalina.core.StandardPipeline.invoke(StandardPipeline.java:504)
+	at com.sun.enterprise.web.WebPipeline.invoke(WebPipeline.java:71)
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:121)
+	at org.apache.catalina.connector.CoyoteAdapter.doService(CoyoteAdapter.java:294)
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:187)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper$HttpHandlerCallable.call(ContainerMapper.java:429)
+	at com.sun.enterprise.v3.services.impl.ContainerMapper.service(ContainerMapper.java:143)
+	at org.glassfish.grizzly.http.server.HttpHandler.runService(HttpHandler.java:174)
+	at org.glassfish.grizzly.http.server.HttpHandler.doHandle(HttpHandler.java:153)
+	at org.glassfish.grizzly.http.server.HttpServerFilter.handleRead(HttpServerFilter.java:202)
+	at org.glassfish.grizzly.filterchain.ExecutorResolver$9.execute(ExecutorResolver.java:89)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.executeFilter(DefaultFilterChain.java:246)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.executeChainPart(DefaultFilterChain.java:178)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.execute(DefaultFilterChain.java:118)
+	at org.glassfish.grizzly.filterchain.DefaultFilterChain.process(DefaultFilterChain.java:96)
+	at org.glassfish.grizzly.ProcessorExecutor.execute(ProcessorExecutor.java:51)
+	at org.glassfish.grizzly.nio.transport.TCPNIOTransport.fireIOEvent(TCPNIOTransport.java:511)
+	at org.glassfish.grizzly.strategies.AbstractIOStrategy.fireIOEvent(AbstractIOStrategy.java:82)
+	at org.glassfish.grizzly.strategies.WorkerThreadIOStrategy.run0(WorkerThreadIOStrategy.java:83)
+	at org.glassfish.grizzly.strategies.WorkerThreadIOStrategy$WorkerThreadRunnable.run(WorkerThreadIOStrategy.java:101)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.doWork(AbstractThreadPool.java:540)
+	at org.glassfish.grizzly.threadpool.AbstractThreadPool$Worker.run(AbstractThreadPool.java:520)
+	at java.base/java.lang.Thread.run(Thread.java:1474)
+]]
+
