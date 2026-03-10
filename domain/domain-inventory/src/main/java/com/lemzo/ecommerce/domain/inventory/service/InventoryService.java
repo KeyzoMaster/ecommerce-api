@@ -64,12 +64,29 @@ public class InventoryService implements InventoryPort {
 
     @Override
     @Transactional
-    @Audit(action = "STOCK_UPDATE_INTERNAL")
-    public void updateStock(final UUID productId, final int quantityChange) {
+    @Audit(action = "STOCK_INCREASE_INTERNAL")
+    public void increaseStock(final UUID productId, final int quantity) {
+        if (quantity < 0) {
+            throw new BusinessRuleException("La quantité à ajouter ne peut pas être négative");
+        }
         final Stock stock = stockRepository.findByProductId(productId)
                 .orElseThrow(() -> new BusinessRuleException("Stock introuvable pour le produit : " + productId));
 
-        final int newQuantity = stock.getQuantity() + quantityChange;
+        stock.setQuantity(stock.getQuantity() + quantity);
+        stockRepository.update(stock);
+    }
+
+    @Override
+    @Transactional
+    @Audit(action = "STOCK_DECREASE_INTERNAL")
+    public void decreaseStock(final UUID productId, final int quantity) {
+        if (quantity < 0) {
+            throw new BusinessRuleException("La quantité à soustraire ne peut pas être négative");
+        }
+        final Stock stock = stockRepository.findByProductId(productId)
+                .orElseThrow(() -> new BusinessRuleException("Stock introuvable pour le produit : " + productId));
+
+        final int newQuantity = stock.getQuantity() - quantity;
 
         if (newQuantity < 0) {
             throw new BusinessRuleException("La quantité en stock ne peut pas être négative");

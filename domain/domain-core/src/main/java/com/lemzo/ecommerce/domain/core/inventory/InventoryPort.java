@@ -7,5 +7,6 @@ import java.util.UUID;
  */
 public interface InventoryPort {
     boolean isAvailable(UUID productId, int quantity);
-    void updateStock(UUID productId, int quantityChange);
+    void increaseStock(UUID productId, int quantity);
+    void decreaseStock(UUID productId, int quantity);
 }

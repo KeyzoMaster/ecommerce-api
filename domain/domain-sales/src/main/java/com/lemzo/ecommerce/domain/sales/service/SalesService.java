@@ -96,7 +96,7 @@ public class SalesService {
             subtotal = subtotal.add(itemSubtotal);
 
             // 2. Décrémentation immédiate du stock via une valeur négative
-            inventoryPort.updateStock(product.getId(), -cartItem.quantity());
+            inventoryPort.decreaseStock(product.getId(), cartItem.quantity());
         }
 
         // Appliquer Coupon si présent

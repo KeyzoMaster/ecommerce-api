@@ -53,7 +53,7 @@ class InventoryServiceTest {
         when(stockRepository.findByProductId(productId)).thenReturn(Optional.of(stock));
 
         // Act
-        inventoryService.updateStock(productId, -3);
+        inventoryService.decreaseStock(productId, 3);
 
         // Assert
         assertEquals(7, stock.getQuantity());
