@@ -19,6 +19,7 @@ Le contrôle d'accès dépasse le simple RBAC (Role-Based Access Control). Nous 
 Dans un RBAC classique, un utilisateur a un rôle (ex: "Vendeur") qui lui donne des droits globaux. Dans un contexte multi-boutiques, cela pose problème : un vendeur ne doit pouvoir modifier **que** les produits de sa propre boutique. 
 Le **PBAC** permet de lier la permission à la **ressource elle-même** et au **contexte**.
 *   **Granularité fine :** On vérifie l'action, le type de ressource et la propriété (`checkOwnership = true`).
+*   **Evolutivité:** Les polices n'étant pas strictement liés à un role, il est possible de définir d'en nouveaux ou mettre à jour ceux existants sans rien à changer dans le code
 *   **Annotation :** `@HasPermission(resource = ResourceType.ORDER, action = PbacAction.READ, checkOwnership = true)`
 *   **Hiérarchie et Récursivité :** Les ressources ont des relations parent/enfant (Ex: `ORDER` -> `SALES` -> `STORE` -> `PLATFORM`). Les fournisseurs d'appartenance (`OwnershipProvider`) vérifient de manière récursive si l'utilisateur est propriétaire de la ressource ou d'une ressource parente (ex: s'il possède la boutique, il possède la commande).
 

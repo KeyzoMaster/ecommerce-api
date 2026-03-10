@@ -8,7 +8,16 @@ printf "\033[1;34m🚀 DÉMARRAGE DE LA SUITE DE TESTS EXHAUSTIVE\033[0m\n"
 # Rendre les scripts exécutables
 chmod +x *.sh
 
+BASE_URL="http://localhost:8080/api/v1"
+printf "\033[1;33m⏳ Attente du démarrage du serveur...\033[0m\n"
+until curl -s "$BASE_URL/catalog/products" > /dev/null; do
+    printf "."
+    sleep 2
+done
+printf "\n\033[0;32m✅ Serveur prêt !\033[0m\n"
+
 # Exécution séquentielle
+bash setup_users.sh || exit 1
 bash test_security.sh || exit 1
 bash test_iam.sh || exit 1
 bash test_catalog.sh || exit 1

@@ -60,6 +60,10 @@ INSERT INTO catalog_products (id, store_id, name, slug, sku, price, category_id,
 ('018e2345-6789-7000-c000-000000000001', '018e2345-6789-7000-d000-000000000001', 'MacBook Pro M3', 'macbook-pro-m3', 'AAPL-MBP-M3', 1500000, '018e2345-6789-7000-b000-000000000001', '{"brand": "Apple", "cpu": "M3"}'),
 ('018e2345-6789-7000-c000-000000000002', '018e2345-6789-7000-d000-000000000001', 'iPhone 15 Pro', 'iphone-15-pro', 'AAPL-I15P', 850000, '018e2345-6789-7000-b000-000000000001', '{"brand": "Apple", "storage": "256GB"}');
 
+INSERT INTO inventory_stocks (id, product_id, quantity, low_stock_threshold) VALUES
+(uuidv7(), '018e2345-6789-7000-c000-000000000001', 50, 5),
+(uuidv7(), '018e2345-6789-7000-c000-000000000002', 100, 10);
+
 -- 3. Marketing
 INSERT INTO marketing_coupons (id, code, type, value, start_date, end_date) VALUES 
 (uuidv7(), 'MARS2026', 'PERCENTAGE', 15.00, '2026-03-01 00:00:00+00', '2026-04-01 00:00:00+00');

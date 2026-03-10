@@ -3,9 +3,6 @@ package com.lemzo.ecommerce.iam.api.dto;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
 import java.util.Set;
 
-/**
- * Réponse d'authentification contenant le token et les infos utilisateur.
- */
 @Schema(description = "Résultat d'une authentification réussie")
 public record AuthResponse(
     @Schema(description = "Jeton d'accès JWT")
