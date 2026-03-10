@@ -51,7 +51,7 @@ public class CouponResource {
     @Operation(summary = "Créer un nouveau coupon", description = "Ajoute un coupon de réduction (Nécessite PLATFORM:CREATE)")
     @APIResponse(responseCode = "201", description = "Coupon créé")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
+    @HasPermission(resource = ResourceType.COUPON, action = PbacAction.CREATE)
     public Response create(@Valid final CouponCreateRequest request) {
         final var coupon = marketingService.createCoupon(request);
         final var res = CouponResponse.from(coupon);

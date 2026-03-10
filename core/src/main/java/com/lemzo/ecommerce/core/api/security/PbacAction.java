@@ -7,7 +7,7 @@ import java.util.Set;
  * Définit les actions possibles avec logique d'implicité.
  */
 public enum PbacAction {
-    READ, CREATE, UPDATE, DELETE, MANAGE, VIEW_ANALYTICS, APPLY_COUPON;
+    READ, CREATE, UPDATE, DELETE, MANAGE, EXECUTE;
 
     /**
      * Retourne l'ensemble des actions qui, si possédées par l'utilisateur, 
@@ -22,6 +22,7 @@ public enum PbacAction {
             required.add(UPDATE);
             required.add(CREATE);
             required.add(DELETE);
+            required.add(EXECUTE);
         }
         
         return required;

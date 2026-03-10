@@ -57,7 +57,7 @@ register_user "client" "client@ecommerce.local" "client123"
 register_user "owner" "owner@ecommerce.local" "owner123"
 
 # Promotion manuelle (Bypass limitations API)
-promote_user "admin" "SUPER_ADMIN"
+promote_user "admin" "ADMIN"
 promote_user "client" "CLIENT"
 promote_user "owner" "STORE_OWNER"
 

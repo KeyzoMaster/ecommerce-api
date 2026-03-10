@@ -24,7 +24,7 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
  */
 @Path("/analytics")
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "Analyses", description = "Tableaux de bord et rapports (Nécessite PLATFORM:VIEW_ANALYTICS)")
+@Tag(name = "Analyses", description = "Tableaux de bord et rapports (Nécessite ANALYTICS:READ)")
 @SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor = @__({@Inject}))
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
@@ -38,7 +38,7 @@ public class AnalyticsResource {
     @Operation(summary = "Récupérer les stats du tableau de bord", description = "Retourne le chiffre d'affaires et le top produits")
     @APIResponse(responseCode = "200", description = "Tableau de bord récupéré")
     @APIResponse(responseCode = "403", description = "Accès refusé")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
+    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.READ)
     public Response getDashboard() {
         return Response.ok(analyticsService.getDashboard()).build();
     }
@@ -48,7 +48,7 @@ public class AnalyticsResource {
     @Produces("text/csv")
     @Operation(summary = "Exporter le top produits en CSV")
     @APIResponse(responseCode = "200", description = "Fichier CSV généré")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
+    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.READ)
     public Response exportTopProducts() {
         final var csv = analyticsService.exportTopProductsCsv();
         return Response.ok(csv)
@@ -59,7 +59,7 @@ public class AnalyticsResource {
     @GET
     @Path("/export/daily-trends")
     @Produces("text/csv")
-    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.VIEW_ANALYTICS)
+    @HasPermission(resource = ResourceType.ANALYTICS, action = PbacAction.READ)
     @Operation(summary = "Exporter les tendances quotidiennes en CSV")
     @APIResponse(responseCode = "200", description = "Fichier CSV généré")
     public Response exportDailyTrends() {

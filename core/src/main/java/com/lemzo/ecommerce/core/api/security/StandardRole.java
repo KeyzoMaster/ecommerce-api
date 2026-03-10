@@ -9,7 +9,7 @@ import static com.lemzo.ecommerce.core.api.security.PbacAction.*;
  * Définition des rôles standards du système.
  */
 public enum StandardRole {
-    SUPER_ADMIN(Map.of(
+    ADMIN(Map.of(
         PLATFORM, Set.of(MANAGE)
     )),
     CLIENT(Map.of(
@@ -21,7 +21,7 @@ public enum StandardRole {
         CATALOG, Set.of(READ, CREATE, UPDATE, DELETE),
         SALES, Set.of(READ, UPDATE, MANAGE),
         INVENTORY, Set.of(READ, UPDATE),
-        ANALYTICS, Set.of(VIEW_ANALYTICS)
+        ANALYTICS, Set.of(READ)
     ));
 
     private final Map<ResourceType, Set<PbacAction>> permissions;

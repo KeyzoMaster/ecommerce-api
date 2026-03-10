@@ -61,7 +61,7 @@ public class CategoryResource {
     @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Catégorie créée")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
-    @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
+    @HasPermission(resource = ResourceType.CATEGORY, action = PbacAction.CREATE)
     public Response create(@Valid final CategoryCreateRequest request) {
         final var category = catalogService.createCategory(
                 request.name(), request.slug(), request.description(), request.parentId());

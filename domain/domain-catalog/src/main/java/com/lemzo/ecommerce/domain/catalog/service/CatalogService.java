@@ -41,6 +41,11 @@ public class CatalogService implements CatalogPort {
         return productRepository.findById(productId);
     }
 
+    @Override
+    public Optional<UUID> getProductStoreId(final UUID productId) {
+        return productRepository.findById(productId).map(Product::getStoreId);
+    }
+
     @Transactional
     @Audit(action = "PRODUCT_CREATE")
     @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)

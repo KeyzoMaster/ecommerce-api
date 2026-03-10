@@ -12,6 +12,7 @@ import jakarta.ws.rs.core.SecurityContext;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
@@ -63,14 +64,31 @@ public class AuthorizationService {
     private boolean hasPbacPermission(final Set<String> possessedPermissions, final ResourceType resource, final PbacAction action) {
         final Set<PbacAction> requiredActions = action.getRequiredPossessedActions();
         
-        return Stream.iterate(resource, java.util.Objects::nonNull, ResourceType::getParent)
+        return Stream.iterate(resource, Objects::nonNull, ResourceType::getParent)
                 .anyMatch(res -> requiredActions.stream()
                         .anyMatch(act -> possessedPermissions.contains(res.name().toLowerCase() + ":" + act.name().toLowerCase())));
     }
 
     private boolean isOwner(final UUID userId, final ResourceType resource, final UUID targetId) {
-        return ownershipProviders.stream()
+        return Optional.ofNullable(targetId)
+            .map(id -> ownershipProviders.stream()
                 .filter(provider -> provider.getResourceType() == resource)
-                .anyMatch(provider -> userId.equals(provider.getOwnerId(targetId)));
+                .findFirst()
+                .map(provider -> {
+                    final boolean isDirectOwner = Optional.ofNullable(provider.getOwnerId(id))
+                        .map(userId::equals)
+                        .orElse(false);
+
+                    if (isDirectOwner) {
+                        return true;
+                    }
+
+                    return Optional.ofNullable(provider.getParentId(id))
+                        .flatMap(parentId -> Optional.ofNullable(resource.getParent())
+                            .map(parentResource -> isOwner(userId, parentResource, parentId)))
+                        .orElse(false);
+                })
+                .orElse(false))
+            .orElse(true);
     }
 }

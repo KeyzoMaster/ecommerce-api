@@ -17,4 +17,11 @@ public interface OwnershipProvider {
      * Retourne l'identifiant de l'utilisateur propriétaire de la ressource.
      */
     UUID getOwnerId(UUID resourceId);
+
+    /**
+     * Retourne l'identifiant de la ressource parente (pour la récursivité).
+     */
+    default UUID getParentId(UUID resourceId) {
+        return null;
+    }
 }

@@ -23,7 +23,7 @@ public class StoreOwnershipProvider implements OwnershipProvider {
 
     @Override
     public ResourceType getResourceType() {
-        return ResourceType.PLATFORM; // Les boutiques appartiennent à la plateforme
+        return ResourceType.STORE;
     }
 
     @Override

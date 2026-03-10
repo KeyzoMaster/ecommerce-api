@@ -58,7 +58,7 @@ public class StoreResource {
     @Operation(summary = "Ouvrir une boutique", description = "Crée une nouvelle boutique (Nécessite PLATFORM:CREATE)")
     @APIResponse(responseCode = "201", description = "Boutique créée")
     @APIResponse(responseCode = "403", description = "Accès refusé")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
+    @HasPermission(resource = ResourceType.STORE, action = PbacAction.CREATE)
     public Response create(@Valid final StoreCreateRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var owner = userService.findById(principal.getUserId())
@@ -77,7 +77,7 @@ public class StoreResource {
     @Operation(summary = "Détails d'une boutique", description = "Récupère les informations d'une boutique par son ID")
     @APIResponse(responseCode = "200", description = "Boutique trouvée")
     @APIResponse(responseCode = "404", description = "Boutique inexistante")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
+    @HasPermission(resource = ResourceType.STORE, action = PbacAction.READ)
     public Response getById(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id) {
         return storeService.findById(id)
                 .map(StoreResponse::from)
@@ -91,7 +91,7 @@ public class StoreResource {
     @Operation(summary = "Modifier une boutique", description = "Met à jour les informations (Nécessite d'être propriétaire)")
     @APIResponse(responseCode = "200", description = "Boutique mise à jour")
     @APIResponse(responseCode = "403", description = "Action non autorisée")
-    @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE, checkOwnership = true)
+    @HasPermission(resource = ResourceType.STORE, action = PbacAction.UPDATE, checkOwnership = true)
     public Response update(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id, @Valid final StoreCreateRequest request) {
         final var saved = storeService.updateStore(id, request.name(), request.description());
         return Response.ok(hateoasMapper.toResource(StoreResponse.from(saved), uriInfo)).build();

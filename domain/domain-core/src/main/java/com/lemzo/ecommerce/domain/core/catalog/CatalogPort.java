@@ -8,4 +8,5 @@ import java.util.UUID;
  */
 public interface CatalogPort {
     Optional<? extends Object> findProductById(UUID productId);
+    Optional<UUID> getProductStoreId(UUID productId);
 }

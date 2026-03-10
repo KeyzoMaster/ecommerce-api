@@ -105,6 +105,7 @@ public class OrderResource {
     @GET
     @Path("/store/{storeId}")
     @Operation(summary = "Lister les commandes d'une boutique (pour propriétaire)")
+    @HasPermission(resource = ResourceType.STORE, action = PbacAction.READ, checkOwnership = true)
     public Response listByStore(@PathParam("storeId") final UUID storeId,
                                 @QueryParam("page") @DefaultValue("1") final int page,
                                 @QueryParam("size") @DefaultValue("10") final int size) {
@@ -120,6 +121,7 @@ public class OrderResource {
     @PATCH
     @Path("/{orderId}/status")
     @Operation(summary = "Mettre à jour le statut d'une commande")
+    @HasPermission(resource = ResourceType.ORDER, action = PbacAction.UPDATE, checkOwnership = true)
     public Response updateStatus(@PathParam("orderId") final UUID orderId, @QueryParam("status") final Order.OrderStatus status) {
         final var updated = salesService.updateStatus(orderId, status);
         return Response.ok(OrderResponse.from(updated)).build();
