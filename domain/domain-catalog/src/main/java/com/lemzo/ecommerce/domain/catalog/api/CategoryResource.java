@@ -23,6 +23,9 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour la gestion des catégories de produits.
  */
@@ -41,7 +44,8 @@ public class CategoryResource {
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Lister les catégories", description = "Retourne toutes les catégories du catalogue")
+    @Operation(summary = "Lister les catégories", description = "Retourne l'arborescence complète des catégories")
+    @APIResponse(responseCode = "200", description = "Liste récupérée")
     public Response list() {
         final var responses = catalogService.getAllCategories().stream()
                 .map(CategoryResponse::from)
@@ -51,8 +55,10 @@ public class CategoryResource {
 
     @POST
     @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
-    @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie au catalogue")
+    @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie (Nécessite CATALOG:CREATE)")
+    @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Catégorie créée")
+    @APIResponse(responseCode = "403", description = "Permission insuffisante")
     public Response create(@Valid final CategoryCreateRequest request) {
         final var category = catalogService.createCategory(
                 request.name(), request.slug(), request.description(), request.parentId());
@@ -64,7 +70,9 @@ public class CategoryResource {
     @GET
     @Path("/{id}")
     @Operation(summary = "Détails d'une catégorie")
-    public Response getById(@PathParam("id") final UUID id) {
+    @APIResponse(responseCode = "200", description = "Détails trouvés")
+    @APIResponse(responseCode = "404", description = "Catégorie inexistante")
+    public Response getById(@Parameter(description = "UUID de la catégorie") @PathParam("id") final UUID id) {
         return catalogService.findCategoryById(id)
                 .map(CategoryResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))

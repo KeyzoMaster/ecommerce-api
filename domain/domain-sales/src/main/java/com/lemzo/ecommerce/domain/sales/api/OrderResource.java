@@ -26,6 +26,8 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+
 /**
  * Ressource pour la gestion des commandes.
  */
@@ -49,9 +51,10 @@ public class OrderResource {
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Lister mes commandes")
-    public Response list(@QueryParam("page") @DefaultValue("1") final int page,
-                         @QueryParam("size") @DefaultValue("10") final int size) {
+    @Operation(summary = "Lister mes commandes", description = "Récupère l'historique des commandes de l'utilisateur connecté")
+    @APIResponse(responseCode = "200", description = "Liste des commandes récupérée")
+    public Response list(@Parameter(description = "Numéro de page") @QueryParam("page") @DefaultValue("1") final int page,
+                         @Parameter(description = "Taille de page") @QueryParam("size") @DefaultValue("10") final int size) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var ordersPage = orderRepository.findByUserId(principal.getUserId(), PageRequest.ofPage(page, size, true));
         
@@ -64,8 +67,9 @@ public class OrderResource {
     }
 
     @POST
-    @Operation(summary = "Passer une commande")
+    @Operation(summary = "Passer une commande", description = "Valide le panier actuel et crée une commande")
     @APIResponse(responseCode = "201", description = "Commande créée avec succès")
+    @APIResponse(responseCode = "400", description = "Données invalides ou panier vide")
     public Response checkout(@Valid final OrderCreateRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         
@@ -85,8 +89,10 @@ public class OrderResource {
 
     @GET
     @Path("/{orderNumber}")
-    @Operation(summary = "Détails d'une commande par son numéro")
-    public Response getByNumber(@PathParam("orderNumber") final String orderNumber) {
+    @Operation(summary = "Détails d'une commande", description = "Récupère les détails via le numéro de commande")
+    @APIResponse(responseCode = "200", description = "Commande trouvée")
+    @APIResponse(responseCode = "404", description = "Commande inexistante")
+    public Response getByNumber(@Parameter(description = "Numéro de commande (ex: ORD-...)") @PathParam("orderNumber") final String orderNumber) {
         return orderRepository.findByOrderNumber(orderNumber)
                 .map(OrderResponse::from)
                 .map(data -> hateoasMapper.toResource(data, uriInfo))

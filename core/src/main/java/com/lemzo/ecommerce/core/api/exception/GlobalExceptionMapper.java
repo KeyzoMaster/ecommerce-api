@@ -5,6 +5,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.ext.ExceptionMapper;
 import jakarta.ws.rs.ext.Provider;
+import jakarta.ws.rs.core.MediaType;
 import java.util.Optional;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,6 +43,7 @@ public class GlobalExceptionMapper implements ExceptionMapper<Throwable> {
                 message
         );
         return Response.status(status)
+                .type(MediaType.APPLICATION_JSON)
                 .entity(errorResponse)
                 .build();
     }

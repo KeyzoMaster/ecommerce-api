@@ -27,6 +27,8 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+
 /**
  * Ressource pour la gestion des boutiques.
  */
@@ -52,8 +54,9 @@ public class StoreResource {
 
     @POST
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
-    @Operation(summary = "Ouvrir une boutique", description = "Crée une nouvelle boutique")
+    @Operation(summary = "Ouvrir une boutique", description = "Crée une nouvelle boutique (Nécessite PLATFORM:CREATE)")
     @APIResponse(responseCode = "201", description = "Boutique créée")
+    @APIResponse(responseCode = "403", description = "Accès refusé")
     public Response create(@Valid final StoreCreateRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var owner = userService.findById(principal.getUserId())
@@ -70,7 +73,9 @@ public class StoreResource {
     @Path("/{id}")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
     @Operation(summary = "Détails d'une boutique", description = "Récupère les informations d'une boutique par son ID")
-    public Response getById(@PathParam("id") final UUID id) {
+    @APIResponse(responseCode = "200", description = "Boutique trouvée")
+    @APIResponse(responseCode = "404", description = "Boutique inexistante")
+    public Response getById(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id) {
         return storeRepository.findById(id)
                 .map(StoreResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
@@ -81,8 +86,10 @@ public class StoreResource {
     @PATCH
     @Path("/{id}")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE, checkOwnership = true)
-    @Operation(summary = "Modifier une boutique", description = "Met à jour les informations.")
-    public Response update(@PathParam("id") final UUID id, @Valid final StoreCreateRequest request) {
+    @Operation(summary = "Modifier une boutique", description = "Met à jour les informations (Nécessite d'être propriétaire)")
+    @APIResponse(responseCode = "200", description = "Boutique mise à jour")
+    @APIResponse(responseCode = "403", description = "Action non autorisée")
+    public Response update(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id, @Valid final StoreCreateRequest request) {
         return storeRepository.findById(id)
                 .map(store -> {
                     store.setName(request.name());

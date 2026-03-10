@@ -21,6 +21,10 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour le suivi des expéditions.
  */
@@ -28,6 +32,7 @@ import java.util.UUID;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Expéditions", description = "Suivi des colis et livraisons")
+@SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class ShippingResource {
@@ -41,8 +46,10 @@ public class ShippingResource {
 
     @GET
     @Path("/order/{orderId}")
-    @Operation(summary = "Suivre une expédition par son ID de commande")
-    public Response getByOrder(@PathParam("orderId") final UUID orderId) {
+    @Operation(summary = "Suivre une expédition", description = "Récupère les infos de livraison via l'ID de commande")
+    @APIResponse(responseCode = "200", description = "Expédition trouvée")
+    @APIResponse(responseCode = "404", description = "Pas d'expédition pour cette commande")
+    public Response getByOrder(@Parameter(description = "ID de la commande") @PathParam("orderId") final UUID orderId) {
         return shipmentRepository.findByOrderId(orderId)
                 .map(ShipmentResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
@@ -53,9 +60,10 @@ public class ShippingResource {
     @PATCH
     @Path("/{trackingNumber}/status")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.MANAGE)
-    @Operation(summary = "Mettre à jour le statut d'une expédition")
-    public Response updateStatus(@PathParam("trackingNumber") final String trackingNumber, 
-                                 @QueryParam("status") final Shipment.ShipmentStatus status) {
+    @Operation(summary = "Mettre à jour le statut", description = "Modifie l'état d'avancement du colis (Nécessite PLATFORM:MANAGE)")
+    @APIResponse(responseCode = "200", description = "Statut mis à jour")
+    public Response updateStatus(@Parameter(description = "Numéro de suivi") @PathParam("trackingNumber") final String trackingNumber, 
+                                 @Parameter(description = "Nouveau statut") @QueryParam("status") final Shipment.ShipmentStatus status) {
         final var shipment = shippingService.updateStatus(trackingNumber, status);
         return Response.ok(ShipmentResponse.from(shipment)).build();
     }

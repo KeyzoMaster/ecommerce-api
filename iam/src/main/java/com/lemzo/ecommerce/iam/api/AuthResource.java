@@ -49,6 +49,7 @@ public class AuthResource {
     @Path("/register")
     @Operation(summary = "Inscrire un nouvel utilisateur", description = "Crée un compte utilisateur standard")
     @APIResponse(responseCode = "201", description = "Utilisateur créé avec succès")
+    @APIResponse(responseCode = "400", description = "Données invalides ou utilisateur déjà existant")
     public Response register(@Valid final RegisterRequest request) {
         final var user = userService.register(request.username(), request.email(), request.password());
         final var response = hateoasMapper.toResource(UserResponse.from(user), uriInfo);
@@ -61,6 +62,8 @@ public class AuthResource {
     @POST
     @Path("/login")
     @Operation(summary = "Se connecter", description = "Authentifie un utilisateur et retourne les jetons JWT")
+    @APIResponse(responseCode = "200", description = "Authentification réussie")
+    @APIResponse(responseCode = "401", description = "Identifiants incorrects")
     public Response login(@Valid final LoginRequest request) {
         final var result = authService.login(request.identifier(), request.password());
         return Response.ok(result).build();

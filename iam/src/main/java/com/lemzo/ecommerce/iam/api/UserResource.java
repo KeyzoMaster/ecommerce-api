@@ -30,6 +30,8 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.UUID;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+
 /**
  * Ressource pour la gestion des profils utilisateurs.
  */
@@ -54,7 +56,9 @@ public class UserResource {
 
     @GET
     @Path("/me")
-    @Operation(summary = "Récupérer mon profil", description = "Retourne les informations de l'utilisateur connecté")
+    @Operation(summary = "Récupérer mon profil", description = "Retourne les informations complètes de l'utilisateur connecté")
+    @APIResponse(responseCode = "200", description = "Profil récupéré avec succès")
+    @APIResponse(responseCode = "401", description = "Non authentifié")
     public Response getMe() {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         return userService.findById(principal.getUserId())
@@ -65,7 +69,8 @@ public class UserResource {
 
     @PUT
     @Path("/me")
-    @Operation(summary = "Mettre à jour mon profil", description = "Modifie le nom et le prénom de l'utilisateur connecté")
+    @Operation(summary = "Mettre à jour mon profil", description = "Modifie les informations personnelles")
+    @APIResponse(responseCode = "200", description = "Profil mis à jour")
     public Response updateProfile(@Valid final UserProfileRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var user = userService.updateProfile(principal.getUserId(), request.firstName(), request.lastName());
@@ -74,7 +79,8 @@ public class UserResource {
 
     @POST
     @Path("/me/payment-methods")
-    @Operation(summary = "Ajouter un moyen de paiement", description = "Enregistre une méthode de paiement mockée")
+    @Operation(summary = "Ajouter un moyen de paiement")
+    @APIResponse(responseCode = "200", description = "Moyen de paiement ajouté")
     public Response addPaymentMethod(@Valid final PaymentMethodRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var user = userService.addPaymentMethod(principal.getUserId(), request.type(), request.details());
@@ -83,7 +89,8 @@ public class UserResource {
 
     @POST
     @Path("/me/addresses")
-    @Operation(summary = "Ajouter une adresse", description = "Ajoute une adresse au profil de l'utilisateur")
+    @Operation(summary = "Ajouter une adresse", description = "Enregistre une nouvelle adresse de livraison ou facturation")
+    @APIResponse(responseCode = "200", description = "Adresse ajoutée")
     public Response addAddress(@Valid final AddressRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var user = userService.addAddress(principal.getUserId(), request.toEntity());
@@ -92,8 +99,9 @@ public class UserResource {
 
     @PUT
     @Path("/me/addresses/{addressId}")
-    @Operation(summary = "Modifier une adresse", description = "Met à jour une adresse existante via son ID")
-    public Response updateAddress(@PathParam("addressId") final String addressId, @Valid final AddressRequest request) {
+    @Operation(summary = "Modifier une adresse")
+    @APIResponse(responseCode = "200", description = "Adresse mise à jour")
+    public Response updateAddress(@Parameter(description = "ID technique de l'adresse") @PathParam("addressId") final String addressId, @Valid final AddressRequest request) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var user = userService.updateAddress(principal.getUserId(), addressId, request.toEntity());
         return Response.ok(buildUserResponse(user)).build();
@@ -101,8 +109,9 @@ public class UserResource {
 
     @DELETE
     @Path("/me/addresses/{addressId}")
-    @Operation(summary = "Supprimer une adresse", description = "Supprime une adresse par son identifiant unique")
-    public Response removeAddress(@PathParam("addressId") final String addressId) {
+    @Operation(summary = "Supprimer une adresse")
+    @APIResponse(responseCode = "200", description = "Adresse supprimée")
+    public Response removeAddress(@Parameter(description = "ID technique de l'adresse") @PathParam("addressId") final String addressId) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var user = userService.removeAddress(principal.getUserId(), addressId);
         return Response.ok(buildUserResponse(user)).build();

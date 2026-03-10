@@ -14,12 +14,16 @@ import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour la consultation des statistiques.
  */
 @Path("/analytics")
 @Produces(MediaType.APPLICATION_JSON)
-@Tag(name = "Analytics", description = "Tableaux de bord et rapports")
+@Tag(name = "Analyses", description = "Tableaux de bord et rapports (Nécessite PLATFORM:VIEW_ANALYTICS)")
+@SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class AnalyticsResource {
@@ -29,7 +33,9 @@ public class AnalyticsResource {
     @GET
     @Path("/dashboard")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
-    @Operation(summary = "Récupérer les stats du tableau de bord")
+    @Operation(summary = "Récupérer les stats du tableau de bord", description = "Retourne le chiffre d'affaires et le top produits")
+    @APIResponse(responseCode = "200", description = "Tableau de bord récupéré")
+    @APIResponse(responseCode = "403", description = "Accès refusé")
     public Response getDashboard() {
         return Response.ok(analyticsService.getDashboard()).build();
     }
@@ -39,6 +45,7 @@ public class AnalyticsResource {
     @Produces("text/csv")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
     @Operation(summary = "Exporter le top produits en CSV")
+    @APIResponse(responseCode = "200", description = "Fichier CSV généré")
     public Response exportTopProducts() {
         final var csv = analyticsService.exportTopProductsCsv();
         return Response.ok(csv)
@@ -51,6 +58,7 @@ public class AnalyticsResource {
     @Produces("text/csv")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.VIEW_ANALYTICS)
     @Operation(summary = "Exporter les tendances quotidiennes en CSV")
+    @APIResponse(responseCode = "200", description = "Fichier CSV généré")
     public Response exportDailyTrends() {
         final var csv = analyticsService.exportDailyTrendsCsv();
         return Response.ok(csv)

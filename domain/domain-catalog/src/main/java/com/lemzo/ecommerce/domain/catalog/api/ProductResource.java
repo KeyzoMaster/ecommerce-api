@@ -34,6 +34,11 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.Schema;
+
 /**
  * Ressource pour la gestion du catalogue produits.
  */
@@ -56,17 +61,18 @@ public class ProductResource {
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Lister et filtrer les produits")
+    @Operation(summary = "Lister et filtrer les produits", description = "Retourne une page de produits avec filtres optionnels")
+    @APIResponse(responseCode = "200", description = "Liste des produits récupérée")
     public Response list(
-            @QueryParam("q") final String query,
-            @QueryParam("category") final UUID categoryId,
-            @QueryParam("minPrice") final BigDecimal minPrice,
-            @QueryParam("maxPrice") final BigDecimal maxPrice,
-            @QueryParam("available") final Boolean available,
-            @QueryParam("sort") @DefaultValue("createdAt") final String sortBy,
-            @QueryParam("dir") @DefaultValue("desc") final String sortDir,
-            @QueryParam("page") @DefaultValue("1") final int pageNumber,
-            @QueryParam("size") @DefaultValue("20") final int pageSize) {
+            @Parameter(description = "Recherche par nom ou description") @QueryParam("q") final String query,
+            @Parameter(description = "Filtrer par catégorie ID") @QueryParam("category") final UUID categoryId,
+            @Parameter(description = "Prix minimum") @QueryParam("minPrice") final BigDecimal minPrice,
+            @Parameter(description = "Prix maximum") @QueryParam("maxPrice") final BigDecimal maxPrice,
+            @Parameter(description = "Filtrer par disponibilité") @QueryParam("available") final Boolean available,
+            @Parameter(description = "Champ de tri") @QueryParam("sort") @DefaultValue("createdAt") final String sortBy,
+            @Parameter(description = "Direction du tri (asc/desc)") @QueryParam("dir") @DefaultValue("desc") final String sortDir,
+            @Parameter(description = "Numéro de page") @QueryParam("page") @DefaultValue("1") final int pageNumber,
+            @Parameter(description = "Taille de la page") @QueryParam("size") @DefaultValue("20") final int pageSize) {
 
         final PageRequest pageRequest = PageRequest.ofPage(pageNumber, pageSize, true);
 
@@ -82,8 +88,10 @@ public class ProductResource {
 
     @POST
     @HasPermission(resource = ResourceType.CATALOG, action = PbacAction.CREATE)
-    @Operation(summary = "Créer un produit")
+    @Operation(summary = "Créer un produit", description = "Ajoute un nouveau produit au catalogue (Nécessite CATALOG:CREATE)")
     @SecurityRequirement(name = "jwt")
+    @APIResponse(responseCode = "201", description = "Produit créé avec succès")
+    @APIResponse(responseCode = "403", description = "Permission insuffisante")
     public Response create(@Valid final ProductCreateRequest request) {
         final Product product = catalogService.createProduct(
                 request.name(), request.slug(), request.sku(), request.price(), request.categoryId(),
@@ -97,8 +105,10 @@ public class ProductResource {
 
     @GET
     @Path("/{productId}")
-    @Operation(summary = "Détails d'un produit")
-    public Response getById(@PathParam("productId") final UUID productId) {
+    @Operation(summary = "Détails d'un produit", description = "Récupère les informations complètes d'un produit")
+    @APIResponse(responseCode = "200", description = "Produit trouvé")
+    @APIResponse(responseCode = "404", description = "Produit inexistant")
+    public Response getById(@Parameter(description = "Identifiant unique du produit") @PathParam("productId") final UUID productId) {
         return catalogService.findById(productId)
                 .map(product -> {
                     catalogService.incrementViewCount(product.getId());

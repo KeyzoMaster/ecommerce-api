@@ -22,6 +22,10 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour la gestion des stocks.
  */
@@ -29,6 +33,7 @@ import java.util.stream.Collectors;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Inventaire", description = "Gestion des stocks produits")
+@SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class InventoryResource {
@@ -42,7 +47,9 @@ public class InventoryResource {
     @GET
     @Path("/{productId}")
     @Operation(summary = "Consulter le stock d'un produit")
-    public Response getStock(@PathParam("productId") final UUID productId) {
+    @APIResponse(responseCode = "200", description = "Données de stock récupérées")
+    @APIResponse(responseCode = "404", description = "Produit non géré dans l'inventaire")
+    public Response getStock(@Parameter(description = "UUID du produit") @PathParam("productId") final UUID productId) {
         return inventoryService.getStockByProduct(productId)
                 .map(StockResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
@@ -53,7 +60,8 @@ public class InventoryResource {
     @GET
     @Path("/low-stock")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.READ)
-    @Operation(summary = "Lister les produits en rupture ou stock faible")
+    @Operation(summary = "Lister les produits en rupture ou stock faible", description = "Retourne les produits sous le seuil d'alerte (Nécessite PLATFORM:READ)")
+    @APIResponse(responseCode = "200", description = "Liste récupérée")
     public Response getLowStocks() {
         final var lowStocks = inventoryService.getLowStocks().stream()
                 .map(StockResponse::from)
@@ -64,8 +72,9 @@ public class InventoryResource {
     @PUT
     @Path("/{productId}")
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.UPDATE)
-    @Operation(summary = "Mettre à jour manuellement le stock")
-    public Response updateStock(@PathParam("productId") final UUID productId, @Valid final StockUpdateRequest request) {
+    @Operation(summary = "Mettre à jour manuellement le stock", description = "Force la quantité en stock pour un produit (Nécessite PLATFORM:UPDATE)")
+    @APIResponse(responseCode = "200", description = "Stock mis à jour")
+    public Response updateStock(@Parameter(description = "UUID du produit") @PathParam("productId") final UUID productId, @Valid final StockUpdateRequest request) {
         final var stock = inventoryService.setStock(productId, request.quantity(), request.lowStockThreshold());
         return Response.ok(hateoasMapper.toResource(StockResponse.from(stock), uriInfo)).build();
     }

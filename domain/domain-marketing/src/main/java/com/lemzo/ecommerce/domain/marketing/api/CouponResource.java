@@ -21,6 +21,10 @@ import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 import java.math.BigDecimal;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour la gestion des coupons.
  */
@@ -28,6 +32,7 @@ import java.math.BigDecimal;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Marketing", description = "Gestion des coupons et promotions")
+@SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CouponResource {
@@ -40,7 +45,9 @@ public class CouponResource {
 
     @POST
     @HasPermission(resource = ResourceType.PLATFORM, action = PbacAction.CREATE)
-    @Operation(summary = "Créer un nouveau coupon")
+    @Operation(summary = "Créer un nouveau coupon", description = "Ajoute un coupon de réduction (Nécessite PLATFORM:CREATE)")
+    @APIResponse(responseCode = "201", description = "Coupon créé")
+    @APIResponse(responseCode = "403", description = "Permission insuffisante")
     public Response create(@Valid final CouponCreateRequest request) {
         final var coupon = marketingService.createCoupon(request);
         final var res = CouponResponse.from(coupon);
@@ -51,8 +58,10 @@ public class CouponResource {
 
     @GET
     @Path("/{code}")
-    @Operation(summary = "Vérifier la validité d'un coupon")
-    public Response validate(@PathParam("code") final String code) {
+    @Operation(summary = "Vérifier la validité d'un coupon", description = "Vérifie si un code coupon est actif et applicable")
+    @APIResponse(responseCode = "200", description = "Coupon valide")
+    @APIResponse(responseCode = "404", description = "Coupon invalide ou expiré")
+    public Response validate(@Parameter(description = "Code du coupon") @PathParam("code") final String code) {
         return marketingService.applyCoupon(code, BigDecimal.ZERO) // Juste pour vérifier l'existence/validité de base
                 .map(discount -> Response.ok().build())
                 .orElse(Response.status(Response.Status.NOT_FOUND).build());

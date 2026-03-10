@@ -17,6 +17,10 @@ import lombok.NoArgsConstructor;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
+import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
+import org.eclipse.microprofile.openapi.annotations.responses.APIResponse;
+import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement;
+
 /**
  * Ressource pour la gestion du panier utilisateur.
  */
@@ -24,6 +28,7 @@ import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Tag(name = "Ventes : Panier", description = "Gestion du panier d'achat")
+@SecurityRequirement(name = "jwt")
 @RequiredArgsConstructor(onConstructor_ = {@Inject})
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class CartResource {
@@ -38,7 +43,8 @@ public class CartResource {
     private UriInfo uriInfo;
 
     @GET
-    @Operation(summary = "Récupérer mon panier")
+    @Operation(summary = "Récupérer mon panier", description = "Retourne les articles actuellement dans le panier de l'utilisateur")
+    @APIResponse(responseCode = "200", description = "Panier récupéré")
     public Response getCart() {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var cart = cartService.getCart(principal.getUserId()).orElse(new Cart(principal.getUserId(), java.util.List.of()));
@@ -47,9 +53,10 @@ public class CartResource {
 
     @POST
     @Path("/items")
-    @Operation(summary = "Ajouter un produit au panier")
-    public Response addItem(@QueryParam("productId") final java.util.UUID productId, 
-                            @QueryParam("quantity") @DefaultValue("1") final int quantity) {
+    @Operation(summary = "Ajouter un produit", description = "Ajoute ou incrémente la quantité d'un produit dans le panier")
+    @APIResponse(responseCode = "200", description = "Produit ajouté")
+    public Response addItem(@Parameter(description = "ID du produit") @QueryParam("productId") final java.util.UUID productId, 
+                            @Parameter(description = "Quantité à ajouter") @QueryParam("quantity") @DefaultValue("1") final int quantity) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var cart = cartService.addToCart(principal.getUserId(), productId, quantity);
         return Response.ok(hateoasMapper.toResource(cart, uriInfo)).build();
@@ -57,8 +64,9 @@ public class CartResource {
 
     @DELETE
     @Path("/items/{productId}")
-    @Operation(summary = "Retirer un produit du panier")
-    public Response removeItem(@PathParam("productId") final java.util.UUID productId) {
+    @Operation(summary = "Retirer un produit", description = "Supprime totalement un produit du panier")
+    @APIResponse(responseCode = "200", description = "Produit retiré")
+    public Response removeItem(@Parameter(description = "ID du produit") @PathParam("productId") final java.util.UUID productId) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         final var cart = cartService.removeFromCart(principal.getUserId(), productId);
         return Response.ok(hateoasMapper.toResource(cart, uriInfo)).build();
@@ -66,6 +74,7 @@ public class CartResource {
 
     @DELETE
     @Operation(summary = "Vider le panier")
+    @APIResponse(responseCode = "204", description = "Panier vidé avec succès")
     public Response clearCart() {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
         cartService.clearCart(principal.getUserId());
