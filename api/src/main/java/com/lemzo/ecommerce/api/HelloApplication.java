@@ -16,6 +16,8 @@ import java.util.Set;
 import java.util.HashSet;
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 
+import org.eclipse.microprofile.openapi.annotations.servers.Server;
+
 /**
  * Configuration JAX-RS et Documentation OpenAPI.
  * La DataSource est définie dans WEB-INF/glassfish-resources.xml.
@@ -30,6 +32,9 @@ import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
         contact = @Contact(name = "Support Technique", email = "support@lemzo.com"),
         license = @License(name = "Apache 2.0", url = "https://www.apache.org/licenses/LICENSE-2.0.html")
     ),
+    servers = {
+        @Server(url = "/api", description = "Serveur de développement Local")
+    },
     tags = {
         @Tag(name = "Authentification", description = "Accès et sécurité"),
         @Tag(name = "Utilisateurs", description = "Profils et adresses"),
