@@ -60,6 +60,28 @@ public class AuthenticationService {
         .map(Permission::getSlug)
         .collect(Collectors.toSet());
 
-        return new AuthResponse(accessToken, refreshToken, user.getEmail(), permissions);
+    @Transactional
+    public AuthResponse refreshToken(final String refreshToken) {
+        final var claims = jwtService.validateToken(refreshToken);
+        final var userId = java.util.UUID.fromString(claims.getSubject());
+        
+        final var user = userRepository.findById(userId)
+                .orElseThrow(() -> new BusinessRuleException("error.iam.user_not_found"));
+
+        if (!user.isEnabled()) {
+            throw new BusinessRuleException("error.iam.account_disabled");
+        }
+
+        final String newAccessToken = jwtService.generateToken(user.getId(), user.getEmail());
+        final String newRefreshToken = jwtService.generateToken(user.getId(), user.getEmail());
+
+        final Set<String> permissions = Stream.concat(
+                user.getRoles().stream().flatMap(role -> role.getPermissions().stream()),
+                user.getAdhocPermissions().stream()
+        )
+        .map(Permission::getSlug)
+        .collect(Collectors.toSet());
+
+        return new AuthResponse(newAccessToken, newRefreshToken, user.getEmail(), permissions);
     }
 }

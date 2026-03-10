@@ -41,4 +41,15 @@ public class StoreService {
     public Optional<Store> findByName(final String name) {
         return storeRepository.findByName(name);
     }
+
+    @Transactional
+    @Audit(action = "STORE_UPDATE")
+    public Store updateStore(final UUID id, final String name, final String description) {
+        final var store = findById(id)
+                .orElseThrow(() -> new BusinessRuleException("error.iam.store_not_found"));
+        
+        store.setName(name);
+        store.setDescription(description);
+        return storeRepository.update(store);
+    }
 }

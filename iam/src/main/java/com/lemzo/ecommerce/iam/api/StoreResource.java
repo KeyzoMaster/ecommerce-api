@@ -41,7 +41,6 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 @NoArgsConstructor(access = AccessLevel.PROTECTED, force = true)
 public class StoreResource {
 
-    private final StoreRepository storeRepository;
     private final StoreService storeService;
     private final UserService userService;
     private final HateoasMapper hateoasMapper;
@@ -76,7 +75,7 @@ public class StoreResource {
     @APIResponse(responseCode = "200", description = "Boutique trouvée")
     @APIResponse(responseCode = "404", description = "Boutique inexistante")
     public Response getById(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id) {
-        return storeRepository.findById(id)
+        return storeService.findById(id)
                 .map(StoreResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
                 .map(res -> Response.ok(res).build())
@@ -90,13 +89,7 @@ public class StoreResource {
     @APIResponse(responseCode = "200", description = "Boutique mise à jour")
     @APIResponse(responseCode = "403", description = "Action non autorisée")
     public Response update(@Parameter(description = "UUID de la boutique") @PathParam("id") final UUID id, @Valid final StoreCreateRequest request) {
-        return storeRepository.findById(id)
-                .map(store -> {
-                    store.setName(request.name());
-                    store.setDescription(request.description());
-                    final var saved = storeRepository.update(store);
-                    return Response.ok(hateoasMapper.toResource(StoreResponse.from(saved), uriInfo)).build();
-                })
-                .orElse(Response.status(Response.Status.NOT_FOUND).build());
+        final var saved = storeService.updateStore(id, request.name(), request.description());
+        return Response.ok(hateoasMapper.toResource(StoreResponse.from(saved), uriInfo)).build();
     }
 }

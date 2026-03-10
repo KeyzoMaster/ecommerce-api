@@ -21,6 +21,8 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import jakarta.data.page.Page;
+import jakarta.data.page.PageRequest;
 import java.math.BigDecimal;
 import java.util.Optional;
 import java.util.UUID;
@@ -39,6 +41,18 @@ public class SalesService {
     private final Instance<PaymentPort> paymentPorts; // Utilisation de Instance pour gérer les multiples implémentations
     private final UserPort userPort;
     private final CartService cartService;
+
+    public Page<Order> listOrdersByUserId(final UUID userId, final PageRequest pageRequest) {
+        return orderRepository.findByUserId(userId, pageRequest);
+    }
+
+    public Optional<Order> findOrderByNumber(final String orderNumber) {
+        return orderRepository.findByOrderNumber(orderNumber);
+    }
+
+    public Page<Order> listOrdersByStoreId(final UUID storeId, final PageRequest pageRequest) {
+        return orderRepository.findByStoreId(storeId, pageRequest);
+    }
 
     @Transactional
     @Audit(action = "ORDER_PLACE")

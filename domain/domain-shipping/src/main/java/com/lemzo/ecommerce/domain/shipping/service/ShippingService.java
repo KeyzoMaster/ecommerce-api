@@ -41,4 +41,8 @@ public class ShippingService {
         shipment.setStatus(status);
         return shipmentRepository.update(shipment);
     }
+
+    public Optional<Shipment> findShipmentByOrderId(final UUID orderId) {
+        return shipmentRepository.findByOrderId(orderId);
+    }
 }

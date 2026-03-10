@@ -70,6 +70,16 @@ public class AuthResource {
     }
 
     @POST
+    @Path("/refresh")
+    @Operation(summary = "Rafraîchir le token", description = "Génère un nouveau couple de tokens via un refresh token valide")
+    @APIResponse(responseCode = "200", description = "Nouveaux tokens générés")
+    @APIResponse(responseCode = "401", description = "Refresh token invalide")
+    public Response refresh(@QueryParam("token") final String refreshToken) {
+        final var result = authService.refreshToken(refreshToken);
+        return Response.ok(result).build();
+    }
+
+    @POST
     @Path("/logout")
     @Operation(summary = "Se déconnecter", description = "Invalide le jeton d'accès actuel")
     public Response logout(@HeaderParam("Authorization") final String authHeader) {

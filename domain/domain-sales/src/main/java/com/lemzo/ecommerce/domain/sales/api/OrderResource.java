@@ -41,7 +41,6 @@ import org.eclipse.microprofile.openapi.annotations.parameters.Parameter;
 public class OrderResource {
 
     private final SalesService salesService;
-    private final OrderRepository orderRepository;
     private final HateoasMapper hateoasMapper;
 
     @Context
@@ -56,7 +55,7 @@ public class OrderResource {
     public Response list(@Parameter(description = "Numéro de page") @QueryParam("page") @DefaultValue("1") final int page,
                          @Parameter(description = "Taille de page") @QueryParam("size") @DefaultValue("10") final int size) {
         final var principal = (AuthenticatedUser) securityContext.getUserPrincipal();
-        final var ordersPage = orderRepository.findByUserId(principal.getUserId(), PageRequest.ofPage(page, size, true));
+        final var ordersPage = salesService.listOrdersByUserId(principal.getUserId(), PageRequest.ofPage(page, size, true));
         
         final var data = ordersPage.content().stream()
                 .map(OrderResponse::from)
@@ -93,7 +92,7 @@ public class OrderResource {
     @APIResponse(responseCode = "200", description = "Commande trouvée")
     @APIResponse(responseCode = "404", description = "Commande inexistante")
     public Response getByNumber(@Parameter(description = "Numéro de commande (ex: ORD-...)") @PathParam("orderNumber") final String orderNumber) {
-        return orderRepository.findByOrderNumber(orderNumber)
+        return salesService.findOrderByNumber(orderNumber)
                 .map(OrderResponse::from)
                 .map(data -> hateoasMapper.toResource(data, uriInfo))
                 .map(res -> Response.ok(res).build())
@@ -107,7 +106,7 @@ public class OrderResource {
     public Response listByStore(@PathParam("storeId") final UUID storeId,
                                 @QueryParam("page") @DefaultValue("1") final int page,
                                 @QueryParam("size") @DefaultValue("10") final int size) {
-        final var ordersPage = orderRepository.findByStoreId(storeId, PageRequest.ofPage(page, size, true));
+        final var ordersPage = salesService.listOrdersByStoreId(storeId, PageRequest.ofPage(page, size, true));
         final var data = ordersPage.content().stream()
                 .map(OrderResponse::from)
                 .collect(Collectors.toList());

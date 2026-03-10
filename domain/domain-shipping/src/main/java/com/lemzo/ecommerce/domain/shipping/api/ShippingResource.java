@@ -38,7 +38,6 @@ import org.eclipse.microprofile.openapi.annotations.security.SecurityRequirement
 public class ShippingResource {
 
     private final ShippingService shippingService;
-    private final ShipmentRepository shipmentRepository;
     private final HateoasMapper hateoasMapper;
 
     @Context
@@ -50,7 +49,7 @@ public class ShippingResource {
     @APIResponse(responseCode = "200", description = "Expédition trouvée")
     @APIResponse(responseCode = "404", description = "Pas d'expédition pour cette commande")
     public Response getByOrder(@Parameter(description = "ID de la commande") @PathParam("orderId") final UUID orderId) {
-        return shipmentRepository.findByOrderId(orderId)
+        return shippingService.findShipmentByOrderId(orderId)
                 .map(ShipmentResponse::from)
                 .map(res -> hateoasMapper.toResource(res, uriInfo))
                 .map(res -> Response.ok(res).build())
