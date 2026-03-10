@@ -57,7 +57,7 @@ public class CategoryResource {
     }
 
     @POST
-    @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie (Nécessite CATALOG:CREATE)")
+    @Operation(summary = "Créer une catégorie", description = "Ajoute une nouvelle catégorie (Nécessite CATEGORY:CREATE)")
     @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Catégorie créée")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")

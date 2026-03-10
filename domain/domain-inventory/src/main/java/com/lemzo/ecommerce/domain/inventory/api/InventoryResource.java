@@ -63,7 +63,7 @@ public class InventoryResource {
 
     @GET
     @Path("/low-stock")
-    @Operation(summary = "Lister les produits en rupture ou stock faible", description = "Retourne les produits sous le seuil d'alerte (Nécessite PLATFORM:READ)")
+    @Operation(summary = "Lister les produits en rupture ou stock faible", description = "Retourne les produits sous le seuil d'alerte (Nécessite INVENTORY:READ)")
     @APIResponse(responseCode = "200", description = "Liste récupérée")
     @HasPermission(resource = ResourceType.INVENTORY, action = PbacAction.READ, checkOwnership = true)
     public Response getLowStocks() {
@@ -75,7 +75,7 @@ public class InventoryResource {
 
     @PUT
     @Path("/{productId}")
-    @Operation(summary = "Mettre à jour manuellement le stock", description = "Force la quantité en stock pour un produit (Nécessite PLATFORM:UPDATE)")
+    @Operation(summary = "Mettre à jour manuellement le stock", description = "Force la quantité en stock pour un produit (Nécessite INVENTORY:UPDATE)")
     @APIResponse(responseCode = "200", description = "Stock mis à jour")
     @HasPermission(resource = ResourceType.INVENTORY, action = PbacAction.UPDATE, checkOwnership = true)
     public Response updateStock(@Parameter(description = "UUID du produit") @PathParam("productId") final UUID productId, @Valid final StockUpdateRequest request) {

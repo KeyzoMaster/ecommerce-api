@@ -48,7 +48,7 @@ public class CouponResource {
     private UriInfo uriInfo;
 
     @POST
-    @Operation(summary = "Créer un nouveau coupon", description = "Ajoute un coupon de réduction (Nécessite PLATFORM:CREATE)")
+    @Operation(summary = "Créer un nouveau coupon", description = "Ajoute un coupon de réduction (Nécessite COUPON:CREATE)")
     @APIResponse(responseCode = "201", description = "Coupon créé")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
     @HasPermission(resource = ResourceType.COUPON, action = PbacAction.CREATE)

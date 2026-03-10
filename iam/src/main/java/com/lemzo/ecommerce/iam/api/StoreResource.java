@@ -55,7 +55,7 @@ public class StoreResource {
     private UriInfo uriInfo;
 
     @POST
-    @Operation(summary = "Ouvrir une boutique", description = "Crée une nouvelle boutique (Nécessite PLATFORM:CREATE)")
+    @Operation(summary = "Ouvrir une boutique", description = "Crée une nouvelle boutique (Nécessite STORE:CREATE)")
     @APIResponse(responseCode = "201", description = "Boutique créée")
     @APIResponse(responseCode = "403", description = "Accès refusé")
     @HasPermission(resource = ResourceType.STORE, action = PbacAction.CREATE)

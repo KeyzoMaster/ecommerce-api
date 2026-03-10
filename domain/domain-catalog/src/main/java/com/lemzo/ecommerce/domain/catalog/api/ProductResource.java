@@ -91,7 +91,7 @@ public class ProductResource {
     }
 
     @POST
-    @Operation(summary = "Créer un produit", description = "Ajoute un nouveau produit au catalogue (Nécessite CATALOG:CREATE)")
+    @Operation(summary = "Créer un produit", description = "Ajoute un nouveau produit au catalogue (Nécessite PRODUCT:CREATE)")
     @SecurityRequirement(name = "jwt")
     @APIResponse(responseCode = "201", description = "Produit créé avec succès")
     @APIResponse(responseCode = "403", description = "Permission insuffisante")
