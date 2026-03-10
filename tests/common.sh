@@ -32,8 +32,10 @@ check_status() {
 get_token_response() {
     local email=$1
     local password=$2
-    curl -s -X POST "$BASE_URL/auth/login" \
+    rm -f "$RES_FILE"
+    curl -s -X POST "$BASE_URL/iam/auth/login" \
         -H "Content-Type: application/json" \
+        -o "$RES_FILE" \
         -d "{\"identifier\": \"$email\", \"password\": \"$password\"}"
 }
 
@@ -41,15 +43,15 @@ get_token_response() {
 init_tokens() {
     printf "${BLUE}--- 🔑 Authentification des rôles ---${NC}\n"
     
-    local admin_res=$(get_token_response "admin@ecommerce.local" "admin123")
-    ADMIN_TOKEN=$(echo "$admin_res" | jq -r '.accessToken // empty')
+    get_token_response "admin@ecommerce.local" "admin123"
+    ADMIN_TOKEN=$(jq -r '.accessToken // empty' "$RES_FILE")
     
-    local client_res=$(get_token_response "client@ecommerce.local" "client123")
-    CLIENT_TOKEN=$(echo "$client_res" | jq -r '.accessToken // empty')
-    CLIENT_REFRESH=$(echo "$client_res" | jq -r '.refreshToken // empty')
+    get_token_response "client@ecommerce.local" "client123"
+    CLIENT_TOKEN=$(jq -r '.accessToken // empty' "$RES_FILE")
+    CLIENT_REFRESH=$(jq -r '.refreshToken // empty' "$RES_FILE")
     
-    local owner_res=$(get_token_response "owner@ecommerce.local" "owner123")
-    OWNER_TOKEN=$(echo "$owner_res" | jq -r '.accessToken // empty')
+    get_token_response "owner@ecommerce.local" "owner123"
+    OWNER_TOKEN=$(jq -r '.accessToken // empty' "$RES_FILE")
 
     if [[ -z "$ADMIN_TOKEN" || -z "$CLIENT_TOKEN" ]]; then
         echo -e "${RED}Erreur: Impossible de récupérer les tokens. Vérifiez que le serveur tourne et que le seeding est fait.${NC}"
